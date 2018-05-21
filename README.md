@@ -11,6 +11,11 @@ For group 42
 
 ## Endpoints
 Proposed endpoint structures are as follows:
+### Authentication / Entity managements
+- [ ] /auth
+  - [x] POST /login
+  - [x] POST /register
+  - [ ] POST /create_group
 ### Users
 - [ ] /me
   - [x] GET /info
