@@ -1,0 +1,23 @@
+version: '3'
+services:
+        adminmongo:
+                build: './adminMongo'
+                ports:
+                        - '1234:1234'
+                links:
+                        - mongo
+                depends_on:
+                        - mongo
+        mongo:
+                image: 'mongo'
+                ports:
+                        - '27017:27017'
+
+        api:
+                build: './backend/backend'
+                ports:
+                        - '3000:3000'
+                links:
+                        - mongo
+                depends_on:
+                        - mongo
