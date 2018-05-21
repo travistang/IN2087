@@ -8,3 +8,63 @@ For group 42
 - try to type `localhost:3000/test/register` on your browser, a user should be created and you should receive a token as a response. If you do it again, you should get an error saying this user has been registered.
 - try to type `localhost:1234` on your browser, then add `mongodb://mongo:27017/finda`, and press `connect`, then you should be able to see the internal structure of the Mongo.
 - try to type `localhost:3000/test/populate` on your browser, the info of the user you just registered should have returned as json in the result
+
+## Endpoints
+Proposed endpoint structures are as follows:
+### Users
+- [ ] /me
+  - [x] GET /info
+  - [ ] POST /info  
+  
+  - [x] GET /wants
+  - [x] POST /wants
+  - [ ] DELETE /wants
+  - [ ] PATCH /wants
+  
+  - [x] GET /offers
+  - [ ] POST /offers
+  - [ ] DELETE /wants
+  - [ ] PATCH /wants
+  
+  
+- [x] /user/:username
+  - [x] GET /info
+  - [x] GET /wants
+  - [x] GET /offers
+
+### Debugging
+- [x] /test
+   - [x] GET /register
+   - [x] GET /populate
+
+### Groups
+- [ ] /group/:groupname
+  - [ ] GET /info
+  - [ ] POST /info
+  
+  - [ ] GET /wants
+  - [ ] POST /wants
+  - [ ] DELETE /wants
+  - [ ] PATCH /wants
+  
+  - [ ] GET /offers
+  - [ ] POST /offers
+  - [ ] DELETE /wants
+  - [ ] PATCH /wants  
+  
+  - [ ] GET /chats
+  - [ ] POST /chats
+  
+  - [ ] POST /join
+  - [ ] POST /canceljoin
+  - [ ] POST /approve/:username
+  - [ ] POST /reject/:username
+  - [ ] POST /invite/:username
+  - [ ] POST /message
+
+### Searches
+- [ ] /search
+  - [ ] GET /wants?q=<search_string>
+  - [ ] GET /offers?q=<search_string>
+  - [ ] GET /users?q=<search_string>
+  - [ ] GET /groups?q=<search_string>
