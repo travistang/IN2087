@@ -8,6 +8,7 @@ const middlewares = require('./middlewares');
 
 const auth  = require('./routes/auth');
 const me    = require('./routes/me')
+const user  = require('./routes/user')
 const testRoute = require('./routes/test')
 const api = express();
 
@@ -26,8 +27,9 @@ api.get('/', (req, res) => {
 });
 
 // API routes
-api.use('/auth'  , auth);
+api.use('/auth'  , auth)
 api.use('/me'    , me)
+api.use('/user' , user)
 
 api.use('/test', testRoute)
 

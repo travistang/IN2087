@@ -43,15 +43,12 @@ const login = (req,res) => {
 
 
 const register = (req,res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.body, 'password')) return res.status(400).json({
-        error: 'Bad Request',
-        message: 'The request body must contain a password property'
-    });
-
-    if (!Object.prototype.hasOwnProperty.call(req.body, 'username')) return res.status(400).json({
-        error: 'Bad Request',
-        message: 'The request body must contain a username property'
-    });
+    for (let expectedAttribute in 'username password gender dob'.split(' ')) {
+      if (!Object.prototype.hasOwnProperty.call(req.body, 'password')) return res.status(400).json({
+          error: 'Bad Request',
+          message: `The request body must contain a ${expectedAttribute} property`
+      });
+    }
 
     const user = Object.assign(req.body, {password: bcrypt.hashSync(req.body.password, 8)});
 

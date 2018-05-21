@@ -16,7 +16,8 @@ const OfferSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: true
-  }
+  },
+  isInfinite: Boolean
 })
 
 module.exports = mongoose.model('Offer',OfferSchema)

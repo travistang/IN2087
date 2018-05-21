@@ -1,30 +1,31 @@
 // controller for giving / editing info about this user
 const config    = require('../config')
 const UserModel = require('../models/user')
-
+const userUtils = require('./utils/user')
 const info = (req,res) => {
   let userId = req.userId
-  UserModel.findOne({_id: userId})
-          .exec()
-          .populate('wants')
-          .populate('offers')
-          .then(user => {
-            if(!user) {
-              res.status(404).json({
-                error: "User Not Found",
-              })
-            } else {
-              res.status(200).json(
-                Object.assign(user,{password: '',wants: []})
-              )
-            }
-          })
-          .catch(e => res.status(404).json({
-            error: 'Unknown error',
-            message: e.message
-          }))
+  userUtils.getUserInfo({_id: userId},res)
 }
 
+const wants = (req,res) => {
+  let userId = req.userId
+  userUtils.getUserWants({_id: userId},res)
+}
+
+const offers = (req,res) => {
+  let userId = req.userId
+  userUtils.getUserOffers({_id: userId},res)
+}
+
+const addWants = (req,res) => {
+  let userId = req.userId
+  let wants = req.body.wants
+  userUtils.addWants(userId,wants,res)
+}
 module.exports = {
   info,
+  wants,
+  offers,
+
+  addWants
 }

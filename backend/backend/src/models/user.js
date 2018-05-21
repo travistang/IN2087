@@ -13,7 +13,6 @@ const UserSchema  = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        unique: true,
     },
     gender: {
       type: String,
@@ -21,9 +20,11 @@ const UserSchema  = new mongoose.Schema({
     },
     isPremium: {
       type: Boolean,
+    },
+    dob: {
+      type: Date,
       required: true,
     },
-    dob: Date,
     wants: [{type:mongoose.Schema.Types.ObjectId,ref: 'Want'}],
     offers: [{type: mongoose.Schema.Types.ObjectId,ref: 'Offer'}]
 });
