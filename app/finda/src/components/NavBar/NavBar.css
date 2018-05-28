@@ -1,0 +1,17 @@
+.Login {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.Register {
+  border-radius: 4px;
+  border: 2px solid #3498db;
+  padding: 8px;
+  margin-left: 4px;
+  background-color: #3498db;
+  color: white !important;
+}
+.Register:hover {
+  text-decoration: none;
+  color: black;
+}
