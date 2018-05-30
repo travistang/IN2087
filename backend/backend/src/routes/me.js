@@ -13,5 +13,5 @@ router.get('/wants',middlewares.checkAuthentication,MeController.wants)
 router.post('/wants',middlewares.checkAuthentication,MeController.addWants)
 
 router.get('/offers',middlewares.checkAuthentication,MeController.offers)
-
+router.post('/offers',middlewares.checkAuthentication,MeController.addOffers)
 module.exports = router

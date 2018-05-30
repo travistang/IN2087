@@ -27,7 +27,7 @@ Proposed endpoint structures are as follows:
   - [ ] PATCH /wants
   
   - [x] GET /offers
-  - [ ] POST /offers
+  - [x] POST /offers
   - [ ] DELETE /wants
   - [ ] PATCH /wants
   

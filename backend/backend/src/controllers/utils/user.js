@@ -1,5 +1,6 @@
 const UserModel = require('../../models/user')
 const WantsModel = require('../../models/wants')
+const OffersModel = require('../../models/offers')
 const config = require('../../config')
 
 const obfuscatePassword = (user) => Object.assign(user,{password: ''})
@@ -79,6 +80,7 @@ const addWants = async (userId,wants,res) => {
     }
     // premium check
     if(!user.isPremium
+      && user.wants
       && user.wants.length + wants.length > config.nonPremiumWantsLimit)
     {
       return res.status(400).json({
@@ -110,10 +112,55 @@ const addWants = async (userId,wants,res) => {
   }
 
 }
+const addOffers = async (userId,offers,res) => {
+  try {
+    let user = await UserModel
+      .findOne({_id: userId})
+      .populate('offers')
+      .exec()
+    if(!user) {
+      return res.status(404).json({
+        error: "This user does not exist"
+      })
+    }
+    if(!user.isPremium
+      && user.offers
+      && user.offers.length + offers.length > config.nonPremiumWantsLimit)
+    {
+      return res.status(400).json({
+        error: 'User offers limit has been exceed'
+      })
+    }
+
+    let offersRef = await Promise.all(
+      offers.map(offer =>
+        OffersModel.create(
+          Object.assign({},offer,{creator:user._id})
+        )
+      )
+    )
+    let result = await user.update(
+      {
+        $push: {
+          'offers':{
+            '$each':offersRef.map(offer => offer._id)
+          }
+        }
+      }
+    ).exec()
+    return res.status(200).json(offersRef)
+  }catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
+
 module.exports = {
   getUserInfo,
   getUserWants,
   getUserOffers,
 
   addWants,
+  addOffers,
 }

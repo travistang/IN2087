@@ -19,13 +19,47 @@ const offers = (req,res) => {
 
 const addWants = (req,res) => {
   let userId = req.userId
-  let wants = req.body.wants
-  userUtils.addWants(userId,wants,res)
+  let title = req.body.title
+  if(!title) return res.status(400).json({
+    error: "Missing want title"
+  })
+  let descriptions = req.body.descriptions
+  if(!descriptions) return res.status(400).json({
+    err: "Missing want descriptions"
+  })
+  let wants = {title,descriptions}
+  userUtils.addWants(userId,[wants],res)
+}
+
+const addOffers = (req,res) => {
+  let userId = req.userId
+  //retrieve all infos
+  let offers = {}
+  let mandatoryField = "title descriptions amount".split(' ')
+  let optionalField = "price wants images amount".split(' ')
+  for(let i in mandatoryField) {
+    let attr = mandatoryField[i]
+    if(!req.body[attr]) return res.status(400).json({
+      error:`missing required field ${attr}`
+    })
+    // assign it to the offer obj.
+    offers[attr] = req.body[attr]
+  }
+  // TODO: add type check here
+  for(let i in optionalField) {
+    let attr = optionalField[i]
+    if(req.body[attr]) {
+      offers[attr] = req.body[attr]
+    }
+  }
+  offers["isInfinite"] = false
+  userUtils.addOffers(userId,[offers],res)
 }
 module.exports = {
   info,
   wants,
   offers,
 
-  addWants
+  addWants,
+  addOffers,
 }
