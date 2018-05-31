@@ -1,6 +1,10 @@
 # IN2087
 For group 42
 
+## How to set up the frontend (on your machine)
+- go to the `app/` directory
+- `npm start`
+- [ ] Dockerize the app as well
 ## How to set up the backend (on your machine)
 - install `docker-compose`
 - in the directory (where docker-compose.yml is), run `docker-compose up --build` (if that doesnt work, try with `sudo`)
