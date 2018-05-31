@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
   width: 100%;
   height: 100%;
 }
@@ -32,4 +31,7 @@
 
 .Ad {
   background: "gray";
+}
+.Section {
+  height: 100%;
 }
