@@ -40,7 +40,7 @@ export default function(props) {
       <Navbar.Collapse>
         <Nav>
           <NavDropdown eventKey={1} title="Wants" id="basic-nav-dropdown">
-            <MenuItem eventKey={1.1}>Me</MenuItem>
+            <MenuItem eventKey={1.1} href="/me">Me</MenuItem>
             <MenuItem divider />
             <MenuItem disabled> You have no groups </MenuItem>
           </NavDropdown>
@@ -51,7 +51,6 @@ export default function(props) {
           </NavDropdown>
           <NavItem eventKey={3}> Categories</NavItem>
         </Nav>
-
         <Nav pullRight>
           {barRightItems(props)}
         </Nav>

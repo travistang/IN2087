@@ -18,7 +18,7 @@ export default [
     component: RegisterLoginForm,
     params: {
       isRegister: false,
-
+      
     }
   }
 ]
