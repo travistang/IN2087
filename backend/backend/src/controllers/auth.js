@@ -43,7 +43,9 @@ const login = (req,res) => {
 
 
 const register = (req,res) => {
-    for (let expectedAttribute in 'username password gender dob'.split(' ')) {
+    let reqAttributes =  'username password gender dob'.split(' ')
+    for (let i in reqAttributes) {
+      let expectedAttribute = reqAttributes[i]
       if (!Object.prototype.hasOwnProperty.call(req.body, 'password')) return res.status(400).json({
           error: 'Bad Request',
           message: `The request body must contain a ${expectedAttribute} property`
