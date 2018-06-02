@@ -1,6 +1,6 @@
 import {apiURL} from "../config"
 import Http from './http'
-class AuthProvider {
+export default class AuthProvider {
   static singleton = null
   static getInstance() {
     if(!AuthProvider.singleton)AuthProvider.singleton = new AuthProvider()
@@ -14,15 +14,21 @@ class AuthProvider {
   isLoggedIn() {
     return this.token != null
   }
+  // here it assumes that all the required fields are there
+  async register(payload) {
+    let response = await Http.post(`${apiURL}/auth/register`,payload)
+    let data = await response.json()
+    let token = data.token
+    if(token) this.token = token
+    return token
+  }
 
   async login(username,password) {
     let response = await Http.post(`${apiURL}/auth/login`,{username,password})
-    if(Object.keys(response).indexOf('token') == -1)
-      throw new Error(response)
-    else {
-      this.token = response.token
-      return response
-    }
+    let data = await response.json()
+    let token = data.token
+    if(token) this.token = token
+    return token
   }
 
   async authenticatedGet(url,params = {}) {

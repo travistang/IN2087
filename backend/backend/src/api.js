@@ -18,7 +18,6 @@ api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(middlewares.allowCrossDomain);
 
-
 // Basic route
 api.get('/', (req, res) => {
     res.json({

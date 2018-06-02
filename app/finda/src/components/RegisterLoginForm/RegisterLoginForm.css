@@ -1,0 +1,12 @@
+.FormContainer {
+  height: auto;
+  width: 100%;
+}
+
+.FormName {
+  text-transform: capitalize;
+}
+
+.CalendarBox {
+  z-index: 2;
+}

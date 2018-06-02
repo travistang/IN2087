@@ -10,6 +10,8 @@ import {
   Row,
   Col,
 } from 'react-bootstrap'
+import { ToastContainer } from "react-toastr";
+import Toaster from './providers/toaster'
 
 class App extends React.Component {
   constructor(props) {
@@ -19,6 +21,11 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div className="App">
+            <ToastContainer
+              ref={ref => Toaster.getInstance().setRef(ref)}
+              className="toast-top-right"
+            />
+
             <NavBar username="Hello World!"/>
             <Grid className="Section">
               <Row>
