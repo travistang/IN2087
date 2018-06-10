@@ -130,6 +130,8 @@ export default class RegisterLoginForm extends React.Component {
         message = 'loginFailed'
       }
     } else {
+      // invoke success callback from parents
+      this.props.onSuccess()
       if(this.props.isRegister) {
         message = 'registerSuccess'
       } else {
@@ -265,8 +267,11 @@ export default class RegisterLoginForm extends React.Component {
         </Alert>
       )
     }
-    // default assumes loginSuccess, so direct to user's home page
-    return <Redirect to="/me" />
+    
+    if(message == 'loginSuccess') {
+      return <Redirect to="/me" />
+    }
+
   }
 
   resetForm() {
@@ -276,6 +281,8 @@ export default class RegisterLoginForm extends React.Component {
   }
 
   render() {
+    // you dont need another registration / login when you have logged in
+    if (Auth.getInstance().isLoggedIn()) return <Redirect to='/me' />
     return (
       <div>
         <PageHeader>
@@ -287,24 +294,21 @@ export default class RegisterLoginForm extends React.Component {
             this.formSubmitMessageElement.bind(this)()
           ):null
         }
-        {(this.state.formSubmitMessage == 'loginFailed')?
-          null:(
-            <Card className="FormContainer" bsSize="large">
-              <Form horizontal>
-                {
-                  this.config.map(this.getFormElement.bind(this))
-                }
 
-                <FormGroup>
-                  <Col smOffset={2} sm={10}>
-                    <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>{this.props.isRegister?"Register":"Login"}</Button>
-                  </Col>
-                </FormGroup>
-              </Form>
+        <Card className="FormContainer" bsSize="large">
+          <Form horizontal>
+            {
+              this.config.map(this.getFormElement.bind(this))
+            }
 
-            </Card>
-          )
-        }
+            <FormGroup>
+              <Col smOffset={2} sm={10}>
+                <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>{this.props.isRegister?"Register":"Login"}</Button>
+              </Col>
+            </FormGroup>
+          </Form>
+
+        </Card>
 
       </div>
     )

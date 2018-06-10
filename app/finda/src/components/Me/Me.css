@@ -1,0 +1,25 @@
+.NameCol {
+  height: 100%;
+}
+
+.BigThumbnail {
+  max-width: 100%;
+}
+
+.NoDescription {
+  font-style: italic;
+}
+/* put elements to the middle when the screen is too small*/
+@media(max-width: 720px) {
+  .ThumbnailCol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .NameCol > .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}

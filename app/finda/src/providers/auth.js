@@ -10,9 +10,11 @@ export default class AuthProvider {
   constructor() {
     this.token = null
   }
-
   isLoggedIn() {
     return this.token != null
+  }
+  logout() {
+    this.token = null
   }
   // here it assumes that all the required fields are there
   async register(payload) {
@@ -32,13 +34,13 @@ export default class AuthProvider {
   }
 
   async authenticatedGet(url,params = {}) {
-    return await Http.get(url,params,{
+    return await Http.get(`${apiURL}${url}`,params,{
       "x-access-token": this.token
     })
   }
 
   async authenticatedPost(url,data = {}) {
-    return await Http.post(url,data,{
+    return await Http.post(`${apiURL}${url}`,data,{
       "x-access-token": this.token
     })
   }

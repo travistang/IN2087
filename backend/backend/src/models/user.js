@@ -25,6 +25,10 @@ const UserSchema  = new mongoose.Schema({
       type: Date,
       required: true,
     },
+    descriptions: {
+      type: String,
+      required: false,
+    },
     wants: [{type:mongoose.Schema.Types.ObjectId,ref: 'Want'}],
     offers: [{type: mongoose.Schema.Types.ObjectId,ref: 'Offer'}]
 });

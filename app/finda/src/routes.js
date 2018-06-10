@@ -3,10 +3,6 @@ import RegisterLoginForm from './components/RegisterLoginForm/RegisterLoginForm'
 
 export default [
   {
-    path: "/me",
-    component: Ads
-  },
-  {
     path: "/register",
     component: RegisterLoginForm,
     params: {
@@ -18,7 +14,6 @@ export default [
     component: RegisterLoginForm,
     params: {
       isRegister: false,
-      
     }
   }
 ]

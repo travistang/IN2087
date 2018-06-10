@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route, Link,BrowserRouter} from 'react-router-dom'
+import { Redirect } from 'react-router'
 import NavBar from './components/NavBar/NavBar'
 import Ads from './components/Ads/Ads'
 import logo from './logo.svg';
@@ -12,10 +13,39 @@ import {
 } from 'react-bootstrap'
 import { ToastContainer } from "react-toastr";
 import Toaster from './providers/toaster'
-
+import Auth from './providers/auth'
+import Me from './providers/me'
+import MeComponent from './components/Me/Me'
 class App extends React.Component {
   constructor(props) {
     super(props)
+    this.auth = Auth.getInstance()
+    this.me = Me.getInstance()
+    this.state = {
+      user: null
+    }
+
+    this.routeParams = {
+      "/login": {
+        onSuccess: this.updateUser.bind(this)
+      },
+      "/register": {
+        onSuccess: this.updateUser.bind(this)
+      },
+    }
+
+    this.logout = this.logout.bind(this)
+  }
+  logout() {
+    // remove token
+    this.auth.logout()
+    // remove user object
+    this.setState(Object.assign({},this.state,{user: null}))
+    return <Redirect to='/home' />
+  }
+  updateUser() {
+    this.me.getUser()
+      .then(user => this.setState(Object.assign({},this.state,{user})))
   }
   render() {
     return (
@@ -26,7 +56,10 @@ class App extends React.Component {
               className="toast-top-right"
             />
 
-            <NavBar username="Hello World!"/>
+            <NavBar
+              user={this.me.user}
+              logout={this.logout}
+            />
             <Grid className="Section">
               <Row>
                   <Ads/>
@@ -35,10 +68,14 @@ class App extends React.Component {
                   <Row style={{height:"100vh",marginBottom:8}}>
                     {ContentRoutes.map(route =>
                       <Route path={route.path}
-                        render={() => <route.component {...route.params} />}
+                        render={() => <route.component {...route.params} {...this.routeParams[route.path]} />}
                       >
                       </Route>
                     )}
+                    <Route
+                      path="/me"
+                      render={() => <MeComponent user={this.me.user} />}
+                    />
                   </Row>
                 </Col>
 
