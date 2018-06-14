@@ -45,6 +45,10 @@ const registerFieldsConfig = [
     name: 'dob',
     displayName: 'Date of Birth',
     type: "date"
+  },
+  {
+    name: 'descriptions',
+    type: "textarea"
   }
 ]
 const loginFieldsConfig = [
@@ -231,10 +235,28 @@ export default class RegisterLoginForm extends React.Component {
       </FormGroup>
     )
   }
+  textareaElement(input) {
+    return (
+      <FormGroup>
+        <Col className="FormName" componentClass={ControlLabel} sm={2}>
+          {input.displayName?input.displayName:input.name}
+        </Col>
+        <Col sm={10}>
+          <FormControl
+            componentClass="textarea"
+            placeholder="Write something about yourself..."
+            value={this.state[input.name]}
+            onChange={text => this.updateValue(text,input.name)}>
+          </FormControl>
+        </Col>
+      </FormGroup>
+    )
+  }
   getFormElement(input) {
     if(input.type == 'checkbox') return this.checkboxElement(input)
     if(input.type == 'radio') return this.radioElement(input)
     if(input.type == 'date') return this.dateElement(input)
+    if(input.type == 'textarea') return this.textareaElement(input)
     return this.textElement(input)
   }
 
@@ -267,7 +289,7 @@ export default class RegisterLoginForm extends React.Component {
         </Alert>
       )
     }
-    
+
     if(message == 'loginSuccess') {
       return <Redirect to="/me" />
     }
