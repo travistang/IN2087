@@ -8,20 +8,25 @@ export default class AuthProvider {
   }
 
   constructor() {
-    this.token = null
   }
   isLoggedIn() {
-    return this.token != null
+    return !!this.getToken()
+  }
+  getToken() {
+    return window.localStorage.getItem('token')
+  }
+  setToken(token) {
+    return window.localStorage.setItem('token',token)
   }
   logout() {
-    this.token = null
+    window.localStorage.removeItem('token')
   }
   // here it assumes that all the required fields are there
   async register(payload) {
     let response = await Http.post(`${apiURL}/auth/register`,payload)
     let data = await response.json()
     let token = data.token
-    if(token) this.token = token
+    if(token) this.setToken(token)
     return token
   }
 
@@ -29,19 +34,21 @@ export default class AuthProvider {
     let response = await Http.post(`${apiURL}/auth/login`,{username,password})
     let data = await response.json()
     let token = data.token
-    if(token) this.token = token
+    if(token) {
+      this.setToken(token)
+    }
     return token
   }
 
   async authenticatedGet(url,params = {}) {
     return await Http.get(`${apiURL}${url}`,params,{
-      "x-access-token": this.token
+      "x-access-token": this.getToken()
     })
   }
 
   async authenticatedPost(url,data = {}) {
     return await Http.post(`${apiURL}${url}`,data,{
-      "x-access-token": this.token
+      "x-access-token": this.getToken()
     })
   }
 }

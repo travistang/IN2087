@@ -32,9 +32,14 @@ class App extends React.Component {
       "/register": {
         onSuccess: this.updateUser.bind(this)
       },
+      "me/wants": {
+        user: this.state.user
+      }
     }
 
     this.logout = this.logout.bind(this)
+    // get user info first
+    this.updateUser()
   }
   logout() {
     // remove token
@@ -45,7 +50,9 @@ class App extends React.Component {
   }
   updateUser() {
     this.me.getUser()
-      .then(user => this.setState(Object.assign({},this.state,{user})))
+      .then(user => {
+        this.setState(Object.assign({},this.state,{user}))
+      })
   }
   render() {
     return (
@@ -57,7 +64,7 @@ class App extends React.Component {
             />
 
             <NavBar
-              user={this.me.user}
+              user={this.state.user}
               logout={this.logout}
             />
             <Grid className="Section">
@@ -74,8 +81,10 @@ class App extends React.Component {
                     )}
                     <Route
                       path="/me"
-                      render={() => <MeComponent user={this.me.user} />}
+                      exact={true}
+                      render={() => <MeComponent isMe={true} user={this.state.user} />}
                     />
+
                   </Row>
                 </Col>
 

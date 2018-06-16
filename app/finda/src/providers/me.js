@@ -23,4 +23,10 @@ export default class Me {
     this.user = user
     return user
   }
+
+  async addWants(want) {
+    if(!this.user) return null
+    let response = await this.auth.authenticatedPost('/me/wants',want)
+    return response
+  }
 }

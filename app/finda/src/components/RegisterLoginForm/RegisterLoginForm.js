@@ -20,6 +20,7 @@ import Auth from '../../providers/auth'
 
 import Toaster from '../../providers/toaster'
 import { Redirect } from 'react-router'
+import FormElements from '../../utils/form'
 
 export const registerTitle = "Register a new account"
 export const loginTitle = "Login"
@@ -81,6 +82,7 @@ export default class RegisterLoginForm extends React.Component {
     this.config = this.props.isRegister?registerFieldsConfig:loginFieldsConfig
     let fields = this.props.isRegister?registerFields:loginFields
     this.fields = fields
+    // flag for triggering redirection
     /*
       State structure:
       {
@@ -95,8 +97,9 @@ export default class RegisterLoginForm extends React.Component {
 
     */
     this.state = {
+      shouldRedirectToMePage: false,
       formSubmitMessage: null,
-      hasChanged: fields.map(field => {field: false})
+      hasChanged: fields.map(field => ({[field]: false}))
     }
   }
   async submitForm(e) {
@@ -134,7 +137,6 @@ export default class RegisterLoginForm extends React.Component {
         message = 'loginFailed'
       }
     } else {
-      // invoke success callback from parents
       this.props.onSuccess()
       if(this.props.isRegister) {
         message = 'registerSuccess'
@@ -164,100 +166,100 @@ export default class RegisterLoginForm extends React.Component {
     return null
   }
 
-  textElement(input) {
-    return (
-      <FormGroup
-        controlId={input.name}
-        validationState={this.getValidationState(input.name)}>
-        <Col className="FormName" componentClass={ControlLabel} sm={2}>
-          {input.name}
-        </Col>
-        <Col sm={10}>
-          <FormControl
-            type={input.type}
-            value={this.state[input.name]}
-            onChange={e => this.updateValue(e,input.name)}
-            placehodler={input.name} />
-        </Col>
-      </FormGroup>)
-  }
-  checkboxElement(input) {
-    return (
-      <FormGroup>
-        <Col smOffset={2} sm={10}>
-          <Checkbox
-            value={this.state[input.name]}
-            onChange={e => this.updateValue(e,input.name)}
-          >
-            {input.text}
-          </Checkbox>
-        </Col>
-      </FormGroup>
-    )
-  }
-  radioElement(input) {
-    return (
-      <FormGroup>
-        <Col className="FormName" componentClass={ControlLabel} sm={2}>
-          {input.name}
-        </Col>
-        <Col sm={10}>
-          {
-            input.choices.map(choice => (
-              <Radio
-                name={input.name}
-                value={choice}
-                onClick={e => this.updateValue(e,input.name)}
-                inline>
-              {choice}
-              </Radio>
-            ))
-          }
-        </Col>
-
-      </FormGroup>
-    )
-  }
-  dateElement(input) {
-    return (
-      <FormGroup>
-        <Col className="FormName" componentClass={ControlLabel} sm={2}>
-          {input.displayName?input.displayName:input.name}
-        </Col>
-        <Col sm={10}>
-        <DatePicker
-          className="CalendarBox"
-          maxDate={new Date()}
-          onChange={date => this.updateValue({target:{value:date}},input.name)}
-          value={this.state[input.name]}
-        />
-        </Col>
-      </FormGroup>
-    )
-  }
-  textareaElement(input) {
-    return (
-      <FormGroup>
-        <Col className="FormName" componentClass={ControlLabel} sm={2}>
-          {input.displayName?input.displayName:input.name}
-        </Col>
-        <Col sm={10}>
-          <FormControl
-            componentClass="textarea"
-            placeholder="Write something about yourself..."
-            value={this.state[input.name]}
-            onChange={text => this.updateValue(text,input.name)}>
-          </FormControl>
-        </Col>
-      </FormGroup>
-    )
-  }
+  // textElement(input) {
+  //   return (
+  //     <FormGroup
+  //       controlId={input.name}
+  //       validationState={this.getValidationState(input.name)}>
+  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
+  //         {input.name}
+  //       </Col>
+  //       <Col sm={10}>
+  //         <FormControl
+  //           type={input.type}
+  //           value={this.state[input.name]}
+  //           onChange={e => this.updateValue(e,input.name)}
+  //           placehodler={input.name} />
+  //       </Col>
+  //     </FormGroup>)
+  // }
+  // checkboxElement(input) {
+  //   return (
+  //     <FormGroup>
+  //       <Col smOffset={2} sm={10}>
+  //         <Checkbox
+  //           value={this.state[input.name]}
+  //           onChange={e => this.updateValue(e,input.name)}
+  //         >
+  //           {input.text}
+  //         </Checkbox>
+  //       </Col>
+  //     </FormGroup>
+  //   )
+  // }
+  // radioElement(input) {
+  //   return (
+  //     <FormGroup>
+  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
+  //         {input.name}
+  //       </Col>
+  //       <Col sm={10}>
+  //         {
+  //           input.choices.map(choice => (
+  //             <Radio
+  //               name={input.name}
+  //               value={choice}
+  //               onClick={e => this.updateValue(e,input.name)}
+  //               inline>
+  //             {choice}
+  //             </Radio>
+  //           ))
+  //         }
+  //       </Col>
+  //
+  //     </FormGroup>
+  //   )
+  // }
+  // dateElement(input) {
+  //   return (
+  //     <FormGroup>
+  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
+  //         {input.displayName?input.displayName:input.name}
+  //       </Col>
+  //       <Col sm={10}>
+  //       <DatePicker
+  //         className="CalendarBox"
+  //         maxDate={new Date()}
+  //         onChange={date => this.updateValue({target:{value:date}},input.name)}
+  //         value={this.state[input.name]}
+  //       />
+  //       </Col>
+  //     </FormGroup>
+  //   )
+  // }
+  // textareaElement(input) {
+  //   return (
+  //     <FormGroup>
+  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
+  //         {input.displayName?input.displayName:input.name}
+  //       </Col>
+  //       <Col sm={10}>
+  //         <FormControl
+  //           componentClass="textarea"
+  //           placeholder="Write something about yourself..."
+  //           value={this.state[input.name]}
+  //           onChange={text => this.updateValue(text,input.name)}>
+  //         </FormControl>
+  //       </Col>
+  //     </FormGroup>
+  //   )
+  // }
   getFormElement(input) {
-    if(input.type == 'checkbox') return this.checkboxElement(input)
-    if(input.type == 'radio') return this.radioElement(input)
-    if(input.type == 'date') return this.dateElement(input)
-    if(input.type == 'textarea') return this.textareaElement(input)
-    return this.textElement(input)
+    if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'radio') return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'date') return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this))
+    return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
   }
 
   formSubmitMessageElement() {
@@ -291,7 +293,16 @@ export default class RegisterLoginForm extends React.Component {
     }
 
     if(message == 'loginSuccess') {
-      return <Redirect to="/me" />
+      // <Redirect to="/me">
+      // trigger the redirect after 3 seconds...
+      // setTimeout(() => {
+      //   this.shouldRedirectToMePage = true
+      // },3000)
+      return (
+        <Alert bsStyle="success">
+          <strong> Login Success! </strong> You will be redirected in a few seconds...
+        </Alert>
+      )
     }
 
   }
@@ -301,10 +312,23 @@ export default class RegisterLoginForm extends React.Component {
       ...this.fields.map(field => {field: null})
     ))
   }
-
+  redirectToMe() {
+    this.setState(Object.assign({},this.state,{shouldRedirectToMePage: true}))
+  }
   render() {
     // you dont need another registration / login when you have logged in
-    if (Auth.getInstance().isLoggedIn()) return <Redirect to='/me' />
+    if (Auth.getInstance().isLoggedIn())
+    {
+      setTimeout(function(){this.redirectToMe()}.bind(this), 3000)
+      return (
+        <div>
+          {this.shouldRedirectToMePage?<Redirect to="/me" />:null}
+          <Alert bsStyle="success">
+            <strong> Login Success! </strong> You will be redirected in a few seconds...
+          </Alert>
+        </div>
+      )
+    }
     return (
       <div>
         <PageHeader>

@@ -5,9 +5,15 @@ import {
   Row,
   Image,
   Badge,
+  PageHeader,
+  Button,
+  Tabs,
+  Tab
 } from 'react-bootstrap'
+import Auth from '../../providers/auth'
 import Card from '../Card/Card'
-
+import ItemCard from '../ItemCard/ItemCard'
+import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
 import './Me.css'
 export default class Me extends React.Component {
   constructor(props) {
@@ -25,19 +31,97 @@ export default class Me extends React.Component {
     }
   }
   numUserWants() {
-    if(this.props.user && this.props.user.wants) {
-      return this.props.user.wants.length
-    }
+    return this.userWants().length
   }
   numUserOffers() {
-    if(this.props.user && this.props.user.offers) {
-      return this.props.user.offers.length
+    return this.userOffers().length
+  }
+  userWants() {
+    return this.props.user.wants
+  }
+  userOffers() {
+    return this.props.user.offers
+  }
+  editProfileButton() {
+    if(this.props.isMe) {
+      return (
+        <Row>
+          <Button block>Edit Profile</Button>
+        </Row>
+      )
     }
+  }
+  wantsSection() {
+    return (
+      <div>
+        <Row>
+          <Col>
+            {(this.userWants().length > 0)?(<div className="ItemContainer">
+                {this.userWants().map(want => (
+                    <ItemCard want={want} />
+                ))}
+              </div>):(
+                <BackgroundNotice title="This user has no wants" />
+              )
+            }
+          </Col>
+
+        </Row>
+        <Row>
+          <Col>
+            <div>
+              {this.props.isMe?<Button block bsSize="large" bsStyle="primary" href="/me/wants"> To my wants</Button>:null}
+            </div>
+
+          </Col>
+        </Row>
+      </div>
+
+    )
+  }
+  toPremiumButton() {
+    if(!this.props.user.isPremium) return (
+      <Button bsStyle="success"> To Premium </Button>
+    )
+  }
+  offersSection() {
+    return (
+      <div>
+        <Row>
+          <Col>
+            {(this.userOffers().length > 0)?(<div className="ItemContainer">
+                {this.userOffers().map(want => (
+                    <ItemCard want={want} />
+                ))}
+              </div>):(
+                <BackgroundNotice title={`This user has no offers`} />
+              )
+            }
+          </Col>
+
+        </Row>
+        <Row>
+          <Col>
+            <div>
+              {this.props.isMe?<Button block bsSize="large" bsStyle="primary"> To my offers</Button>:null}
+            </div>
+
+          </Col>
+        </Row>
+      </div>
+    )
+  }
+  groupsSection() {
+    return (
+      <BackgroundNotice title="You have no groups" />
+    )
   }
   render() {
 
-    // if(!this.props.user) return <Redirect to='/login' />
-    return (
+    if(!Auth.getInstance().isLoggedIn()) return <Redirect to='/login' />
+    // logged in but user not loaded
+    else if(!this.props.user) return null
+    else return (
       <Col>
         <Row>
           <Col className="ThumbnailCol" xs={12} md={4} sm={4} lg={4}>
@@ -52,8 +136,37 @@ export default class Me extends React.Component {
             <Row>
               {this.userDescriptions()}
             </Row>
+            <Row>
+              <Col sm={6}>
+                {this.editProfileButton()}
+              </Col>
+              <Col sm={6}>
+                {this.toPremiumButton()}
+              </Col>
+            </Row>
+
           </Col>
         </Row>
+
+
+
+
+
+
+        <div className="SubpageContainer">
+          <Tabs>
+            <Tab eventKey={1} title="Wants">
+              {this.wantsSection()}
+            </Tab>
+            <Tab eventKey={2} title="Offers">
+              {this.offersSection()}
+            </Tab>
+            <Tab eventKey={3} title="Groups">
+              {this.groupsSection()}
+            </Tab>
+          </Tabs>
+        </div>
+
       </Col>
     )
   }

@@ -1,0 +1,27 @@
+
+.ItemCardMain {
+  height: 220px;
+  width: 156px;
+}
+.ItemTitle {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+.ItemThumbnail {
+  height: 64px;
+  width: 64px;
+}
+
+.ItemCardCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ItemCardContent {
+  width: 100%;
+  padding: 0;
+}
+.itemRowTitle {
+  padding-top: 16px;
+}

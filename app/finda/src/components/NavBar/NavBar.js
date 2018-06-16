@@ -10,6 +10,7 @@ import {
   Button
 } from 'react-bootstrap'
 import {Redirect} from 'react-router'
+import Auth from '../../providers/auth'
 import './NavBar.css'
 
 
@@ -18,13 +19,14 @@ export default class NavBar extends React.Component {
     super(props)
   }
   barRightItems() {
-    if(this.props.user) {
-      return (
-        <NavItem>
-          <Image className="Thumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
-          {this.props.user.username}
-          <Button className="NavButton" onClick={this.props.logout}> Logout</Button>
-        </NavItem>
+    if(Auth.getInstance().isLoggedIn()) {
+      return (this.props.user?(
+          <NavItem>
+            <Image className="Thumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
+            {this.props.user.username}
+            <Button className="NavButton" onClick={this.props.logout}> Logout</Button>
+          </NavItem>
+        ): null
       )
     } else {
       return (
@@ -35,7 +37,6 @@ export default class NavBar extends React.Component {
     }
   }
   getWantsItem() {
-    if(this.props.users) {
       return (
         <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={1} title="Wants" id="basic-nav-dropdown">
           <MenuItem eventKey={1.1} href="/me/wants">Me</MenuItem>
@@ -43,12 +44,8 @@ export default class NavBar extends React.Component {
           <MenuItem disabled> You have no groups </MenuItem>
         </NavDropdown>
       )
-    } else {
-      return (<NavItem href="/login"> Wants </NavItem>)
-    }
   }
   getOffersItem() {
-    if(this.props.users) {
       return (
         <NavDropdown eventKey={2} title="Offers" id="basic-nav-dropdown">
           <MenuItem eventKey={2.1}>Me</MenuItem>
@@ -56,9 +53,6 @@ export default class NavBar extends React.Component {
           <MenuItem disabled> You have no groups </MenuItem>
         </NavDropdown>
       )
-    } else {
-      return (<NavItem href="/login"> Offers</NavItem>)
-    }
   }
   render() {
     return (

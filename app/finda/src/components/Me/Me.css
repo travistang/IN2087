@@ -9,6 +9,15 @@
 .NoDescription {
   font-style: italic;
 }
+
+.SubpageContainer {
+  padding: 16px;
+}
+.ItemContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 /* put elements to the middle when the screen is too small*/
 @media(max-width: 720px) {
   .ThumbnailCol {

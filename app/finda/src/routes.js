@@ -1,6 +1,6 @@
 import Ads from './components/Ads/Ads'
 import RegisterLoginForm from './components/RegisterLoginForm/RegisterLoginForm'
-
+import ItemsListPage from './components/ItemsListPage/ItemsListPage'
 export default [
   {
     path: "/register",
@@ -15,5 +15,15 @@ export default [
     params: {
       isRegister: false,
     }
-  }
+  },
+  {
+    path: "/me/wants",
+    component: ItemsListPage,
+    params: {
+      isMe: true,
+      isForWant: true,
+    }
+  },
+
+
 ]
