@@ -270,7 +270,7 @@ export default class RegisterLoginForm extends React.Component {
           <h4>Registration Success!</h4>
           <p> Welcome to FindA! Now you can choose to</p>
           <p>
-            <Button bsStyle="primary" onClick={() => <Redirect to='/home/offers'/>}> View people's offers </Button>
+            <Button bsStyle="primary" onClick={() => <Redirect to='/home/offers'/>}> View peoples offers </Button>
               or
             <Button onClick={() => <Redirect to='/me'/>}> Go to your profile </Button>
           </p>
