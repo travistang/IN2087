@@ -22,7 +22,6 @@ export default class NavBar extends React.Component {
     if(Auth.getInstance().isLoggedIn()) {
       return (this.props.user?(
           <NavItem>
-            //TESTING
             // FIX HERE
             <Image className="Thumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
             {this.props.user.username}
