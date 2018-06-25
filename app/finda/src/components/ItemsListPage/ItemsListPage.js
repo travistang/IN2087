@@ -13,6 +13,7 @@ import ItemCard from '../ItemCard/ItemCard'
 import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
 import Card from '../Card/Card'
 import FormElements from '../../utils/form'
+import Me from '../../providers/me'
 export default class ItemListPage extends React.Component {
   /*
     Expected props are as follows...
@@ -80,6 +81,40 @@ export default class ItemListPage extends React.Component {
 
     ]
   }
+
+  //const config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+
+
+  async submitForm(e) {
+    e.preventDefault()
+    let config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+    let questionNames = config.map(q => q.name)
+
+    let payload = {}
+    for (let i in questionNames) {
+      let field = questionNames[i]
+      if(!Object.keys(this.state).indexOf(field)) {
+        // trigger the invalidation of this field
+        this.setState(Object.assign({},this.state,{hasChanged: {[questionNames]: true}}))
+        return // stop the form from submitting
+      }
+      payload[field] = this.state[field]
+    }
+
+    let meProvider = Me.getInstance()
+    let result = null
+
+    if(this.props.isForWant) {
+      result = await meProvider.addWants('{"title":"' + payload.name + '", "descriptions:""', payload.descriptions + '"')
+    } else {
+
+    }
+
+    console.log('Name: ' + payload.name)
+    console.log('Description: ' + payload.descriptions)
+  }
+
+
   addItemForm() {
     if(!this.props.isMe) return null
     let formTitle = this.props.isForWant?"Add a new want":"Add a new offer"
@@ -89,8 +124,14 @@ export default class ItemListPage extends React.Component {
           <h4> Add a new {this.props.isForWant?"want":"offer"} </h4>
           <Form horizontal>
             {this.questions().map(this.getFormElement.bind(this))}
+            <FormGroup>
+              <Col smOffset={2} sm={10}>
+                <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>Add Item</Button>
+              </Col>
+            </FormGroup>
           </Form>
         </Card>
+
       </Row>
     )
   }
