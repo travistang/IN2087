@@ -17,11 +17,16 @@ import './NavBar.css'
 export default class NavBar extends React.Component {
     state={
         query:'',
-        searchResults:[]
+        searchResults:[],
+        isOffers:true,
+        firstDropDownSelected:"Offers",
+        firstDropDownSecond:"Wants",
+        secondDropDownSelected:"All"
     }
 
   constructor(props) {
-    super(props)
+    super(props);
+    this.firstDropDown=this.firstDropDown(this);
   }
 
   handleInputChange=()=>{
@@ -50,12 +55,39 @@ export default class NavBar extends React.Component {
       )
     }
   }
-  getWantsItem() {
+
+
+    firstDropDown(){
+        if(!this.state.isOffers)
+        {
+            this.setState({
+                firstDropDownSelected:"Wants",
+                firstDropDownSecond:"Offers",
+                isOffers:false
+            });
+
+
+        }
+        else {
+            this.state.firstDropDownSelected="Offers";
+            this.setState({firstDropDownSecond:"Wants"});
+            this.setState({isOffers:true})
+        }
+    }
+
+    secondDropDown()
+    {
+        this.setState({SecondDropDownSecond:"All"});
+    }
+
+
+
+  /*getWoOItems() {
       return (
         <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={1} title="Wants" id="basic-nav-dropdown">
-          <MenuItem eventKey={1.1} href="/me/wants">Me</MenuItem>
+          <MenuItem eventKey={1.1} href="/offers">Offers</MenuItem>
           <MenuItem divider />
-          <MenuItem disabled> You have no groups </MenuItem>
+          <MenuItem id="firstTwo" eventKey={1.2} href="/wants" onclick={document.getElementById(firstTwo).innerHTML }> Wants </MenuItem>
         </NavDropdown>
       )
   }
@@ -67,7 +99,7 @@ export default class NavBar extends React.Component {
           <MenuItem disabled> You have no groups </MenuItem>
         </NavDropdown>
       )
-  }
+  }*/
   render() {
     return (
       <Navbar inverse collapseOnSelect>
@@ -84,8 +116,15 @@ export default class NavBar extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            {this.getWantsItem()}
-            {this.getOffersItem()}
+
+                <NavDropdown id="firstDropDownTitle" title={this.state.firstDropDownSelected}>
+                    <MenuItem id="firstDropDownItem" onSelect={this.firstDropDown}>{this.state.firstDropDownSecond}</MenuItem>
+
+                </NavDropdown>
+                <NavDropdown id="secondDropDownTitle" title="All">
+                    <MenuItem id="secondDropDownItem1" onSelect={this.secondDropDown}>My Groups</MenuItem>
+                    <MenuItem id="secondDropDownItem2" onSelect={this.secondDropDown}>My own</MenuItem>
+                </NavDropdown>
             <NavItem eventKey={3}> Categories</NavItem>
           </Nav>
           <Nav className="NavRight" pullRight>
@@ -95,4 +134,6 @@ export default class NavBar extends React.Component {
       </Navbar>
     )
   }
+
+
 }
