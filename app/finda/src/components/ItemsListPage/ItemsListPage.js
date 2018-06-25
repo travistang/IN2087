@@ -113,6 +113,7 @@ export default class ItemListPage extends React.Component {
     let items = []
     if(this.props.user && this.props.isForWant) items = this.props.user.wants
     if(this.props.user && !this.props.isForWant) items = this.props.user.offers
+     // if(this.props.isForWant) items =this.props.wants
     return (
       <div>
         <Row>

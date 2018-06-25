@@ -15,8 +15,22 @@ import './NavBar.css'
 
 
 export default class NavBar extends React.Component {
+    state={
+        query:'',
+        searchResults:[]
+    }
+
   constructor(props) {
     super(props)
+  }
+
+  handleInputChange=()=>{
+        this.setState({
+            query:this.search.value
+        }),()=>{
+           // if(this.props.isForWant){searchResults:data.data}
+            //if(==offers){search user offers}
+        }
   }
   barRightItems() {
     if(Auth.getInstance().isLoggedIn()) {
@@ -62,6 +76,11 @@ export default class NavBar extends React.Component {
             <a href="/home">FindA</a>
           </Navbar.Brand>
           <Navbar.Toggle />
+          <input
+            placeholder="Search for:"
+            ref={input=>this.search=input}
+            onChange={this.handleInputChange}
+            />
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
