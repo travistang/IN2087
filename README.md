@@ -45,7 +45,7 @@ Proposed endpoint structures are as follows:
 
 ### Groups
 - [ ] /group/:groupname
-  - [ ] GET /info
+  - [x] GET /info
   - [ ] POST /info
 
   - [ ] GET /wants
@@ -67,7 +67,7 @@ Proposed endpoint structures are as follows:
   - [ ] POST /reject/:username
   - [ ] POST /invite/:username
   - [ ] POST /message
-
+- [x] POST /group/create_group
 ### Searches
 - [ ] /search
   - [ ] GET /wants?q=<search_string>
