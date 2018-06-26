@@ -1,6 +1,7 @@
 import Ads from './components/Ads/Ads'
 import RegisterLoginForm from './components/RegisterLoginForm/RegisterLoginForm'
 import ItemsListPage from './components/ItemsListPage/ItemsListPage'
+import ItemList from './components/ItemList'
 
 export default [
   {
@@ -25,6 +26,14 @@ export default [
       isForWant: true,
     }
   },
+
+    {
+      path:"/listtest",
+        component: ItemList,
+        params:{
+
+        }
+    }
 
 
 
