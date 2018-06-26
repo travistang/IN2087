@@ -122,7 +122,7 @@ export default class ItemListPage extends React.Component {
     return (
       <Row>
         <Card>
-          <h4> Add a new {this.props.isForWant?"want":"offer"} </h4>
+          <h4> {formTitle} </h4>
           <Form horizontal>
             {this.questions().map(this.getFormElement.bind(this))}
             <FormGroup>
@@ -146,9 +146,9 @@ export default class ItemListPage extends React.Component {
     )
   }
   noItemElement() {
-    let username = this.props.isMe?'You':this.props.username
+    let username = this.props.isMe?'You have':`${this.props.username} has`
     let wantOrOffer = this.props.isForWant?'wants':'offers'
-    let title = `${username} has no ${wantOrOffer}`
+    let title = `${username} no ${wantOrOffer}`
     return <BackgroundNotice title={title} />
   }
   render() {

@@ -3,7 +3,7 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
 const helmet     = require('helmet');
-
+const cors 	 = require('cors')
 const middlewares = require('./middlewares');
 
 const auth  = require('./routes/auth');
@@ -14,6 +14,7 @@ const api = express();
 
 // Adding Basic Middlewares
 api.use(helmet());
+api.use(cors())
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(middlewares.allowCrossDomain);
