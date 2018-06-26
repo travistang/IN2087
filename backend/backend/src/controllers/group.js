@@ -24,8 +24,18 @@ const getWants = (req,res) => {
   })
   return GroupUtils.getWants(groupname,res)
 }
+
+const addWants = (req,res) => {
+  let groupname = req.params.groupname
+  let wants = req.body.wants
+  if(!wants || !groupname) return res.status(400).json({
+    "error": "Group name and wants object are required to add a want"
+  })
+  return GroupUtils.addWants(groupname,wants,res)
+}
 module.exports = {
   info,
   createGroup,
-  getWants
+  getWants,
+  addWants
 }

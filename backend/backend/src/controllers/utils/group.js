@@ -50,6 +50,24 @@ const getWants = async (groupname,res) => {
     res.status(500).json(e)
   }
 }
+
+const addWants = async (groupname,wants,res) => {
+  try {
+    let result = await GroupModel
+      .findOneAndUpdate({groupname}, {
+        $push: {
+          'wants': {
+            '$each': wants
+          }
+        }
+      }).exec()
+    return res.status(200).json(result)
+  } catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
 module.exports = {
   info,
   createGroup,
