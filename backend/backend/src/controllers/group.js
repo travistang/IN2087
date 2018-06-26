@@ -34,9 +34,32 @@ const addWants = (req,res) => {
   })
   return GroupUtils.addWants(groupname,wants,creator,res)
 }
+
+const getOffers = (req,res) => {
+  let groupname = req.params.groupname
+  if(!groupname) return res.status(400).json({
+    "error": "Name of the group must be provided"
+  })
+  return GroupUtils.getOffers(groupname,res)
+}
+
+const addOffers = (req,res) => {
+  let creator = req.userId
+  let groupname = req.params.groupname
+  let offers = req.body.offers
+  if(!offers || !groupname) return res.status(400).json({
+    "error": "Group name and offers object are required to add a offer"
+  })
+  return GroupUtils.addOffers(groupname,offers,creator,res)
+}
+
 module.exports = {
   info,
   createGroup,
+
   getWants,
-  addWants
+  addWants,
+
+  getOffers,
+  addOffers,
 }

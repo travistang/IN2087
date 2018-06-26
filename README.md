@@ -43,31 +43,36 @@ Proposed endpoint structures are as follows:
    - [x] GET /register
    - [x] GET /populate
 
+### Categories
+- [ ] /categories
+  - [ ] GET /:category
 ### Groups
+- [x] POST /group/create_group
 - [ ] /group/:groupname
   - [x] GET /info
   - [ ] POST /info
 
-  - [ ] GET /wants
-  - [ ] POST /wants
+  - [x] GET /wants
+  - [x] POST /wants
   - [ ] DELETE /wants
-  - [ ] PATCH /wants
+  - ~~[ ] PATCH /wants~~
 
-  - [ ] GET /offers
-  - [ ] POST /offers
+  - [x] GET /offers
+  - [x] POST /offers
   - [ ] DELETE /wants
-  - [ ] PATCH /wants  
+  - ~~[ ] PATCH /wants~~
 
   - [ ] GET /chats
   - [ ] POST /chats
 
   - [ ] POST /join
-  - [ ] POST /canceljoin
-  - [ ] POST /approve/:username
-  - [ ] POST /reject/:username
-  - [ ] POST /invite/:username
+  - [ ] POST /quit
+  - ~~[ ] POST /canceljoin~~
+  - ~~[ ] POST /approve/:username~~
+  - ~~[ ] POST /reject/:username~~
+  - ~~[ ] POST /invite/:username~~
   - [ ] POST /message
-- [x] POST /group/create_group
+
 ### Searches
 - [ ] /search
   - [ ] GET /wants?q=<search_string>

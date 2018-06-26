@@ -44,7 +44,7 @@ const getWants = async (groupname,res) => {
       .select('wants')
       .exec()
     res.status(200).json(
-      Object.assign({},{wants},{groupname})
+      Object.assign({},{wants:wants.wants},{groupname})
     )
   }catch(e) {
     res.status(500).json(e)
@@ -73,10 +73,50 @@ const addWants = async (groupname,wants,creator,res) => {
     })
   }
 }
+const getOffers = async (groupname,res) => {
+  try {
+    let offers = await GroupModel
+      .findOne({groupname})
+      .populate('offers')
+      .select('offers')
+      .exec()
+    res.status(200).json(
+      Object.assign({},{offers:offers.offers},{groupname})
+    )
+  }catch(e) {
+    res.status(500).json(e)
+  }
+}
+
+const addOffers = async (groupname,offers,creator,res) => {
+  try {
+    let offerResult = await OffersModel.create(Object.assign({},offers,{creator}))
+    if(!offerResult._id) return res.status(500).json({
+      error: "Failed to add offer"
+    })
+
+    let result = await GroupModel
+      .findOneAndUpdate({groupname}, {
+        $push: {
+          'offers': {
+            '$each': [offerResult._id]
+          }
+        }
+      }).exec()
+    return res.status(200).json(offerResult) // yeah, why should the group info be returned...
+  } catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
 module.exports = {
   info,
   createGroup,
 
   getWants,
   addWants,
+
+  getOffers,
+  addOffers
 }

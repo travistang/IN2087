@@ -12,4 +12,8 @@ router.post('/create_group',middlewares.checkAuthentication, GroupController.cre
 
 router.get('/:groupname/wants',GroupController.getWants)
 router.post('/:groupname/wants',middlewares.checkAuthentication,GroupController.addWants)
+
+router.get('/:groupname/offers',GroupController.getOffers)
+router.post('/:groupname/offers',middlewares.checkAuthentication,GroupController.addOffers)
+
 module.exports = router
