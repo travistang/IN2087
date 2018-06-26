@@ -101,13 +101,14 @@ export default class ItemListPage extends React.Component {
       payload[field] = this.state[field]
     }
 
-    let meProvider = Me.getInstance()
+    let meProvider = Me.getInstance() // Must be changed to not only supporting me
+    console.log(meProvider.getUser())
     let result = null
 
     if(this.props.isForWant) {
-      result = await meProvider.addWants('{"title":"' + payload.name + '", "descriptions:""', payload.descriptions + '"')
+      result = await meProvider.addWants(payload)
     } else {
-
+      result = await meProvider.addOffers(payload)
     }
 
     console.log('Name: ' + payload.name)
