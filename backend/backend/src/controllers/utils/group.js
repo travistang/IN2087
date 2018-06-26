@@ -27,6 +27,8 @@ const info = async (groupname,res) => {
         path: 'members',
         select: ['username','wants','offers']
       })
+      .populate('wants')
+      .populate('offers')
       .exec()
     res.status(200).json(group)
   } catch(e) {
@@ -34,7 +36,23 @@ const info = async (groupname,res) => {
   }
 }
 
+const getWants = async (groupname,res) => {
+  try {
+    let wants = await GroupModel
+      .findOne({groupname})
+      .populate('wants')
+      .select('wants')
+      .exec()
+    res.status(200).json(
+      Object.assign({},{wants},{groupname})
+    )
+  }catch(e) {
+    res.status(500).json(e)
+  }
+}
 module.exports = {
   info,
-  createGroup
+  createGroup,
+
+  getWants,
 }

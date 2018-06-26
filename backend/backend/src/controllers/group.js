@@ -17,7 +17,15 @@ const createGroup = (req,res) => {
   return GroupUtils.createGroup(title,descriptions,creator,res)
 }
 
+const getWants = (req,res) => {
+  let groupname = req.params.groupname
+  if(!groupname) return res.status(400).json({
+    "error": "Name of the group must be provided"
+  })
+  return GroupUtils.getWants(groupname,res)
+}
 module.exports = {
   info,
-  createGroup
+  createGroup,
+  getWants
 }
