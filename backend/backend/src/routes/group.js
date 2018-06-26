@@ -6,7 +6,7 @@ const router         = express.Router();
 const middlewares    = require('../middlewares');
 const GroupController = require('../controllers/group');
 
-router.get('/:group/info',null, GroupController.info)
-router.post('/create_group',null, GroupController.createGroup)
+router.get('/:groupname/info', GroupController.info)
+router.post('/create_group',middlewares.checkAuthentication, GroupController.createGroup)
 
 module.exports = router

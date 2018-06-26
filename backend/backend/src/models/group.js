@@ -25,9 +25,9 @@ const GroupSchema = new mongoose.Schema({
   members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
 
   wants: [{type:mongoose.Schema.Types.ObjectId,ref: 'Want'}],
-  offers: [{type: mongoose.Schema.Types.ObjectId,ref: 'Offer'}]
+  offers: [{type: mongoose.Schema.Types.ObjectId,ref: 'Offer'}],
 
-  messages: [messageSchema] 
+  messages: [messageSchema]
 })
 
 module.exports = mongoose.model('Group',GroupSchema)

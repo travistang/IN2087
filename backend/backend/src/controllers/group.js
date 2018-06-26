@@ -7,9 +7,13 @@ const info = (req,res) => {
 }
 
 const createGroup = (req,res) => {
-  let title = req.params.title
-  let descriptions = req.params.descriptions
-  let creator = req.params.creator
+
+  let title = req.body.groupname
+  let descriptions = req.body.descriptions
+  let creator = req.userId
+  if(!title || !descriptions) return res.status(400).json({
+    "error": "Missing title, descriptions or both"
+  })
   return GroupUtils.createGroup(title,descriptions,creator,res)
 }
 

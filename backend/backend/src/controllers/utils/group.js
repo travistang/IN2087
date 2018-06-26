@@ -6,10 +6,10 @@ const config = require('../../config')
 
 
 // TODO: test
-const createGroup = async (title,descriptions,creator,res) => {
+const createGroup = async (groupname,descriptions,creator,res) => {
   try{
     let group = await GroupModel.create({
-      title,
+      groupname,
       descriptions,
       members: [creator]
     })
@@ -21,11 +21,18 @@ const createGroup = async (title,descriptions,creator,res) => {
 
 const info = async (groupname,res) => {
   try {
-    let group = await GroupModel.findOne({groupname}).populate().exec()
+    let group = await GroupModel
+      .findOne({groupname})
+      .populate({
+        path: 'members',
+        select: ['username','wants','offers']
+      })
+      .exec()
     res.status(200).json(group)
   } catch(e) {
     res.status(500).json(e)
   }
+}
 
 module.exports = {
   info,
