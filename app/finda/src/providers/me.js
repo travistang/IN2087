@@ -25,14 +25,22 @@ export default class Me {
   }
 
   async addWants(want) {
-    if(!this.user) return null
-    let response = await this.auth.authenticatedPost('/me/wants',want)
-    return response
+    if(!this.user) {
+      return null
+    }
+    else {
+      let response = await this.auth.authenticatedPost('/me/wants',want)
+      return response
+    }
   }
 
   async addOffers(offer) {
-    if(!this.user) return null
-    let response = await this.auth.authenticatedPost('/me/offers',offer)
-    return response
+    if(!this.user) {
+      return null
+    }
+    else {
+      let response = await this.auth.authenticatedPost('/me/offers',offer)
+      return response
+    }
   }
 }
