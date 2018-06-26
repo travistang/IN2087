@@ -118,7 +118,7 @@ export default class ItemListPage extends React.Component {
 
   addItemForm() {
     if(!this.props.isMe) return null
-    let formTitle = this.props.isForWant?"Add a new want":"Add a new offer"
+    let formTitle = this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)
     return (
       <Row>
         <Card>
@@ -159,7 +159,7 @@ export default class ItemListPage extends React.Component {
       <div>
         <Row>
           <PageHeader>
-            {this.props.isMe?"Your wants":`${this.props.user.username}'s wants`}
+            {this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)}
           </PageHeader>
 
         </Row>

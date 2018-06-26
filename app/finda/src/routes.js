@@ -24,6 +24,14 @@ export default [
       isForWant: true,
     }
   },
+  {
+    path: "/me/offers",
+    component: ItemsListPage,
+    params: {
+      isMe: true,
+      isForWant: false,
+    }
+  },
 
 
 ]
