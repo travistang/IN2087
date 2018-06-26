@@ -156,6 +156,16 @@ const addOffers = async (userId,offers,res) => {
   }
 }
 
+const toPremium = async (userId,res) => {
+  try {
+    let result = await UserModel.update({_id: userId},{toPremium: true}).exec()
+    res.status(200).json(result)
+  } catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
 module.exports = {
   getUserInfo,
   getUserWants,
@@ -163,4 +173,6 @@ module.exports = {
 
   addWants,
   addOffers,
+
+  toPremium,
 }

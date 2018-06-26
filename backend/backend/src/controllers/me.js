@@ -71,6 +71,10 @@ const addOffers = (req,res) => {
   }
 
 }
+const toPremium = (req,res) => {
+  let userId = req.userId
+  userUtils.toPremium(userId,res)
+}
 module.exports = {
   info,
   wants,
@@ -78,4 +82,6 @@ module.exports = {
 
   addWants,
   addOffers,
+
+  toPremium
 }

@@ -18,20 +18,21 @@ Proposed endpoint structures are as follows:
   - [ ] POST /create_group
 ### Users
 - [ ] /me
+  - [ ] POST /toPremium
   - [x] GET /info
   - [ ] POST /info  
-  
+
   - [x] GET /wants
   - [x] POST /wants
   - [ ] DELETE /wants
   - [ ] PATCH /wants
-  
+
   - [x] GET /offers
   - [x] POST /offers
   - [ ] DELETE /wants
   - [ ] PATCH /wants
-  
-  
+
+
 - [x] /user/:username
   - [x] GET /info
   - [x] GET /wants
@@ -46,20 +47,20 @@ Proposed endpoint structures are as follows:
 - [ ] /group/:groupname
   - [ ] GET /info
   - [ ] POST /info
-  
+
   - [ ] GET /wants
   - [ ] POST /wants
   - [ ] DELETE /wants
   - [ ] PATCH /wants
-  
+
   - [ ] GET /offers
   - [ ] POST /offers
   - [ ] DELETE /wants
   - [ ] PATCH /wants  
-  
+
   - [ ] GET /chats
   - [ ] POST /chats
-  
+
   - [ ] POST /join
   - [ ] POST /canceljoin
   - [ ] POST /approve/:username
