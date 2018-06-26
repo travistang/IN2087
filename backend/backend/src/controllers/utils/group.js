@@ -51,17 +51,22 @@ const getWants = async (groupname,res) => {
   }
 }
 
-const addWants = async (groupname,wants,res) => {
+const addWants = async (groupname,wants,creator,res) => {
   try {
+    let wantResult = await WantsModel.create(Object.assign({},wants,{creator}))
+    if(!wantResult._id) return res.status(500).json({
+      error: "Failed to add wants"
+    })
+
     let result = await GroupModel
       .findOneAndUpdate({groupname}, {
         $push: {
           'wants': {
-            '$each': wants
+            '$each': [wantResult._id]
           }
         }
       }).exec()
-    return res.status(200).json(result)
+    return res.status(200).json(wantResult) // yeah, why should the group info be returned...
   } catch(e) {
     res.status(500).json({
       error: e.message
@@ -73,4 +78,5 @@ module.exports = {
   createGroup,
 
   getWants,
+  addWants,
 }
