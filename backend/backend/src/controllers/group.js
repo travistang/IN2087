@@ -53,6 +53,27 @@ const addOffers = (req,res) => {
   return GroupUtils.addOffers(groupname,offers,creator,res)
 }
 
+const getChats = (req,res) => {
+  let groupname = req.params.groupname
+  return GroupUtils.getChats(groupname,res)
+}
+
+const addChats = (req,res) => {
+  let groupname = req.params.groupname
+  let message = req.body.message
+  let creator = req.userId
+  if(!message) return res.status(400).json({
+    "error":"Message object must be provided"
+  })
+  let resultMessage = {
+    time: new Date(),
+    message,
+    author: creator
+  }
+
+  // return res.status(200).json(resultMessage)
+  return GroupUtils.addChats(groupname,resultMessage,res)
+}
 module.exports = {
   info,
   createGroup,
@@ -62,4 +83,7 @@ module.exports = {
 
   getOffers,
   addOffers,
+
+  getChats,
+  addChats,
 }

@@ -3,11 +3,18 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  message: String,
-  time: Date,
+  message: {
+    type: String,
+    required: true
+  },
+  time: {
+    type: Date,
+    required: true
+  },
   author: {
-    type:mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 })
 
@@ -30,4 +37,7 @@ const GroupSchema = new mongoose.Schema({
   messages: [messageSchema]
 })
 
-module.exports = mongoose.model('Group',GroupSchema)
+module.exports = {
+  GroupModel: mongoose.model('Group',GroupSchema),
+  MessageModel: mongoose.model('Message',messageSchema)
+}

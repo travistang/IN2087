@@ -1,4 +1,7 @@
-const GroupModel = require('../../models/group')
+const __group = require('../../models/group')
+const GroupModel = __group.GroupModel
+const MessageModel = __group.MessageModel
+
 const UserModel = require('../../models/user')
 const WantsModel = require('../../models/wants')
 const OffersModel = require('../../models/offers')
@@ -22,7 +25,7 @@ const createGroup = async (groupname,descriptions,creator,res) => {
 const info = async (groupname,res) => {
   try {
     let group = await GroupModel
-      .findOne({groupname})
+      .findOne({groupname},{messages: 0})
       .populate({
         path: 'members',
         select: ['username','wants','offers']
@@ -110,6 +113,40 @@ const addOffers = async (groupname,offers,creator,res) => {
     })
   }
 }
+
+const getChats = async (groupname,res) => {
+  try {
+    let chats = await GroupModel
+      .findOne({groupname})
+      .select('messages')
+      .exec()
+    return res.status(200).json(chats)
+  } catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
+
+const addChats = async (groupname,message,res) => {
+  try {
+     let messageObj = new MessageModel(message)
+     let updateResults = await GroupModel
+      .findOneAndUpdate({groupname},{
+        $push: {
+          'messages': {
+            '$each': [messageObj]
+          }
+        }
+      })
+      .exec()
+    return res.status(200).json(messageObj)
+  } catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
 module.exports = {
   info,
   createGroup,
@@ -118,5 +155,8 @@ module.exports = {
   addWants,
 
   getOffers,
-  addOffers
+  addOffers,
+
+  getChats,
+  addChats,
 }
