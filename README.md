@@ -15,7 +15,7 @@ Proposed endpoint structures are as follows:
 - [ ] /auth
   - [x] POST /login
   - [x] POST /register
-  - [ ] POST /create_group
+  ~~ - [ ] POST /create_group ~~
 ### Users
 - [ ] /me
   - [ ] POST /toPremium
@@ -47,7 +47,7 @@ Proposed endpoint structures are as follows:
 - [ ] /categories
   - [ ] GET /:category
 ### Groups
-- [x] POST /group/create_group
+- [x] POST /group
 - [ ] /group/:groupname
   - [x] GET /info
   - [ ] POST /info
@@ -55,23 +55,22 @@ Proposed endpoint structures are as follows:
   - [x] GET /wants
   - [x] POST /wants
   - [ ] DELETE /wants
-  - ~~[ ] PATCH /wants~~
+~~  - [ ] PATCH /wants~~
 
   - [x] GET /offers
   - [x] POST /offers
   - [ ] DELETE /wants
-  - ~~[ ] PATCH /wants~~
+~~  - [ ] PATCH /wants~~
 
-  - [ ] GET /chats
-  - [ ] POST /chats
+  - [x] GET /messages
+  - [x] POST /messages
 
   - [ ] POST /join
   - [ ] POST /quit
-  - ~~[ ] POST /canceljoin~~
-  - ~~[ ] POST /approve/:username~~
-  - ~~[ ] POST /reject/:username~~
-  - ~~[ ] POST /invite/:username~~
-  - [ ] POST /message
+~~  - [ ] POST /canceljoin~~
+~~  - [ ] POST /approve/:username~~
+~~  - [ ] POST /reject/:username~~
+~~  - [ ] POST /invite/:username~~
 
 ### Searches
 - [ ] /search

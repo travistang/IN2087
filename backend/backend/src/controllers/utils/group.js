@@ -7,6 +7,60 @@ const WantsModel = require('../../models/wants')
 const OffersModel = require('../../models/offers')
 const config = require('../../config')
 
+// aux functions for controlling memberships
+const addUserToGroup = async (groupname,userId) => {
+  try {
+    let groupId = await GroupModel.findOne({groupname}).select("_id")
+    groupId = groupId._id
+    let result = await UserModel.findOneAndUpdate({_id: userId},
+    {
+      $addToSet: {
+        "groups": groupId
+      }
+    })
+    let groupResult = await GroupModel.findOneAndUpdate({groupname},{
+      $addToSet: {
+        "members": userId
+      }
+    })
+
+    return result
+  }catch(e){
+    return e
+  }
+}
+
+const removeUserFromGroup = async (groupname,userId) => {
+  try {
+    let groupId = await GroupModel.findOne({groupname}).select("_id")
+    groupId = groupId._id
+    let result = await UserModel.findOneAndUpdate({_id: userId},
+    {
+      $pull: {
+        "groups": groupId
+      }
+    })
+    let groupResult = await GroupModel.findOneAndUpdate({groupname},{
+      $pull: {
+        "members": userId
+      }
+    })
+    return result
+  }catch(e){
+    return e
+  }
+}
+const joinGroup = async (groupname,userId,res) => {
+  let result = await addUserToGroup(groupname,userId)
+  if(!result._id) return res.status(500).json(result)
+  else return res.status(200).json(result)
+}
+const quitGroup = async (groupname,userId,res) => {
+  let result = await removeUserFromGroup(groupname,userId)
+  if(!result._id) return res.status(500).json(result)
+  else return res.status(200).json(result)
+}
+
 
 // TODO: test
 const createGroup = async (groupname,descriptions,creator,res) => {
@@ -16,6 +70,7 @@ const createGroup = async (groupname,descriptions,creator,res) => {
       descriptions,
       members: [creator]
     })
+    let userUpdate = await
     res.status(200).json(group)
   }catch(e){
     res.status(500).json(e)
@@ -147,6 +202,7 @@ const addChats = async (groupname,message,res) => {
     })
   }
 }
+
 module.exports = {
   info,
   createGroup,
@@ -159,4 +215,7 @@ module.exports = {
 
   getChats,
   addChats,
+
+  joinGroup,
+  quitGroup
 }

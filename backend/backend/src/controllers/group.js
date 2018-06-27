@@ -74,6 +74,19 @@ const addChats = (req,res) => {
   // return res.status(200).json(resultMessage)
   return GroupUtils.addChats(groupname,resultMessage,res)
 }
+
+const joinGroup = (req,res) => {
+  let userId = req.userId
+  let groupname = req.params.groupname
+  return GroupUtils.joinGroup(groupname,userId,res)
+}
+
+const quitGroup = (req,res) => {
+  let userId = req.userId
+  let groupname = req.params.groupname
+  return GroupUtils.quitGroup(groupname,userId,res)
+}
+
 module.exports = {
   info,
   createGroup,
@@ -86,4 +99,7 @@ module.exports = {
 
   getChats,
   addChats,
+
+  joinGroup,
+  quitGroup
 }
