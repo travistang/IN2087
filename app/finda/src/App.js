@@ -34,6 +34,9 @@ class App extends React.Component {
       },
       "me/wants": {
         user: this.state.user
+      },
+      "me/offers": {
+        user: this.state.user
       }
     }
 

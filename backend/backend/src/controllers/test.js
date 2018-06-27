@@ -9,7 +9,7 @@ const OfferModel = require('../models/offers')
 const testRegister = async (req,res) => {
   try {
     let want = await WantModel.create({
-      title: "A new want",
+      name: "A new want",
       descriptions: "which is nothing",
     })
     let want_id = want._id

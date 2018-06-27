@@ -79,6 +79,7 @@ export default class RegisterLoginForm extends React.Component {
   */
   constructor(props) {
     super(props)
+    console.log(props)
     this.config = this.props.isRegister?registerFieldsConfig:loginFieldsConfig
     let fields = this.props.isRegister?registerFields:loginFields
     this.fields = fields
@@ -113,19 +114,18 @@ export default class RegisterLoginForm extends React.Component {
         this.setState(Object.assign({},this.state,{hasChanged: {[fields]: true}}))
         return // stop the form from submitting
       }
-      console.log('payload')
-      console.log(payload)
       payload[field] = this.state[field]
     }
     // register / login
     let authProvider = Auth.getInstance()
+    
     let result = null
 
     // submit form according to registration / login
     if(this.props.isRegister) {
       result = await authProvider.register(payload)
     } else {
-      result = await authProvider.login(payload.username,payload.password)
+      result = await authProvider.login(payload)
     }
 
     // check the result
@@ -270,7 +270,7 @@ export default class RegisterLoginForm extends React.Component {
           <h4>Registration Success!</h4>
           <p> Welcome to FindA! Now you can choose to</p>
           <p>
-            <Button bsStyle="primary" onClick={() => <Redirect to='/home/offers'/>}> View people's offers </Button>
+            <Button bsStyle="primary" onClick={() => <Redirect to='/home/offers'/>}> View peoples offers </Button>
               or
             <Button onClick={() => <Redirect to='/me'/>}> Go to your profile </Button>
           </p>
