@@ -79,8 +79,17 @@ export default class ItemListPage extends React.Component {
         type: "textarea",
       },
       {
+        name: "price",
+        type: "text"
+      },
+      {
         name: "amount",
         type: "text"
+      },
+      {
+        name: "isInfinite",
+        type: "radio",
+        choices: ['Yes','No']
       },
     ]
   }
@@ -101,16 +110,24 @@ export default class ItemListPage extends React.Component {
         this.setState(Object.assign({},this.state,{hasChanged: {[questionNames]: true}}))
         return // stop the form from submitting
       }
-      payload[field] = this.state[field]
+      if (field=="isInfinite") {
+        console.log(this.state[field])
+        payload["isInfinite"] = (this.state[field]=="Yes")?true:false
+      }
+      else {
+        payload[field] = this.state[field]
+      }
     }
+    payload["images"] = []
+    payload["wants"] = []
 
-    let meProvider = Me.getInstance() // Must be changed to not only supporting me
-    console.log(meProvider.getUser())
+    let meProvider = Me.getInstance()
     let result = null
 
     if(this.props.isForWant) {
       result = await meProvider.addWants(payload)
     } else {
+      console.log(payload)
       result = await meProvider.addOffers(payload)
     }
 
@@ -139,6 +156,35 @@ export default class ItemListPage extends React.Component {
       </Row>
     )
   }
+  getItemList() {
+    if (this.props.isMe) {
+      let meProvider = Me.getInstance()
+      if (this.props.isForWant) {
+        return {}
+      }
+      else{
+        return {}
+      }
+    }
+    else {
+      if (this.props.user) {
+        if (this.props.isForWant) {
+          return this.props.user.wants
+        }
+        else{
+          return this.props.user.offers
+        }
+      }
+      else {
+        if (this.props.isForWant) {
+          return {}
+        }
+        else{
+          return {}
+        }
+      }
+    }
+  }
   itemElement(item) {
     return (
       <Row>
@@ -156,8 +202,7 @@ export default class ItemListPage extends React.Component {
   }
   render() {
     let items = []
-    if(this.props.user && this.props.isForWant) items = this.props.user.wants
-    if(this.props.user && !this.props.isForWant) items = this.props.user.offers
+    items = this.getItemList()
     return (
       <div>
         <Row>
