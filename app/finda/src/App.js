@@ -12,17 +12,22 @@ import {
   Col,
 } from 'react-bootstrap'
 import { ToastContainer } from "react-toastr";
-import Toaster from './providers/toaster'
-import Auth from './providers/auth'
-import Me from './providers/me'
-import MeComponent from './components/Me/Me'
+import Toaster from './providers/toaster';
+import Auth from './providers/auth';
+import Me from './providers/me';
+import MeComponent from './components/Me/Me';
+import Http from './providers/http';
+
+
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.auth = Auth.getInstance()
     this.me = Me.getInstance()
     this.state = {
-      user: null
+      user: null,
+        wants:[],
+        offers:[]
     }
 
     this.routeParams = {
@@ -39,11 +44,31 @@ class App extends React.Component {
         user: this.state.user
       }
     }
-
     this.logout = this.logout.bind(this)
     // get user info first
     this.updateUser()
   }
+
+
+
+    componentWillMount(){
+        this.setState(this.getWants());
+        //this.getOffers();
+    }
+    getWants()
+    {
+        return new Promise((resolve, reject) => {
+            Http.get("http://localhost:3000/wants/all", function(data) {
+                resolve(data);
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+
+
+
   logout() {
     // remove token
     this.auth.logout()
@@ -57,6 +82,8 @@ class App extends React.Component {
         this.setState(Object.assign({},this.state,{user}))
       })
   }
+
+
   render() {
     return (
       <BrowserRouter>

@@ -30,18 +30,19 @@ export default class Me extends React.Component {
       return <p className="NoDescription"> This user has no descriptions yet </p>
     }
   }
-  numUserWants() {
-    return this.userWants().length
-  }
-  numUserOffers() {
-    return this.userOffers().length
-  }
+
   userWants() {
     return this.props.user.wants
   }
   userOffers() {
     return this.props.user.offers
   }
+    numUserWants() {
+        return this.userWants().length
+    }
+    numUserOffers() {
+        return this.userOffers().length
+    }
   editProfileButton() {
     if(this.props.isMe) {
       return (

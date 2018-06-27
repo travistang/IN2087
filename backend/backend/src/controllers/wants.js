@@ -3,10 +3,15 @@ const wantsModel = require('../models/wants')
 const wantUtils = require('./utils/want')
 const info = (req,res) => {
     let title = req.params.title
-    wantUtils.getWantsInfo({username},res)
+    wantUtils.getWantsInfo({title},res)
 }
-const wants=(req,res)=>{
+const list=(req,res)=>{
     wantUtils.list(req,res)
+}
+const test=(req,res)=>{
+    res.json({
+        name: 'It works!'
+    });
 }
 /*const wants = (req,res) => {
     let username = req.params.username
@@ -18,6 +23,7 @@ const offers = (req,res) => {
 }*/
 module.exports = {
     info,
-    wants,
+    list,
+    test,
    // offers,
 }
