@@ -79,7 +79,6 @@ export default class RegisterLoginForm extends React.Component {
   */
   constructor(props) {
     super(props)
-    console.log(props)
     this.config = this.props.isRegister?registerFieldsConfig:loginFieldsConfig
     let fields = this.props.isRegister?registerFields:loginFields
     this.fields = fields
