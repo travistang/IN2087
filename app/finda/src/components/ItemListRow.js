@@ -28,20 +28,18 @@ export class ItemListRow extends React.Component {
 
         return (
             <TableRow key={this.props.key}>
-    <TableColumn>
-        <Link to={`/show/${this.props.want._id}`}>
-    <FontIcon>image</FontIcon>
-        </Link>
-        </TableColumn>
+                <TableColumn>
+                    <Link to={`/show/${this.props.want._id}`}>
+                        <FontIcon>image</FontIcon>
+                    </Link>
+                </TableColumn>
 
-        <TableColumn>
-        <Link to={`/show/${this.props.want._id}`}>
-        {this.props.want.title}
-    </Link>
-        </TableColumn>
-
-
-        </TableRow>
+                <TableColumn>
+                    <Link to={`/show/${this.props.want._id}`}>
+                        {this.props.want.title}
+                    </Link>
+                 </TableColumn>
+            </TableRow>
     );
     }
 }

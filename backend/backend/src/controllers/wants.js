@@ -5,6 +5,9 @@ const info = (req,res) => {
     let title = req.params.title
     wantUtils.getWantsInfo({username},res)
 }
+const wants=(req,res)=>{
+    wantUtils.list(req,res)
+}
 /*const wants = (req,res) => {
     let username = req.params.username
     userUtils.getUserWants({username},res)
@@ -15,6 +18,6 @@ const offers = (req,res) => {
 }*/
 module.exports = {
     info,
-   // wants,
+    wants,
    // offers,
 }

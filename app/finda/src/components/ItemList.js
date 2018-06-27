@@ -6,27 +6,9 @@ import { DataTable, TableHeader, TableBody, TableRow, TableColumn, Button } from
 import { ItemListRow } from './ItemListRow';
 
 
-export default class ItemList extends React.Component {
+export const ItemList =({data,isForWants})=>(
 
-    constructor(props) {
-        super(props)
-        this.state={
-            //data:Array.from(props)
-        }
-    }
-
-    propTypes:{
-    data:React.PropTypes.array.isRequired
-    }
-        // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
-       // this.state = {
-           // hasChanged: this.questions().map(field => ({[field]:false}))
-        //}
-
-
-    render(){
-        let x=this.props.data.length>0
-       return( <DataTable plain>
+   <DataTable plain>
             <TableHeader>
                 <TableRow>
                     <TableColumn></TableColumn>
@@ -36,10 +18,8 @@ export default class ItemList extends React.Component {
                 </TableRow>
             </TableHeader>
             <TableBody>
-
-                {this.props.data.map((want, i) => <ItemListRow key={i} want={want}></ItemListRow> )
-                }
+                {data.map((want, i) => <ItemListRow key={i} want={want}/> )}
             </TableBody>
-            </DataTable>)
-    }
-}
+            </DataTable>
+
+);

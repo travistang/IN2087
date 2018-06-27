@@ -25,7 +25,8 @@ export default class ItemListPage extends React.Component {
     super(props)
     // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
     this.state = {
-      hasChanged: this.questions().map(field => ({[field]:false}))
+      hasChanged: this.questions().map(field => ({[field]:false})),
+        data:props
     }
   }
   getFormElement(input) {

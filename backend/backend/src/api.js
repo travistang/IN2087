@@ -10,6 +10,7 @@ const auth  = require('./routes/auth');
 const me    = require('./routes/me')
 const user  = require('./routes/user')
 const testRoute = require('./routes/test')
+const want =require('./routes/want')
 const api = express();
 
 // Adding Basic Middlewares
@@ -31,6 +32,7 @@ api.use('/auth'  , auth)
 api.use('/me'    , me)
 api.use('/user' , user)
 
+api.use('/want',want)
 api.use('/test', testRoute)
 
 module.exports = api;
