@@ -32,10 +32,10 @@ class App extends React.Component {
       "/register": {
         onSuccess: this.updateUser.bind(this)
       },
-      "me/wants": {
+      "/me/wants": {
         user: this.state.user
       },
-      "me/offers": {
+      "/me/offers": {
         user: this.state.user
       }
     }
@@ -77,10 +77,10 @@ class App extends React.Component {
                 <Col md={6} lg={6}>
                   <Row style={{height:"100vh",marginBottom:8}}>
                     {ContentRoutes.map(route =>
-                      <Route path={route.path}
-                        render={() => <route.component {...route.params} {...this.routeParams[route.path]} />}
-                      >
-                      </Route>
+                      <Route 
+                        path={route.path}
+                        render={() => <route.component {...route.params} {...this.routeParams[route.path]}/>}
+                      />
                     )}
                     <Route
                       path="/me"

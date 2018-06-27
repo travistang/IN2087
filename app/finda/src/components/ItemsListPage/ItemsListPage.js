@@ -25,9 +25,50 @@ export default class ItemListPage extends React.Component {
     super(props)
     // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
     this.state = {
-      hasChanged: this.questions().map(field => ({[field]:false}))
+      hasChanged: this.getQuestions().map(field => ({[field]:false}))
     }
   }
+
+  getUserWants() {
+    return this.props.user.wants
+  }
+  getUserOffers() {
+    return this.props.user.offers
+  }
+  getNrUserWants() {
+    return this.userWants().length
+  }
+  getNrUserOffers() {
+    return this.userOffers().length
+  }
+  getItemList() {
+    return this.props.isForWant?this.getUserWants():this.getUserOffers()
+  }
+
+  getInputFieldValue(inputField) {
+    return this.state[inputField]
+  }
+  getFieldToBoolean(field) {
+    return (field=="Yes")?true:false
+  }
+  getPayload(inputFields) {
+    let output = {}
+    for (let inputFieldName in inputFields) {
+      let field = this.getInputFieldValue(inputFieldName)
+      if(!Object.keys(this.state).indexOf(field)) {
+        // trigger the invalidation of this field
+        this.setState(Object.assign({},this.state,{hasChanged: {[inputFields]: true}}))
+        return // stop the form from submitting
+      }
+      output[inputFieldName] = inputFieldName=="isInfinite"?(this.getStringToBoolean(field)):(field)
+    }
+    output["images"] = []
+    output["wants"] = []
+    return output
+  }
+
+  
+
   getFormElement(input) {
     if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'radio') return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
@@ -35,26 +76,7 @@ export default class ItemListPage extends React.Component {
     if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
     return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
   }
-  questions() {
-    if(this.props.isForWant)
-      return this.wantQuestions()
-    return this.offerQuestions()
-  }
-  getValidationState(field) {
-    if(this.state.hasChanged[field] && (!this.state[field] || this.state[field].length == 0)) return 'error'
-    return null
-  }
-  updateValue(e,field) {
-    this.setState(
-      Object.assign({},this.state,{
 
-        [field]: e.target.value,
-        hasChanged: {
-          [field]:true
-        }
-      })
-    )
-  }
   wantQuestions() {
     return [
       {
@@ -93,52 +115,56 @@ export default class ItemListPage extends React.Component {
       },
     ]
   }
+  getQuestions() {
+    return this.props.isForWant?this.wantQuestions():this.offerQuestions()
+  }
+
+  getValidationState(field) {
+    if(this.state.hasChanged[field] && (!this.state[field] || this.state[field].length == 0)) return 'error'
+    return null
+  }
+  updateValue(e,field) {
+    this.setState(
+      Object.assign({},this.state,{
+
+        [field]: e.target.value,
+        hasChanged: {
+          [field]:true
+        }
+      })
+    )
+  }
 
   //const config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
 
 
   async submitForm(e) {
     e.preventDefault()
-    let config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
-    let questionNames = config.map(q => q.name)
+    let meProvider = Me.getInstance()
+
+    let questions = this.getQuestions()
+    let questionNames = questions.map(q => q.name)
 
     let payload = {}
-    for (let i in questionNames) {
-      let field = questionNames[i]
-      if(!Object.keys(this.state).indexOf(field)) {
-        // trigger the invalidation of this field
-        this.setState(Object.assign({},this.state,{hasChanged: {[questionNames]: true}}))
-        return // stop the form from submitting
-      }
-      if (field=="isInfinite") {
-        console.log(this.state[field])
-        payload["isInfinite"] = (this.state[field]=="Yes")?true:false
-      }
-      else {
-        payload[field] = this.state[field]
-      }
-    }
-    payload["images"] = []
-    payload["wants"] = []
+    payload = this.getPayload(questionNames)
 
-    let meProvider = Me.getInstance()
     let result = null
-
-    if(this.props.isForWant) {
-      result = await meProvider.addWants(payload)
-    } else {
-      console.log(payload)
-      result = await meProvider.addOffers(payload)
-    }
+    result = this.props.isForWant?(await meProvider.addWants(payload)):(await meProvider.addOffers(payload))
 
     console.log('Name: ' + payload.name)
     console.log('Description: ' + payload.descriptions)
   }
 
 
+  getMeAddItemFormTitleString(){
+    return this.props.isForWant?"Your wants":"Your offers"
+  }
+  getUserAddItemFormTitleString(){
+    return this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
+  }
   addItemForm() {
     if(!this.props.isMe) return null
-    let formTitle = this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)
+    let formTitle = this.props.isMe?this.getMeAddItemFormTitleString():this.getUserAddItemFormTitleString()
     return (
       <Row>
         <Card>
@@ -156,35 +182,6 @@ export default class ItemListPage extends React.Component {
       </Row>
     )
   }
-  getItemList() {
-    if (this.props.isMe) {
-      let meProvider = Me.getInstance()
-      if (this.props.isForWant) {
-        return {}
-      }
-      else{
-        return {}
-      }
-    }
-    else {
-      if (this.props.user) {
-        if (this.props.isForWant) {
-          return this.props.user.wants
-        }
-        else{
-          return this.props.user.offers
-        }
-      }
-      else {
-        if (this.props.isForWant) {
-          return {}
-        }
-        else{
-          return {}
-        }
-      }
-    }
-  }
   itemElement(item) {
     return (
       <Row>
@@ -200,14 +197,23 @@ export default class ItemListPage extends React.Component {
     let title = `${username} no ${wantOrOffer}`
     return <BackgroundNotice title={title} />
   }
+
+  getMePageHeaderString(){
+    return this.props.isForWant?"Your wants":"Your offers"
+  }
+  getUserPageHeaderString(){
+    return this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
+  }
   render() {
+    console.log('Items-Page props')
+    console.log(this.props)
     let items = []
     items = this.getItemList()
     return (
       <div>
         <Row>
           <PageHeader>
-            {this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)}
+            {this.props.isMe?this.getMePageHeaderString():this.getUserPageHeaderString()}
           </PageHeader>
 
         </Row>
