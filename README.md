@@ -54,19 +54,19 @@ Proposed endpoint structures are as follows:
 
   - [x] GET /wants
   - [x] POST /wants
-  - [ ] DELETE /wants
+  - [x] DELETE /wants
 ~~  - [ ] PATCH /wants~~
 
   - [x] GET /offers
   - [x] POST /offers
-  - [ ] DELETE /wants
+  - [x] DELETE /wants
 ~~  - [ ] PATCH /wants~~
 
   - [x] GET /messages
   - [x] POST /messages
 
-  - [ ] POST /join
-  - [ ] POST /quit
+  - [x] POST /join
+  - [x] POST /quit
 ~~  - [ ] POST /canceljoin~~
 ~~  - [ ] POST /approve/:username~~
 ~~  - [ ] POST /reject/:username~~

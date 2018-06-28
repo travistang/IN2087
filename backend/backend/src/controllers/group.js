@@ -35,6 +35,23 @@ const addWants = (req,res) => {
   return GroupUtils.addWants(groupname,wants,creator,res)
 }
 
+const deleteWants = async (req,res) => {
+  let user = req.userId
+  let groupname = req.params.groupname
+  let wants = req.body.wants
+
+  try {
+    let isUserInGroup = await GroupUtils.isUserInGroup(groupname,user,res)
+    if(!isUserInGroup) return res.status(403).json({
+      "error": "You are not a memeber of this group"
+    })
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+
+  return GroupUtils.deleteWants(groupname,wants,res)
+}
+
 const getOffers = (req,res) => {
   let groupname = req.params.groupname
   if(!groupname) return res.status(400).json({
@@ -51,6 +68,23 @@ const addOffers = (req,res) => {
     "error": "Group name and offers object are required to add a offer"
   })
   return GroupUtils.addOffers(groupname,offers,creator,res)
+}
+
+const deleteOffers = async (req,res) => {
+  let user = req.userId
+  let groupname = req.params.groupname
+  let offers = req.body.offers
+
+  try {
+    let isUserInGroup = await GroupUtils.isUserInGroup(groupname,user,res)
+    if(!isUserInGroup) return res.status(403).json({
+      "error": "You are not a memeber of this group"
+    })
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+
+  return GroupUtils.deleteOffers(groupname,offers,res)
 }
 
 const getChats = (req,res) => {
@@ -93,9 +127,11 @@ module.exports = {
 
   getWants,
   addWants,
+  deleteWants,
 
   getOffers,
   addOffers,
+  deleteOffers,
 
   getChats,
   addChats,

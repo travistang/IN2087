@@ -8,6 +8,17 @@ const OffersModel = require('../../models/offers')
 const config = require('../../config')
 
 // aux functions for controlling memberships
+const isUserInGroup = async (groupname,userId,res) => {
+  console.log('userId')
+  console.log(userId)
+  let count = await GroupModel.count({
+    groupname,
+    members: userId
+  }).exec()
+  // if there is such a group, then its _id shouldnt be undefined
+  return count == 1
+}
+
 const addUserToGroup = async (groupname,userId) => {
   try {
     let groupId = await GroupModel.findOne({groupname}).select("_id")
@@ -70,7 +81,11 @@ const createGroup = async (groupname,descriptions,creator,res) => {
       descriptions,
       members: [creator]
     })
-    let userUpdate = await
+    let result = await addUserToGroup(groupname,creator)
+    if(!result._id) return res.status(500).json(
+      {
+        "error": "Unable to add user to group"
+      })
     res.status(200).json(group)
   }catch(e){
     res.status(500).json(e)
@@ -131,6 +146,24 @@ const addWants = async (groupname,wants,creator,res) => {
     })
   }
 }
+
+const deleteWants = async (groupname,wants,res) => {
+  try {
+    let wantResult = await WantsModel.deleteOne({_id: wants}).exec()
+
+    let groupResult = await GroupModel.findOneAndUpdate({groupname}, {
+      $pull: {
+        wants: wants
+      }
+    }).exec()
+    return res.status(200).json(groupResult)
+
+  }catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
 const getOffers = async (groupname,res) => {
   try {
     let offers = await GroupModel
@@ -169,6 +202,22 @@ const addOffers = async (groupname,offers,creator,res) => {
   }
 }
 
+const deleteOffers = async (groupname,offers,res) => {
+  try {
+    let offerResult = await OffersModel.deleteOne({_id: offers}).exec()
+    let groupResult = await GroupModel.findOneAndUpdate({groupname}, {
+      $pull: {
+        offers: offers
+      }
+    }).exec()
+    return res.status(200).json(groupResult)
+
+  }catch(e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
+}
 const getChats = async (groupname,res) => {
   try {
     let chats = await GroupModel
@@ -209,13 +258,17 @@ module.exports = {
 
   getWants,
   addWants,
+  deleteWants,
 
   getOffers,
   addOffers,
-
+  deleteOffers,
+  
   getChats,
   addChats,
 
   joinGroup,
-  quitGroup
+  quitGroup,
+
+  isUserInGroup,
 }
