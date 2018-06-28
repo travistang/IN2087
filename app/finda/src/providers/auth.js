@@ -30,25 +30,21 @@ export default class AuthProvider {
     return token
   }
 
-  async login(username,password) {
-    let response = await Http.post(`${apiURL}/auth/login`,{username,password})
+  async login(payload) {
+    let response = await Http.post(`${apiURL}/auth/login`,payload)
     let data = await response.json()
     let token = data.token
-    if(token) {
-      this.setToken(token)
-    }
+    if(token) this.setToken(token)
     return token
   }
 
   async authenticatedGet(url,params = {}) {
-    return await Http.get(`${apiURL}${url}`,params,{
-      "x-access-token": this.getToken()
-    })
+    let response = await Http.get(`${apiURL}${url}`,params,{"x-access-token": this.getToken()})
+    return response
   }
 
   async authenticatedPost(url,data = {}) {
-    return await Http.post(`${apiURL}${url}`,data,{
-      "x-access-token": this.getToken()
-    })
+    let response = await Http.post(`${apiURL}${url}`,data,{"x-access-token": this.getToken()})
+    return response
   }
 }

@@ -20,13 +20,13 @@ const offers = (req,res) => {
 const addWants = (req,res) => {
   let userId = req.userId
   let parseWant = (want) => {
-    let fields = "title descriptions".split(' ')
+    let fields = "name descriptions".split(' ')
     if(fields.some(field => Object.keys(want).indexOf(field) == -1)) {
       return res.status(400).json({
-        error: `missing either title or descriptions`
+        error: `missing either name or descriptions`
       })
     }
-    return {title:want.title,descriptions:want.descriptions}
+    return {name:want.name,descriptions:want.descriptions}
   }
   if (Array.isArray(req.body)) {
     let wants = req.body.map(parseWant)
@@ -42,7 +42,7 @@ const addOffers = (req,res) => {
   //retrieve all infos
   let parseOffer = (offer) => {
     let offers = {}
-    let mandatoryField = "title descriptions amount".split(' ')
+    let mandatoryField = "name descriptions amount".split(' ')
     let optionalField = "price wants images amount".split(' ')
     for(let i in mandatoryField) {
       let attr = mandatoryField[i]

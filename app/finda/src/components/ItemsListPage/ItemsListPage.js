@@ -13,6 +13,7 @@ import ItemCard from '../ItemCard/ItemCard'
 import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
 import Card from '../Card/Card'
 import FormElements from '../../utils/form'
+import Me from '../../providers/me'
 export default class ItemListPage extends React.Component {
   /*
     Expected props are as follows...
@@ -75,22 +76,66 @@ export default class ItemListPage extends React.Component {
       },
       {
         name: "descriptions",
-        type: "textarea"
+        type: "textarea",
       },
-
+      {
+        name: "amount",
+        type: "text"
+      },
     ]
   }
+
+  //const config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+
+
+  async submitForm(e) {
+    e.preventDefault()
+    let config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+    let questionNames = config.map(q => q.name)
+
+    let payload = {}
+    for (let i in questionNames) {
+      let field = questionNames[i]
+      if(!Object.keys(this.state).indexOf(field)) {
+        // trigger the invalidation of this field
+        this.setState(Object.assign({},this.state,{hasChanged: {[questionNames]: true}}))
+        return // stop the form from submitting
+      }
+      payload[field] = this.state[field]
+    }
+
+    let meProvider = Me.getInstance() // Must be changed to not only supporting me
+    console.log(meProvider.getUser())
+    let result = null
+
+    if(this.props.isForWant) {
+      result = await meProvider.addWants(payload)
+    } else {
+      result = await meProvider.addOffers(payload)
+    }
+
+    console.log('Name: ' + payload.name)
+    console.log('Description: ' + payload.descriptions)
+  }
+
+
   addItemForm() {
     if(!this.props.isMe) return null
-    let formTitle = this.props.isForWant?"Add a new want":"Add a new offer"
+    let formTitle = this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)
     return (
       <Row>
         <Card>
           <h4> {formTitle} </h4>
           <Form horizontal>
             {this.questions().map(this.getFormElement.bind(this))}
+            <FormGroup>
+              <Col smOffset={2} sm={10}>
+                <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>Add Item</Button>
+              </Col>
+            </FormGroup>
           </Form>
         </Card>
+
       </Row>
     )
   }
@@ -117,7 +162,7 @@ export default class ItemListPage extends React.Component {
       <div>
         <Row>
           <PageHeader>
-            {this.props.isMe?"Your wants":`${this.props.user.username}'s wants`}
+            {this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)}
           </PageHeader>
 
         </Row>

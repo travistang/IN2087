@@ -103,7 +103,7 @@ export default class Me extends React.Component {
         <Row>
           <Col>
             <div>
-              {this.props.isMe?<Button block bsSize="large" bsStyle="primary"> To my offers</Button>:null}
+              {this.props.isMe?<Button block bsSize="large" bsStyle="primary" href="/me/offers"> To my offers</Button>:null}
             </div>
 
           </Col>

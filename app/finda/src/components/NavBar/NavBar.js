@@ -23,7 +23,7 @@ export default class NavBar extends React.Component {
       return (this.props.user?(
           <NavItem>
             <Image className="Thumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
-            {this.props.user.username}
+            <Link to="/me">{this.props.user.username}</Link>
             <Button className="NavButton" onClick={this.props.logout}> Logout</Button>
           </NavItem>
         ): null
@@ -47,8 +47,8 @@ export default class NavBar extends React.Component {
   }
   getOffersItem() {
       return (
-        <NavDropdown eventKey={2} title="Offers" id="basic-nav-dropdown">
-          <MenuItem eventKey={2.1}>Me</MenuItem>
+        <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={2} title="Offers" id="basic-nav-dropdown">
+          <MenuItem eventKey={2.1} href="/me/offers">Me</MenuItem>
           <MenuItem divider />
           <MenuItem disabled> You have no groups </MenuItem>
         </NavDropdown>
