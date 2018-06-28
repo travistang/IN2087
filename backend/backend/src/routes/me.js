@@ -14,4 +14,8 @@ router.post('/wants',middlewares.checkAuthentication,MeController.addWants)
 
 router.get('/offers',middlewares.checkAuthentication,MeController.offers)
 router.post('/offers',middlewares.checkAuthentication,MeController.addOffers)
+
+
+router.post('/toPremium',middlewares.checkAuthentication,MeController.toPremium)
+
 module.exports = router

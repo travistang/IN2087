@@ -30,7 +30,9 @@ const UserSchema  = new mongoose.Schema({
       required: false,
     },
     wants: [{type:mongoose.Schema.Types.ObjectId,ref: 'Want'}],
-    offers: [{type: mongoose.Schema.Types.ObjectId,ref: 'Offer'}]
+    offers: [{type: mongoose.Schema.Types.ObjectId,ref: 'Offer'}],
+
+    groups: [{type: mongoose.Schema.Types.ObjectId,ref: 'Group'}],
 });
 
 UserSchema.set('versionKey', false);
