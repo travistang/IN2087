@@ -6,6 +6,7 @@ import Ads from './components/Ads/Ads'
 import logo from './logo.svg';
 import './App.css';
 import ContentRoutes from "./routes"
+import {apiURL} from "./config"
 import {
   Grid,
   Row,
@@ -21,14 +22,14 @@ import Http from './providers/http';
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
-    this.auth = Auth.getInstance()
-    this.me = Me.getInstance()
+    super(props);
+    this.auth = Auth.getInstance();
+    this.me = Me.getInstance();
     this.state = {
       user: null,
         wants:[],
         offers:[]
-    }
+    };
 
     this.routeParams = {
       "/login": {
@@ -43,28 +44,65 @@ class App extends React.Component {
       "me/offers": {
         user: this.state.user
       }
-    }
-    this.logout = this.logout.bind(this)
+    };
+    this.logout = this.logout.bind(this);
     // get user info first
-    this.updateUser()
-  }
+    this.updateUser();
+  };
 
 
 
     componentWillMount(){
-        this.setState(this.getWants());
+        this.getWants();
+        console.log("Wants");
+        console.log(this.state.wants);
+        console.log("Offers");
+        console.log(this.state.offers);
         //this.getOffers();
-    }
-    getWants()
+    };
+
+   getWants()
+   {
+       this.getWantsP().then((data) => {
+           this.setState({
+               wants: [...data],
+           });
+           console.log("Data: ");
+           console.log([...data]);
+           console.log("");
+           console.log("wantsThenINteresting: ");
+           console.log(this.state.wants);
+       }).catch((e) => {
+           console.error(e);
+       });
+       console.log("");
+       console.log("Wants: ");
+       console.log(this.state.wants);
+
+
+   };
+
+
+    getWantsP()
     {
-        return new Promise((resolve, reject) => {
-            Http.get("http://localhost:3000/wants/all", function(data) {
+
+
+        let a=new Promise((resolve, reject) => {
+            Http.get2(`${apiURL}/wants/`, function(data) {
                 resolve(data);
-            }, function(textStatus) {
-                reject(textStatus);
             });
         });
-    }
+        //console.log(`${apiURL}/wants`);
+
+        return a;
+    };
+
+    componentDidMount(){
+        this.getWants();
+        console.log("didMount");
+        console.log(this.state.wants);
+    };
+
 
 
 

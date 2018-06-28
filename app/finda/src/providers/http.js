@@ -1,3 +1,4 @@
+"use strict";
 export default class {
   static async post(url,data = {},header = {}) {
     return await fetch(url,{
@@ -22,5 +23,35 @@ export default class {
       }
     })
   }
+
+
+  //get method from the sample project
+    static get2(url, onSuccess, onError) {
+        let header = new Headers();
+      /*  if(token) {
+            header.append('Authorization', `JWT ${token}`);
+        }*/
+
+        fetch(url, {
+            method: 'GET',
+            headers: header
+        }).then((resp) => {
+
+                return resp.json();
+
+        }).then((resp) => {
+            if(resp.error) {
+
+            }
+            else {
+
+                onSuccess(resp);
+            }
+        }).catch((e) => {
+
+        });
+    }
+
+
 
 }

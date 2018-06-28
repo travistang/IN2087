@@ -28,7 +28,7 @@ api.use('/me'    , me);
 api.use('/user' , user);
 
 api.use('/all/wants',want);
-api.get('/all/testt',(req, res)=>{
+api.get('/all/test',(req, res)=>{
     res.json({
         name: 'It works!'
     });
