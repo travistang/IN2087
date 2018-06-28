@@ -48,9 +48,9 @@ Proposed endpoint structures are as follows:
   - [ ] GET /:category
 ### Groups
 - [x] POST /group
-- [ ] /group/:groupname
+- [x] /group/:groupname
   - [x] GET /info
-  - [ ] POST /info
+  - [x] POST /info
 
   - [x] GET /wants
   - [x] POST /wants

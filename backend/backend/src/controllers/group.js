@@ -6,6 +6,26 @@ const info = (req,res) => {
   return GroupUtils.info(groupname,res)
 }
 
+const editInfo = async (req,res) => {
+  let groupname = req.params.groupname
+  let info = req.body.info
+  let user = req.userId
+
+  try {
+    let isUserInGroup = await GroupUtils.isUserInGroup(groupname,user,res)
+    if(!isUserInGroup) return res.status(403).json({
+      "error": "You are not a memeber of this group"
+    })
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+
+  if(!info || !info.descriptions) return res.status(400).json({
+    "error": "Missing info object or the descriptions inside"
+  })
+
+  return GroupUtils.editInfo(groupname,info,res)
+}
 const createGroup = (req,res) => {
 
   let title = req.body.groupname
@@ -123,6 +143,8 @@ const quitGroup = (req,res) => {
 
 module.exports = {
   info,
+  editInfo,
+
   createGroup,
 
   getWants,

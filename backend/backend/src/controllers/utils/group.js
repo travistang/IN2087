@@ -109,6 +109,19 @@ const info = async (groupname,res) => {
   }
 }
 
+const editInfo = async (groupname,info,res) => {
+  try {
+    let result = await GroupModel
+      .findOneAndUpdate({groupname},
+      {
+        descriptions: info.descriptions
+      })
+      .exec()
+    res.status(200).json(result)
+  }catch(e) {
+    res.status(500).json(e)
+  }
+}
 const getWants = async (groupname,res) => {
   try {
     let wants = await GroupModel
@@ -254,6 +267,8 @@ const addChats = async (groupname,message,res) => {
 
 module.exports = {
   info,
+  editInfo,
+
   createGroup,
 
   getWants,
@@ -263,7 +278,7 @@ module.exports = {
   getOffers,
   addOffers,
   deleteOffers,
-  
+
   getChats,
   addChats,
 
