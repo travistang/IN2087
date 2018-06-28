@@ -79,9 +79,25 @@ export default class ItemListPage extends React.Component {
         type: "textarea",
       },
       {
+        name: "price",
+        type: "text"
+      },
+      {
+        name: "wants",
+        type: "none"
+      },
+      {
+        name: "image",
+        type: "file"
+      },
+      {
         name: "amount",
         type: "text"
       },
+      {
+        name: "is infinite",
+        type: "text"
+      }
     ]
   }
 
