@@ -1,8 +1,10 @@
 import React from 'react';
 import { Router, Route, Link,BrowserRouter} from 'react-router-dom'
 import { Redirect } from 'react-router'
+import { DataTable, TableHeader, TableBody, TableRow, TableColumn, Button } from 'react';
 import NavBar from './components/NavBar/NavBar'
 import Ads from './components/Ads/Ads'
+
 import logo from './logo.svg';
 import './App.css';
 import ContentRoutes from "./routes"
@@ -20,6 +22,7 @@ import MeComponent from './components/Me/Me';
 import Http from './providers/http';
 
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -28,8 +31,11 @@ class App extends React.Component {
     this.state = {
       user: null,
         wants:[],
-        offers:[]
+        offers:[],
+        query:'',
     };
+
+    this.setQuery=this.setQuery.bind(this);
 
     this.routeParams = {
       "/login": {
@@ -51,13 +57,25 @@ class App extends React.Component {
   };
 
 
+  setQuery(q){
+
+      this.setState({
+          query:q
+
+      });
+      console.log("URL: ");
+      this.getWants();
+      console.log("this.state.query: ");
+      console.log(this.state.query);
+      console.log("this.state.wants: ");
+      console.log(this.state.wants);
+  }
+
+
 
     componentWillMount(){
         this.getWants();
-        console.log("Wants");
-        console.log(this.state.wants);
-        console.log("Offers");
-        console.log(this.state.offers);
+
         //this.getOffers();
     };
 
@@ -67,40 +85,32 @@ class App extends React.Component {
            this.setState({
                wants: [...data],
            });
-           console.log("Data: ");
-           console.log([...data]);
-           console.log("");
-           console.log("wantsThenINteresting: ");
-           console.log(this.state.wants);
+
+
        }).catch((e) => {
            console.error(e);
        });
-       console.log("");
-       console.log("Wants: ");
-       console.log(this.state.wants);
+
 
 
    };
 
 
-    getWantsP()
-    {
+    getWantsP() {
 
+       console.log(`${apiURL}/wats/?search=${this.state.query}`);
+       return new Promise((res,rej)=>{
+          Http.get2(`${apiURL}/wants/?search=${this.state.query}`,function(data){
+              res(data);
+          })
 
-        let a=new Promise((resolve, reject) => {
-            Http.get2(`${apiURL}/wants/`, function(data) {
-                resolve(data);
-            });
-        });
-        //console.log(`${apiURL}/wants`);
+       })
 
-        return a;
     };
 
     componentDidMount(){
         this.getWants();
-        console.log("didMount");
-        console.log(this.state.wants);
+
     };
 
 
@@ -134,7 +144,12 @@ class App extends React.Component {
             <NavBar
               user={this.state.user}
               logout={this.logout}
+              data={this.state.wants}
+              setQuery = {this.setQuery}
             />
+
+
+
             <Grid className="Section">
               <Row>
                   <Ads/>

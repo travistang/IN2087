@@ -1,15 +1,16 @@
 "use strict";
 
 import React from 'react';
-import { TableRow, TableColumn, FontIcon, Button } from 'react';
-import { Link } from 'react-router-dom';
+//<import { TableRow, TableColumn, FontIcon, Button } from 'react';
+//import { Link } from 'react-router-dom';
+import {apiURL} from "../config"
 
 // import { SimpleLink } from './SimpleLink';
 
 //import UserService from '../services/UserService';
 
 
-export class ItemListRow extends React.Component {
+export default class ItemListRow extends React.Component {
 
     constructor(props) {
         super(props);
@@ -27,19 +28,9 @@ export class ItemListRow extends React.Component {
     render() {
 
         return (
-            <TableRow key={this.props.key}>
-                <TableColumn>
-                    <Link to={`/show/${this.props.want._id}`}>
-                        <FontIcon>image</FontIcon>
-                    </Link>
-                </TableColumn>
 
-                <TableColumn>
-                    <Link to={`/show/${this.props.want._id}`}>
-                        {this.props.want.title}
-                    </Link>
-                 </TableColumn>
-            </TableRow>
+                    <p>test</p>
+
     );
     }
 }

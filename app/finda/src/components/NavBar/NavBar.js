@@ -16,7 +16,7 @@ import './NavBar.css'
 
 export default class NavBar extends React.Component {
     state={
-        query:'',
+
         searchResults:[],
         isOffers:true,
         firstDropDownSelected:"Offers",
@@ -27,6 +27,7 @@ export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.firstDropDown=this.firstDropDown(this);
+
   }
 
   handleInputChange=()=>{
@@ -36,6 +37,11 @@ export default class NavBar extends React.Component {
            // if(this.props.isForWant){searchResults:data.data}
             //if(==offers){search user offers}
         }
+
+      this.props.setQuery(this.search.value)
+
+      console.log(this.search.value);
+
   }
   barRightItems() {
     if(Auth.getInstance().isLoggedIn()) {

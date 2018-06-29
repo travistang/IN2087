@@ -1,25 +1,30 @@
 "use strict";
 
 import React from 'react';
-import { DataTable, TableHeader, TableBody, TableRow, TableColumn, Button } from 'react';
+//import { DataTable, TableHeader, TableBody, TableRow, TableColumn, Button } from 'react';
 
-import { ItemListRow } from './ItemListRow';
+import  ItemListRow  from './ItemListRow';
 
 
-export const ItemList =({data,isForWants})=>(
+export default class ItemList extends React.Component{
 
-   <DataTable plain>
-            <TableHeader>
-                <TableRow>
-                    <TableColumn></TableColumn>
-                    <TableColumn>Name</TableColumn>
-                    <TableColumn>Edit</TableColumn>
-                    <TableColumn>Remove</TableColumn>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {data.map((want, i) => <ItemListRow key={i} want={want}/> )}
-            </TableBody>
-            </DataTable>
+    constructor(props){
+        super(props);
+    }
 
-);
+
+
+    render() {
+
+        return (
+            <div>
+            <p>testList</p>
+            <ItemListRow/>
+        </div>
+        )
+    }
+
+
+
+
+}
