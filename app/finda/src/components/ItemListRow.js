@@ -29,7 +29,12 @@ export default class ItemListRow extends React.Component {
 
         return (
 
+            <div key={this.props.want._id}>
                     <p>test</p>
+        <p> {this.props.want.title} </p>
+
+
+        </div>
 
     );
     }

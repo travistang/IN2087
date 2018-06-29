@@ -70,11 +70,18 @@ export default class NavBar extends React.Component {
                 firstDropDownSelected:"Wants",
                 firstDropDownSecond:"Offers",
                 isOffers:false
+
             });
+
+            console.log("isOffers");
+            console.log(this.state.firstDropDownSelected);
 
 
         }
         else {
+
+            console.log("!isOffers");
+            console.log(this.state.firstDropDownSelected);
             this.state.firstDropDownSelected="Offers";
             this.setState({firstDropDownSecond:"Wants"});
             this.setState({isOffers:true})
@@ -122,7 +129,7 @@ export default class NavBar extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-
+                //TODO change this to select box
                 <NavDropdown id="firstDropDownTitle" title={this.state.firstDropDownSelected}>
                     <MenuItem id="firstDropDownItem" onSelect={this.firstDropDown}>{this.state.firstDropDownSecond}</MenuItem>
 

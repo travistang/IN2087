@@ -18,8 +18,17 @@ export default class ItemList extends React.Component{
 
         return (
             <div>
-            <p>testList</p>
-            <ItemListRow/>
+            <p>{this.props.test}</p>
+            <p> {this.props.query}</p>
+        {console.log("this.props.want")}
+        {console.log(this.props.wants)}
+            <div>
+            {this.props.wants.map(function(want){
+                console.log(want.id);
+                return <li key={want._id}>{want.title}</li>
+            })}
+            </div>
+
         </div>
         )
     }

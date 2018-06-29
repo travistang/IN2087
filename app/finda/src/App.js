@@ -35,7 +35,10 @@ class App extends React.Component {
         query:'',
     };
 
+      this.getWants();
+
     this.setQuery=this.setQuery.bind(this);
+
 
     this.routeParams = {
       "/login": {
@@ -49,7 +52,12 @@ class App extends React.Component {
       },
       "me/offers": {
         user: this.state.user
-      }
+      },"/listtest":{
+      user:this.state.user,
+            wants:this.state.wants,
+            query:this.state.query,
+            test:"testList:"
+    }
     };
     this.logout = this.logout.bind(this);
     // get user info first
