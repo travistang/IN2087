@@ -10,7 +10,7 @@ const OfferSchema = new mongoose.Schema({
     required: true,
   },
   // exchange item
-  price: Number,
+  price: String,
   wants: [{type: mongoose.Schema.Types.ObjectId,ref: 'Wants'}],
   images: [String],
   amount: {
