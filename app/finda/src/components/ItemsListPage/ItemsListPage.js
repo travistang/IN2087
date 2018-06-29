@@ -30,6 +30,7 @@ export default class ItemListPage extends React.Component {
   }
   getFormElement(input) {
     if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'select') return FormElements.selectElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'radio') return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'date') return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
@@ -84,7 +85,8 @@ export default class ItemListPage extends React.Component {
       },
       {
         name: "wants",
-        type: "none"
+        type: "select",
+        options: ["First option", "Second option"]
       },
       {
         name: "images",
