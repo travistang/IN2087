@@ -178,7 +178,7 @@ export default class ItemListPage extends React.Component {
     if(this.props.user && this.props.isForWant) items = this.props.user.wants
     if(this.props.user && !this.props.isForWant) items = this.props.user.offers
     return (
-      <div>
+      <div id="formDiv">
         <Row>
           <PageHeader>
             {this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)}
