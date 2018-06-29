@@ -1,10 +1,10 @@
 import React from 'react';
 import { Router, Route, Link,BrowserRouter} from 'react-router-dom'
 import { Redirect } from 'react-router'
-import { DataTable, TableHeader, TableBody, TableRow, TableColumn, Button } from 'react';
 import NavBar from './components/NavBar/NavBar'
 import Ads from './components/Ads/Ads'
-
+import RegisterLoginForm from './components/RegisterLoginForm/RegisterLoginForm'
+import ItemsListPage from './components/ItemsListPage/ItemsListPage'
 import logo from './logo.svg';
 import './App.css';
 import ContentRoutes from "./routes"
@@ -47,10 +47,10 @@ class App extends React.Component {
       "/register": {
         onSuccess: this.updateUser.bind(this)
       },
-      "me/wants": {
+      "/me/wants": {
         user: this.state.user
       },
-      "me/offers": {
+      "/me/offers": {
         user: this.state.user
       },"/listtest":{
       user:this.state.user,
@@ -164,16 +164,30 @@ class App extends React.Component {
 
                 <Col md={6} lg={6}>
                   <Row style={{height:"100vh",marginBottom:8}}>
-                    {ContentRoutes.map(route =>
-                      <Route path={route.path}
-                        render={() => <route.component {...route.params} {...this.routeParams[route.path]} />}
-                      >
-                      </Route>
-                    )}
+                    <Route
+                      path="/login"
+                      exact={true}
+                      render={() => <RegisterLoginForm isregister={false} onSuccess={this.updateUser.bind(this)} />}
+                    />
+                    <Route
+                      path="/register"
+                      exact={true}
+                      render={() => <RegisterLoginForm isregister={true} onSuccess={this.updateUser.bind(this)} />}
+                    />
                     <Route
                       path="/me"
                       exact={true}
                       render={() => <MeComponent isMe={true} user={this.state.user} />}
+                    />
+                    <Route
+                      path="/me/wants"
+                      exact={true}
+                      render={() => <ItemsListPage isMe={true} isForWant={true} user={this.state.user} />}
+                    />
+                    <Route
+                      path="/me/offers"
+                      exact={true}
+                      render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
                     />
 
                   </Row>

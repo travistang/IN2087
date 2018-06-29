@@ -15,23 +15,24 @@ Proposed endpoint structures are as follows:
 - [ ] /auth
   - [x] POST /login
   - [x] POST /register
-  - [ ] POST /create_group
+  ~~ - [ ] POST /create_group ~~
 ### Users
 - [ ] /me
+  - [ ] POST /toPremium
   - [x] GET /info
   - [ ] POST /info  
-  
+
   - [x] GET /wants
   - [x] POST /wants
   - [ ] DELETE /wants
   - [ ] PATCH /wants
-  
+
   - [x] GET /offers
   - [x] POST /offers
   - [ ] DELETE /wants
   - [ ] PATCH /wants
-  
-  
+
+
 - [x] /user/:username
   - [x] GET /info
   - [x] GET /wants
@@ -42,30 +43,34 @@ Proposed endpoint structures are as follows:
    - [x] GET /register
    - [x] GET /populate
 
+### Categories
+- [ ] /categories
+  - [ ] GET /:category
 ### Groups
-- [ ] /group/:groupname
-  - [ ] GET /info
-  - [ ] POST /info
-  
-  - [ ] GET /wants
-  - [ ] POST /wants
-  - [ ] DELETE /wants
-  - [ ] PATCH /wants
-  
-  - [ ] GET /offers
-  - [ ] POST /offers
-  - [ ] DELETE /wants
-  - [ ] PATCH /wants  
-  
-  - [ ] GET /chats
-  - [ ] POST /chats
-  
-  - [ ] POST /join
-  - [ ] POST /canceljoin
-  - [ ] POST /approve/:username
-  - [ ] POST /reject/:username
-  - [ ] POST /invite/:username
-  - [ ] POST /message
+- [x] POST /group
+- [x] /group/:groupname
+  - [x] GET /info
+  - [x] POST /info
+
+  - [x] GET /wants
+  - [x] POST /wants
+  - [x] DELETE /wants
+  - ~~[ ] PATCH /wants~~
+
+  - [x] GET /offers
+  - [x] POST /offers
+  - [x] DELETE /wants
+  - ~~[ ] PATCH /wants~~
+
+  - [x] GET /messages
+  - [x] POST /messages
+
+  - [x] POST /join
+  - [x] POST /quit
+  - ~~[ ] POST /canceljoin~~
+  - ~~[ ] POST /approve/:username~~
+  - ~~[ ] POST /reject/:username~~
+  - ~~[ ] POST /invite/:username~~
 
 ### Searches
 - [ ] /search
