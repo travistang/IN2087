@@ -62,8 +62,6 @@ export default class ItemListPage extends React.Component {
       }
       output[inputFieldName] = inputFieldName=="isInfinite"?(this.getStringToBoolean(field)):(field)
     }
-    output["images"] = []
-    output["wants"] = []
     return output
   }
 
@@ -103,6 +101,14 @@ export default class ItemListPage extends React.Component {
       {
         name: "price",
         type: "text"
+      },
+      {
+        name: "wants",
+        type: "none"
+      },
+      {
+        name: "image",
+        type: "file"
       },
       {
         name: "amount",

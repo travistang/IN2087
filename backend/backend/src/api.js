@@ -9,6 +9,7 @@ const middlewares = require('./middlewares');
 const auth  = require('./routes/auth');
 const me    = require('./routes/me')
 const user  = require('./routes/user')
+const group = require('./routes/group')
 const testRoute = require('./routes/test')
 const api = express();
 
@@ -30,6 +31,7 @@ api.get('/', (req, res) => {
 api.use('/auth'  , auth)
 api.use('/me'    , me)
 api.use('/user' , user)
+api.use('/group', group)
 
 api.use('/test', testRoute)
 
