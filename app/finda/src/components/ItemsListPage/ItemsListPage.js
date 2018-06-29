@@ -87,7 +87,7 @@ export default class ItemListPage extends React.Component {
         type: "none"
       },
       {
-        name: "image",
+        name: "images",
         type: "file"
       },
       {
@@ -95,8 +95,9 @@ export default class ItemListPage extends React.Component {
         type: "text"
       },
       {
-        name: "is infinite",
-        type: "text"
+        name: "isInfinite",
+        choices: ["true", "false"],
+        type: "radio"
       }
     ]
   }
@@ -129,7 +130,7 @@ export default class ItemListPage extends React.Component {
     } else {
       result = await meProvider.addOffers(payload)
     }
-
+    console.log(payload)
     console.log('Name: ' + payload.name)
     console.log('Description: ' + payload.descriptions)
   }

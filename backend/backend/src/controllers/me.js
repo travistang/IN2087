@@ -43,7 +43,7 @@ const addOffers = (req,res) => {
   let parseOffer = (offer) => {
     let offers = {}
     let mandatoryField = "name descriptions amount".split(' ')
-    let optionalField = "price wants images amount".split(' ')
+    let optionalField = "price wants images".split(' ')
     for(let i in mandatoryField) {
       let attr = mandatoryField[i]
       if(!offer[attr]) return res.status(400).json({
