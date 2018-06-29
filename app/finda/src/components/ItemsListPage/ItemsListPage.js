@@ -114,10 +114,8 @@ export default class ItemListPage extends React.Component {
   offerQuestions() {
     let options = []
     if(!!this.props.user) {
-      console.log(this.props.user)
-      options = this.props.user.wants 
+      options = this.getUserWants().map(entry => entry.name)
     }
-    console.log(options)
     return [
       {
         name: "name",
@@ -134,7 +132,7 @@ export default class ItemListPage extends React.Component {
       {
         name: "wants",
         type: "select",
-        options: options.map(entry => entry.name)
+        options: options
       },
       {
         name: "images",
