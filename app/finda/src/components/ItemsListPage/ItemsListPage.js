@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect } from 'react-router'
 import {
   Col,
   Row,
@@ -14,6 +15,7 @@ import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
 import Card from '../Card/Card'
 import FormElements from '../../utils/form'
 import Me from '../../providers/me'
+import Auth from '../../providers/auth'
 export default class ItemListPage extends React.Component {
   /*
     Expected props are as follows...
@@ -68,10 +70,18 @@ export default class ItemListPage extends React.Component {
   
 
   getFormElement(input) {
-    if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
-    if(input.type == 'radio') return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
-    if(input.type == 'date') return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
-    if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
+    if(input.type == 'checkbox') {
+      return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
+    }
+    if(input.type == 'radio') {
+      return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
+    } 
+    if(input.type == 'date') {
+      return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
+    } 
+    if(input.type == 'textarea') {
+      return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
+    }
     return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
   }
 
@@ -126,7 +136,9 @@ export default class ItemListPage extends React.Component {
   }
 
   getValidationState(field) {
-    if(this.state.hasChanged[field] && (!this.state[field] || this.state[field].length == 0)) return 'error'
+    if(this.state.hasChanged[field] && (!this.state[field] || this.state[field].length == 0)) {
+      return 'error'
+    }
     return null
   }
   updateValue(e,field) {
@@ -145,6 +157,7 @@ export default class ItemListPage extends React.Component {
 
 
   async submitForm(e) {
+    console.log(this.state)
     e.preventDefault()
     let meProvider = Me.getInstance()
 
@@ -169,14 +182,16 @@ export default class ItemListPage extends React.Component {
     return this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
   }
   addItemForm() {
-    if(!this.props.isMe) return null
+    if(!this.props.isMe) {
+      return null
+    }
     let formTitle = this.props.isMe?this.getMeAddItemFormTitleString():this.getUserAddItemFormTitleString()
     return (
       <Row>
         <Card>
           <h4> {formTitle} </h4>
           <Form horizontal>
-            {this.questions().map(this.getFormElement.bind(this))}
+            {this.getQuestions().map(this.getFormElement.bind(this))}
             <FormGroup>
               <Col smOffset={2} sm={10}>
                 <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>Add Item</Button>
@@ -184,7 +199,6 @@ export default class ItemListPage extends React.Component {
             </FormGroup>
           </Form>
         </Card>
-
       </Row>
     )
   }
@@ -211,6 +225,12 @@ export default class ItemListPage extends React.Component {
     return this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
   }
   render() {
+    if(!Auth.getInstance().isLoggedIn()) {
+      return <Redirect to='/login' />
+    }
+    if(!this.props.user) {
+      return null
+    }
     console.log('Items-Page props')
     console.log(this.props)
     let items = []
