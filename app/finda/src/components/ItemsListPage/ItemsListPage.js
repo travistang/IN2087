@@ -38,7 +38,7 @@ export default class ItemListPage extends React.Component {
     if(input.type == 'date') return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
     return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
-
+  }
 
   getUserWants() {
     return this.props.user.wants
@@ -72,12 +72,12 @@ export default class ItemListPage extends React.Component {
         this.setState(Object.assign({},this.state,{hasChanged: {[inputFields]: true}}))
         return // stop the form from submitting
       }
-      output[inputFieldName] = inputFieldName=="isInfinite"?(this.getFieldToBoolean(field)):(field)
+      output[inputFieldName] = field
     }
     return output
   }
 
-  
+
 
   getFormElement(input) {
     if(input.type == 'checkbox') {
@@ -85,10 +85,10 @@ export default class ItemListPage extends React.Component {
     }
     if(input.type == 'radio') {
       return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
-    } 
+    }
     if(input.type == 'date') {
       return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
-    } 
+    }
     if(input.type == 'textarea') {
       return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
     }
