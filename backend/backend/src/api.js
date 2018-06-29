@@ -33,7 +33,7 @@ api.use('/auth'  , auth);
 api.use('/me'    , me);
 api.use('/user' , user);
 api.use('/group',group);
-api.use('wants',want);
+api.use('/wants',want);
 
 api.use('/test', testRoute)
 

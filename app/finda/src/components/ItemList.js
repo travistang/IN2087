@@ -1,10 +1,8 @@
 "use strict";
 
 import React from 'react';
-//import { DataTable, TableHeader, TableBody, TableRow, TableColumn, Button } from 'react';
-
-import  ItemListRow  from './ItemListRow';
-
+import {Table} from 'react-bootstrap';
+import ItemListRow from './ItemListRow';
 
 export default class ItemList extends React.Component{
 
@@ -14,22 +12,31 @@ export default class ItemList extends React.Component{
 
 
 
+
     render() {
 
         return (
-            <div>
-            <p>{this.props.test}</p>
-            <p> {this.props.query}</p>
-        {console.log("this.props.want")}
-        {console.log(this.props.wants)}
-            <div>
-            {this.props.wants.map(function(want){
-                console.log(want.id);
-                return <li key={want._id}>{want.title}</li>
-            })}
-            </div>
 
-        </div>
+        <Table hover condensed={false}>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th ></th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                {this.props.wants.map(function(want){
+                                           return <ItemListRow key={want._id} want={want}></ItemListRow>
+                                       })}
+            </tbody>
+
+        </Table>
+
+
+
         )
     }
 

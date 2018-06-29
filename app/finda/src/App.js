@@ -20,6 +20,9 @@ import Auth from './providers/auth';
 import Me from './providers/me';
 import MeComponent from './components/Me/Me';
 import Http from './providers/http';
+import ItemList from "./components/ItemList";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 
 
@@ -68,15 +71,10 @@ class App extends React.Component {
   setQuery(q){
 
       this.setState({
-          query:q
+          query:q,
 
-      });
-      console.log("URL: ");
-      this.getWants();
-      console.log("this.state.query: ");
-      console.log(this.state.query);
-      console.log("this.state.wants: ");
-      console.log(this.state.wants);
+      },this.getWants);
+
   }
 
 
@@ -106,7 +104,7 @@ class App extends React.Component {
 
     getWantsP() {
 
-       console.log(`${apiURL}/wats/?search=${this.state.query}`);
+      // console.log(`${apiURL}/wats/?search=${this.state.query}`);
        return new Promise((res,rej)=>{
           Http.get2(`${apiURL}/wants/?search=${this.state.query}`,function(data){
               res(data);
@@ -189,6 +187,13 @@ class App extends React.Component {
                       exact={true}
                       render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
                     />
+
+                        <Route
+                            path="/listtest"
+                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} test="testList:"/>}
+                            />
+
+
 
                   </Row>
                 </Col>

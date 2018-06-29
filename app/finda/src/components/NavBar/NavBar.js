@@ -40,7 +40,6 @@ export default class NavBar extends React.Component {
 
       this.props.setQuery(this.search.value)
 
-      console.log(this.search.value);
 
   }
   barRightItems() {
