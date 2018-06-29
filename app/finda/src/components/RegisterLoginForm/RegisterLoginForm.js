@@ -79,7 +79,6 @@ export default class RegisterLoginForm extends React.Component {
   */
   constructor(props) {
     super(props)
-    console.log(props)
     this.config = this.props.isRegister?registerFieldsConfig:loginFieldsConfig
     let fields = this.props.isRegister?registerFields:loginFields
     this.fields = fields
@@ -317,8 +316,7 @@ export default class RegisterLoginForm extends React.Component {
   }
   render() {
     // you dont need another registration / login when you have logged in
-    if (Auth.getInstance().isLoggedIn())
-    {
+    if (Auth.getInstance().isLoggedIn()) {
       setTimeout(function(){this.redirectToMe()}.bind(this), 3000)
       return (
         <div>
@@ -334,28 +332,17 @@ export default class RegisterLoginForm extends React.Component {
         <PageHeader>
           {this.props.isRegister?registerTitle:loginTitle}
         </PageHeader>
-        {
-          (this.state.formSubmitMessage)?
-          (
-            this.formSubmitMessageElement.bind(this)()
-          ):null
-        }
-
+        {(this.state.formSubmitMessage)?(this.formSubmitMessageElement.bind(this)()):null}
         <Card className="FormContainer" bsSize="large">
           <Form horizontal>
-            {
-              this.config.map(this.getFormElement.bind(this))
-            }
-
+            {this.config.map(this.getFormElement.bind(this))}
             <FormGroup>
               <Col smOffset={2} sm={10}>
                 <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>{this.props.isRegister?"Register":"Login"}</Button>
               </Col>
             </FormGroup>
           </Form>
-
         </Card>
-
       </div>
     )
   }
