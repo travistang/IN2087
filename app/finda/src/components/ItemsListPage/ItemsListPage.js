@@ -55,7 +55,8 @@ export default class ItemListPage extends React.Component {
   }
   getPayload(inputFields) {
     let output = {}
-    for (let inputFieldName in inputFields) {
+    for (let inputFieldNr in inputFields) {
+      let inputFieldName = inputFields[inputFieldNr]
       let field = this.getInputFieldValue(inputFieldName)
       if(!Object.keys(this.state).indexOf(field)) {
         // trigger the invalidation of this field
@@ -157,7 +158,6 @@ export default class ItemListPage extends React.Component {
 
 
   async submitForm(e) {
-    console.log(this.state)
     e.preventDefault()
     let meProvider = Me.getInstance()
 
@@ -231,8 +231,6 @@ export default class ItemListPage extends React.Component {
     if(!this.props.user) {
       return null
     }
-    console.log('Items-Page props')
-    console.log(this.props)
     let items = []
     items = this.getItemList()
     return (
