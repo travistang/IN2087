@@ -63,7 +63,7 @@ export default class ItemListPage extends React.Component {
         this.setState(Object.assign({},this.state,{hasChanged: {[inputFields]: true}}))
         return // stop the form from submitting
       }
-      output[inputFieldName] = inputFieldName=="isInfinite"?(this.getStringToBoolean(field)):(field)
+      output[inputFieldName] = inputFieldName=="isInfinite"?(this.getFieldToBoolean(field)):(field)
     }
     return output
   }
