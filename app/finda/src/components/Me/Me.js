@@ -14,6 +14,7 @@ import Auth from '../../providers/auth'
 import Card from '../Card/Card'
 import ItemCard from '../ItemCard/ItemCard'
 import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
+import MeTwo from '../../providers/me'
 import './Me.css'
 export default class Me extends React.Component {
   constructor(props) {
@@ -51,6 +52,17 @@ export default class Me extends React.Component {
       )
     }
   }
+  async submitPremium(e) {
+    e.preventDefault()
+
+    let result = null
+    result = await MeTwo.getInstance().toPremium()
+  }
+  toPremiumButton() {
+    if(!this.props.user.isPremium) return (
+      <Button bsStyle="success" onClick={this.submitPremium.bind(this)}> To Premium </Button>
+    )
+  }
   wantsSection() {
     return (
       <div>
@@ -65,23 +77,16 @@ export default class Me extends React.Component {
               )
             }
           </Col>
-
         </Row>
         <Row>
           <Col>
             <div>
               {this.props.isMe?<Button block bsSize="large" bsStyle="primary" href="/me/wants"> To my wants</Button>:null}
             </div>
-
           </Col>
         </Row>
       </div>
 
-    )
-  }
-  toPremiumButton() {
-    if(!this.props.user.isPremium) return (
-      <Button bsStyle="success"> To Premium </Button>
     )
   }
   offersSection() {
@@ -98,14 +103,12 @@ export default class Me extends React.Component {
               )
             }
           </Col>
-
         </Row>
         <Row>
           <Col>
             <div>
               {this.props.isMe?<Button block bsSize="large" bsStyle="primary" href="/me/offers"> To my offers</Button>:null}
             </div>
-
           </Col>
         </Row>
       </div>
@@ -116,20 +119,16 @@ export default class Me extends React.Component {
       <BackgroundNotice title="You have no groups" />
     )
   }
-  render() {
-
-    if(!Auth.getInstance().isLoggedIn()) return <Redirect to='/login' />
-    // logged in but user not loaded
-    else if(!this.props.user) return null
-    else return (
-      <Col>
+  addUserInformation() {
+    return (
+      <div>
         <Row>
           <Col className="ThumbnailCol" xs={12} md={4} sm={4} lg={4}>
             <Image className="BigThumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
           </Col>
           <Col className="NameCol" xs={12} md={8} sm={8} lg={8}>
             <Row>
-              <h2>{this.userName()}</h2>
+              <h2>{this.userName()} ({this.props.user.isPremium?"":"Not "}Premium)</h2>
               <Badge>{this.numUserWants()} wants</Badge>
               <Badge>{this.numUserOffers()} offers</Badge>
             </Row>
@@ -144,29 +143,36 @@ export default class Me extends React.Component {
                 {this.toPremiumButton()}
               </Col>
             </Row>
-
           </Col>
         </Row>
-
-
-
-
-
-
-        <div className="SubpageContainer">
-          <Tabs>
-            <Tab eventKey={1} title="Wants">
-              {this.wantsSection()}
-            </Tab>
-            <Tab eventKey={2} title="Offers">
-              {this.offersSection()}
-            </Tab>
-            <Tab eventKey={3} title="Groups">
-              {this.groupsSection()}
-            </Tab>
-          </Tabs>
-        </div>
-
+      </div>
+    )
+  }
+  addUserStatus() {
+    return (
+      <div className="SubpageContainer">
+        <Tabs>
+          <Tab eventKey={1} title="Wants">
+            {this.wantsSection()}
+          </Tab>
+          <Tab eventKey={2} title="Offers">
+            {this.offersSection()}
+          </Tab>
+          <Tab eventKey={3} title="Groups">
+            {this.groupsSection()}
+          </Tab>
+        </Tabs>
+      </div>
+    )
+  }
+  render() {
+    if(!Auth.getInstance().isLoggedIn()) return <Redirect to='/login' />
+    // logged in but user not loaded
+    else if(!this.props.user) return null
+    else return (
+      <Col>
+        {this.addUserInformation()}
+        {this.addUserStatus()}
       </Col>
     )
   }

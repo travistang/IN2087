@@ -102,18 +102,16 @@ export default class ItemListPage extends React.Component {
     return [
       {name: "name",type: "text",},
       {name: "descriptions",type: "textarea"},
+      {name: "category",type: "radio",choices: ["Things","People","Groups","Courses-Slots"]},
+      {name: "images",type: "file"}
     ]
   }
   offerQuestions() {
-    let options = []
-    if(!!this.props.user) {
-      options = this.getUserWants().map(entry => entry.name)
-    }
     return [
       {name: "name",type: "text",},
       {name: "descriptions",type: "textarea",},
+      {name: "category",type: "radio",choices: ["Things","People","Groups","Courses-Slots"]},
       {name: "price",type: "text"},
-      {name: "wants",type: "select",options: options},
       {name: "images",type: "file"},
       {name: "amount",type: "text"},
       {name: "isInfinite",choices: ["true", "false"],type: "radio"}
@@ -186,9 +184,15 @@ export default class ItemListPage extends React.Component {
     console.log('Add Item')
     console.log('Name: ' + payload.name)
     console.log('Description: ' + payload.descriptions)
+    console.log('Category: ' + payload.category)
+    console.log('Image: ' + payload.images)
+    if(!this.props.isForWant) {
+      console.log('Price: ' + payload.price)
+      console.log('Amount: ' + payload.amount)
+      console.log('Is Infinite: ' + payload.isInfinite)
+    }
   }
   async submitDeleteForm(e,item) {
-    console.log(item)
     e.preventDefault()
 
     let result = null
@@ -197,6 +201,13 @@ export default class ItemListPage extends React.Component {
     console.log('Delete Item')
     console.log('Name: ' + item.name)
     console.log('Description: ' + item.descriptions)
+    console.log('Category: ' + item.category)
+    console.log('Image: ' + item.images)
+    if(!this.props.isForWant) {
+      console.log('Price: ' + item.price)
+      console.log('Amount: ' + item.amount)
+      console.log('Is Infinite: ' + item.isInfinite)
+    }
   }
 
 
@@ -242,7 +253,6 @@ export default class ItemListPage extends React.Component {
     )
   }
   addItemElement(item) {
-    console.log(this)
     let optionalElements = null
     if(!this.props.isForWant){
       optionalElements = (
@@ -260,6 +270,8 @@ export default class ItemListPage extends React.Component {
           Name: {item.name}
           <br />
           Description: {item.descriptions}
+          <br />
+          Category: {item.category}
           <br />
           {optionalElements}
           <Button bsStyle="primary" type="submit" onClick={e => this.submitDeleteForm.bind(this)(e,item)}>Delete Item</Button>
