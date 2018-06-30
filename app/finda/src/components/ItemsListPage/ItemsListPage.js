@@ -180,7 +180,8 @@ export default class ItemListPage extends React.Component {
   showFileForm() {
     return (
       <Form>
-        <input type="file" onChange={this.readFile} />
+
+        <input type="file" onChange={(evt) => this.readFile(evt)} />
       </Form>
     )
   }
@@ -192,8 +193,12 @@ export default class ItemListPage extends React.Component {
     )
   }
 
-  async readFile({fileInput}) {
-    const file = fileInput.target.files[0];
+  async readFile(fileInput) {
+    let file = fileInput.target.files[0];
+    console.log(file);
+    //console.log(fileInput.target.value);
+    //const file = fileInput.target.value;
+    //const file = fileInput.files[0];
     let meProvider = Me.getInstance()
     let result = null
     result = await meProvider.uploadImage(file)

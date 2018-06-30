@@ -30,7 +30,7 @@ router.post('/offers',middlewares.checkAuthentication,MeController.addOffers)
 
 router.post('/toPremium',middlewares.checkAuthentication,MeController.toPremium)
 
-router.post("/upload", upload.single('images'), (req, res, next) => {
+router.post("/upload", upload.single('image'), (req, res, next) => {
   console.log(req)
 
   res.status(201).json({
