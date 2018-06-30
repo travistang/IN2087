@@ -247,11 +247,9 @@ export default class ItemListPage extends React.Component {
     if(!this.props.isForWant){
       optionalElements = (
         <div>
-          Price:
-          {item.price}
+          Price: {item.price}
           <br />
-          Amount:
-          {item.amount}
+          Amount: {item.amount}
           <br />
         </div>
       )
@@ -259,11 +257,9 @@ export default class ItemListPage extends React.Component {
     return (
       <Row>
         <Card>
-          Name:
-          {item.name}
+          Name: {item.name}
           <br />
-          Description:
-          {item.descriptions}
+          Description: {item.descriptions}
           <br />
           {optionalElements}
           <Button bsStyle="primary" type="submit" onClick={e => this.submitDeleteForm.bind(this)(e,item)}>Delete Item</Button>
