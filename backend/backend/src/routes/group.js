@@ -6,6 +6,7 @@ const router         = express.Router();
 const middlewares    = require('../middlewares');
 const GroupController = require('../controllers/group');
 
+router.get('/',middlewares.checkAuthentication, GroupController.getGroupList)
 router.post('/',middlewares.checkAuthentication, GroupController.createGroup)
 
 router.get('/:groupname/info', GroupController.info)

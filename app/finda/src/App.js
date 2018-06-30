@@ -16,6 +16,7 @@ import Toaster from './providers/toaster'
 import Auth from './providers/auth'
 import Me from './providers/me'
 import MeComponent from './components/Me/Me'
+import GroupComponent from './components/Group/Group'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -37,7 +38,7 @@ class App extends React.Component {
       },
       "me/offers": {
         user: this.state.user
-      }
+      },
     }
 
     this.logout = this.logout.bind(this)
@@ -54,6 +55,10 @@ class App extends React.Component {
   updateUser() {
     this.me.getUser()
       .then(user => {
+        if(user && user.error) {
+          this.logout()
+          return
+        }
         this.setState(Object.assign({},this.state,{user}))
       })
   }
@@ -88,6 +93,10 @@ class App extends React.Component {
                       render={() => <MeComponent isMe={true} user={this.state.user} />}
                     />
 
+                    <Route
+                      path="/group/:groupname"
+                      render={(props) => <GroupComponent {...props} user={this.state.user}/>}
+                    />
                   </Row>
                 </Col>
 

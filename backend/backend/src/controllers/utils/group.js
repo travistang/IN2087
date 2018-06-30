@@ -7,10 +7,10 @@ const WantsModel = require('../../models/wants')
 const OffersModel = require('../../models/offers')
 const config = require('../../config')
 
+
 // aux functions for controlling memberships
 const isUserInGroup = async (groupname,userId,res) => {
-  console.log('userId')
-  console.log(userId)
+
   let count = await GroupModel.count({
     groupname,
     members: userId
@@ -19,6 +19,33 @@ const isUserInGroup = async (groupname,userId,res) => {
   return count == 1
 }
 
+const getGroupList = async (userId,res) => {
+  try {
+    console.log('userId')
+    console.log(userId)
+    let groups = await GroupModel
+      .aggregate([
+        {
+          $match: {
+            members: userId,
+          }
+        },
+        {
+          $project: {
+            "groupname": 1,
+            "descriptions": 1,
+            "wants": {$size: "$wants"},
+            "offers": {$size: "$offers"},
+            "members": {$size: "$members"}
+          }
+        }
+      ])
+      .exec()
+    return res.status(200).json(groups)
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+}
 const addUserToGroup = async (groupname,userId) => {
   try {
     let groupId = await GroupModel.findOne({groupname}).select("_id")
@@ -266,6 +293,8 @@ const addChats = async (groupname,message,res) => {
 }
 
 module.exports = {
+  getGroupList,
+
   info,
   editInfo,
 

@@ -37,20 +37,40 @@ export default class NavBar extends React.Component {
     }
   }
   getWantsItem() {
-      return (
-        <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={1} title="Wants" id="basic-nav-dropdown">
-          <MenuItem eventKey={1.1} href="/me/wants">Me</MenuItem>
-          <MenuItem divider />
-          <MenuItem disabled> You have no groups </MenuItem>
-        </NavDropdown>
-      )
+    if(!this.props.user) return (
+      <NavDropdown onClick={() => <Redirect to='/login' />} eventKey={1} title="Wants" id="basic-nav-dropdown" />
+    )
+    else return (
+    <NavDropdown eventKey={1} title="Wants" id="basic-nav-dropdown">
+      <MenuItem eventKey={1.1} href="/me/wants">Me</MenuItem>
+      <MenuItem divider />
+      {
+        (this.props.user.groups.length)?
+          this.props.user.groups.map(
+            group => <MenuItem href={`/group/${encodeURIComponent(group.groupname)}/wants`}>{group.groupname}</MenuItem>
+          ):
+          (<MenuItem disabled> You have no groups </MenuItem>)
+
+      }
+    </NavDropdown>
+    )
   }
   getOffersItem() {
+    if(!this.props.user) return (
+      <NavDropdown onClick={() => <Redirect to='/login' />} eventKey={1} title="Offers" id="basic-nav-dropdown" />
+    )
       return (
         <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={2} title="Offers" id="basic-nav-dropdown">
           <MenuItem eventKey={2.1} href="/me/offers">Me</MenuItem>
           <MenuItem divider />
-          <MenuItem disabled> You have no groups </MenuItem>
+          {
+            (this.props.user.groups.length)?
+              this.props.user.groups.map(
+                group => <MenuItem href={`/group/${encodeURIComponent(group.groupname)}/offers`}>{group.groupname}</MenuItem>
+              ):
+              (<MenuItem disabled> You have no groups </MenuItem>)
+
+          }
         </NavDropdown>
       )
   }

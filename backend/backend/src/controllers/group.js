@@ -1,6 +1,11 @@
 const GroupModel = require('../models/group')
 const GroupUtils = require('./utils/group')
 
+const getGroupList = (req,res) => {
+  let userId = req.userId
+  return GroupUtils.getGroupList(userId,res)
+}
+
 const info = (req,res) => {
   let groupname = req.params.groupname
   return GroupUtils.info(groupname,res)
@@ -142,6 +147,8 @@ const quitGroup = (req,res) => {
 }
 
 module.exports = {
+  getGroupList,
+
   info,
   editInfo,
 

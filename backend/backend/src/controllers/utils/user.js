@@ -9,6 +9,7 @@ const getUserInfo = (query,res) => {
   UserModel.findOne(query)
           .populate('wants')
           .populate('offers')
+          .populate('groups')
           .exec()
           .then(user => {
             if(!user) {
