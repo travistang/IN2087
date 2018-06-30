@@ -19,6 +19,7 @@ api.use(cors())
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(middlewares.allowCrossDomain);
+api.use('/uploads', express.static('uploads'));
 
 // Basic route
 api.get('/', (req, res) => {

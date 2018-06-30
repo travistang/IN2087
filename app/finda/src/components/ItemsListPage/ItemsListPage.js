@@ -68,7 +68,7 @@ export default class ItemListPage extends React.Component {
     return output
   }
 
-  
+
 
   getFormElement(input) {
     if(input.type == 'checkbox') {
@@ -76,10 +76,10 @@ export default class ItemListPage extends React.Component {
     }
     if(input.type == 'radio') {
       return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
-    } 
+    }
     if(input.type == 'date') {
       return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
-    } 
+    }
     if(input.type == 'textarea') {
       return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
     }
@@ -117,10 +117,13 @@ export default class ItemListPage extends React.Component {
         name: "wants",
         type: "none"
       },
+      /*
       {
-        name: "image",
-        type: "file"
+        name: "images",
+        type: "file",
+        onChange: "readFile(this);"
       },
+      */
       {
         name: "amount",
         type: "text"
@@ -174,6 +177,29 @@ export default class ItemListPage extends React.Component {
     console.log('Description: ' + payload.descriptions)
   }
 
+  showFileForm() {
+    return (
+      <Form>
+        <input type="file" onChange={this.readFile} />
+      </Form>
+    )
+  }
+
+  showNothing() {
+    return (
+      <div>
+      </div>
+    )
+  }
+
+  async readFile({fileInput}) {
+    const file = fileInput.target.files[0];
+    let meProvider = Me.getInstance()
+    let result = null
+    result = await meProvider.uploadImage(file)
+    console.log('Do something here with uploading files!!')
+  }
+
 
   getMeAddItemFormTitleString(){
     return this.props.isForWant?"Your wants":"Your offers"
@@ -192,6 +218,7 @@ export default class ItemListPage extends React.Component {
           <h4> {formTitle} </h4>
           <Form horizontal>
             {this.getQuestions().map(this.getFormElement.bind(this))}
+            {!this.props.isForWant?this.showFileForm():this.showNothing()}
             <FormGroup>
               <Col smOffset={2} sm={10}>
                 <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>Add Item</Button>

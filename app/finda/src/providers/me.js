@@ -24,6 +24,16 @@ export default class Me {
     return user
   }
 
+  async uploadImage(image) {
+    if(!this.user) {
+      return null
+    }
+    else {
+      let response = await this.auth.authenticatedPost('/me/upload', image)
+      return response
+    }
+  }
+
   async addWants(want) {
     if(!this.user) {
       return null
