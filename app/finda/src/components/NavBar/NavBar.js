@@ -154,13 +154,16 @@ return(
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav >
-                //TODO change this to select box
+
             {this.firstDropD()}
 
 
-                <NavDropdown id="secondDropDownTitle" title="All">
-                    <MenuItem id="secondDropDownItem1" onSelect={this.secondDropDown}>My Groups</MenuItem>
-                    <MenuItem id="secondDropDownItem2" onSelect={this.secondDropDown}>My own</MenuItem>
+                <NavDropdown id="secondDropDownTitle" title="Categories">
+                    <MenuItem id="secondDropDownItem1" href="/categories/Things">Things</MenuItem>
+                    <MenuItem id="secondDropDownItem2" href="/categories/Groups">Groups</MenuItem>
+                    <MenuItem id="secondDropDownItem2" href="/categories/CourseSlots">Course Slots</MenuItem>
+                    <MenuItem id="secondDropDownItem2" href="/categories/Jobs">Jobs</MenuItem>
+                    <MenuItem id="secondDropDownItem2" href="/categories/People">People</MenuItem>
                 </NavDropdown>
             <NavItem eventKey={3}> Categories</NavItem>
           </Nav>
