@@ -41,10 +41,21 @@ export default class ItemListPage extends React.Component {
   }
 
   getUserWants() {
-    return this.props.user.wants
+    if(!this.props.user.wants){
+      return [];
+    }
+    else{
+        return this.props.user.wants
+    }
+
   }
   getUserOffers() {
-    return this.props.user.offers
+    if(!this.props.user.wants){
+      return [];
+    }
+    else{
+        return this.props.user.offers
+    }
   }
   getNrUserWants() {
     return this.userWants().length

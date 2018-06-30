@@ -24,7 +24,7 @@ export  default class ItemListRowOffer extends React.Component {
             <tr key={this.props.key}>
     <td>{this.props.offer.image}</td>
         <td colspan="2">
-            <tr> {this.props.offer.title}</tr>
+            <tr> {this.props.offer.name}</tr>
         <tr> {this.props.offer.descriptions}</tr>
         </td>
         </tr>

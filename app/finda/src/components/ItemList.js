@@ -12,20 +12,71 @@ export default class ItemList extends React.Component{
     }
 
 
-
-    body()
+   /* items()
     {
-       if(this.props.isOffers){
-                         this.props.wants.map(function(offer){
-                            return <ItemListRowOffer key={offer._id} offer={offer}></ItemListRowOffer>
-                          })
-                        }
-                        else{
-                        this.props.wants.map(function(want){
-                            return <ItemListRow key={want._id} want={want}></ItemListRow>
-                        })
-       }
+        if(this.props.isOffers)
+        {
+            if(this.props.offers)
+            {
+                        return this.props.offers;
+            }
+            else
+            {
+            return [];
+            }
+        }
+        else
+        {
+            if(this.props.wants)
+                {
+                    console.log("ItemList.wants: "+this.props.wants);
+                    return this.props.wants;
+                }
+            else
+                {
+                    console.log("ItemList.offers: "+this.props.offers)
+                    return [];
+                }
+        }
     }
+*/
+
+
+offers()
+{
+    console.log("ItemList: ");
+    console.log(this.props.offers);
+    if(this.props.offers)
+    {
+      return(  this.props.offers.map(function(offer){
+                            return <ItemListRowOffer key={offer._id} offer={offer}></ItemListRowOffer>
+                        })
+      )
+    }
+    else
+    {
+        return ("");
+    }
+
+}
+
+
+wants()
+{
+    if(this.props.wants)
+        {
+          return(  this.props.wants.map(function(want){
+                                return <ItemListRow key={want._id} want={want}></ItemListRow>
+                            })
+          )
+        }
+        else
+        {
+            return ("");
+        }
+
+}
+
 
 
 
@@ -46,8 +97,10 @@ export default class ItemList extends React.Component{
                 </tr>
             </thead>
             <tbody>
-                {this.body}
-                </tbody>
+            {this.props.isOffers?this.offers():this.wants()}
+
+
+            </tbody>
 
         </Table>
         </div>

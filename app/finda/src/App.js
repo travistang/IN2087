@@ -40,6 +40,7 @@ class App extends React.Component {
     };
 
       this.getWants();
+      this.getOffers();
 
     this.setQuery=this.setQuery.bind(this);
     this.setIsOffers=this.setIsOffers.bind(this);
@@ -73,12 +74,22 @@ class App extends React.Component {
 
   setQuery(q){
 
-      this.setState({
-          query:q,
+      if(this.state.isOffers)
+      {
+          this.setState({
+              query:q,
 
-      },this.getWants);
+          },this.getOffers);
+      }else {
+          this.setState({
+              query:q,
+
+          },this.getWants);
+      }
+
 
   }
+
 
   setIsOffers(o){
     this.setState({
@@ -90,6 +101,7 @@ class App extends React.Component {
 
     componentWillMount(){
         this.getWants();
+        this.getOffers();
 
         //this.getOffers();
     };
@@ -150,6 +162,7 @@ class App extends React.Component {
 
     componentDidMount(){
         this.getWants();
+        this.getOffers();
 
     };
 
@@ -225,8 +238,8 @@ class App extends React.Component {
                     />
 
                         <Route
-                            path="/listtest"
-                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} test="testList:"/>}
+                            path="/"
+                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
                             />
 
 
