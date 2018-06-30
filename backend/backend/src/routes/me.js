@@ -9,6 +9,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
+    console.log('testting here' + file)
     cb(null, './uploads/');
   },
   filename: function(req, file, cb) {
@@ -31,7 +32,7 @@ router.post('/offers',middlewares.checkAuthentication,MeController.addOffers)
 router.post('/toPremium',middlewares.checkAuthentication,MeController.toPremium)
 
 router.post("/upload", upload.single('image'), (req, res, next) => {
-  console.log(req)
+  console.log(req.file)
 
   res.status(201).json({
     uploadedImage: {

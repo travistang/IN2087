@@ -25,11 +25,12 @@ export default class Me {
   }
 
   async uploadImage(image) {
+    console.log('image is here: ' + image.name)
     if(!this.user) {
       return null
     }
     else {
-      let response = await this.auth.authenticatedPost('/me/upload', image)
+      let response = await this.auth.nonAuthenticatedPost('/me/upload', {"image": image})
       return response
     }
   }

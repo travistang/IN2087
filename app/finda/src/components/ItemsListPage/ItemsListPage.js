@@ -180,7 +180,6 @@ export default class ItemListPage extends React.Component {
   showFileForm() {
     return (
       <Form>
-
         <input type="file" onChange={(evt) => this.readFile(evt)} />
       </Form>
     )
