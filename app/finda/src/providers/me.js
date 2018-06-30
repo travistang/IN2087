@@ -34,12 +34,32 @@ export default class Me {
     }
   }
 
+  async deleteWants(want) {
+    if(!this.user) {
+      return null
+    }
+    else {
+      let response = await this.auth.authenticatedDelete('/me/wants',want)
+      return response
+    }
+  }
+
   async addOffers(offer) {
     if(!this.user) {
       return null
     }
     else {
       let response = await this.auth.authenticatedPost('/me/offers',offer)
+      return response
+    }
+  }
+
+  async deleteOffers(offer) {
+    if(!this.user) {
+      return null
+    }
+    else {
+      let response = await this.auth.authenticatedDelete('/me/offers',offer)
       return response
     }
   }

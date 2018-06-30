@@ -201,12 +201,12 @@ class App extends React.Component {
                     <Route
                       path="/login"
                       exact={true}
-                      render={() => <RegisterLoginForm isregister={false} onSuccess={this.updateUser.bind(this)} />}
+                      render={() => <RegisterLoginForm isRegister={false} onSuccess={this.updateUser.bind(this)} />}
                     />
                     <Route
                       path="/register"
                       exact={true}
-                      render={() => <RegisterLoginForm isregister={true} onSuccess={this.updateUser.bind(this)} />}
+                      render={() => <RegisterLoginForm isRegister={true} onSuccess={this.updateUser.bind(this)} />}
                     />
                     <Route
                       path="/me"

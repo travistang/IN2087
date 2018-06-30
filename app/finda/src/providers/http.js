@@ -1,5 +1,25 @@
 "use strict";
 export default class {
+  static async patch(url,data = {},header = {}) {
+    return await fetch(url,{
+      body: JSON.stringify(data),
+      headers: {
+        'content-type': 'application/json',
+        ...header
+      },
+      method: 'PATCH'
+    })
+  }
+  static async delete(url,data = {},header = {}) {
+    return await fetch(url,{
+      body: JSON.stringify(data),
+      headers: {
+        'content-type': 'application/json',
+        ...header
+      },
+      method: 'DELETE'
+    })
+  }
   static async post(url,data = {},header = {}) {
     return await fetch(url,{
       body: JSON.stringify(data),
