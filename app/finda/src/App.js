@@ -236,25 +236,25 @@ class App extends React.Component {
                       exact={true}
                       render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
                     />
-
-                        <Route
-                            path="/"
-                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
-                            />
-
-
-
-                  </Row>
-                </Col>
-
-                  <Ads/>
-              </Row>
-            </Grid>
-
         </div>
       </BrowserRouter>
     );
   }
 }
+
+<Route
+path="/"
+render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
+/>
+
+
+
+</Row>
+</Col>
+
+<Ads/>
+</Row>
+</Grid>
+
 
 export default App;
