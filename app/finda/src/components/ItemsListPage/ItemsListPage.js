@@ -188,6 +188,7 @@ export default class ItemListPage extends React.Component {
     console.log('Description: ' + payload.descriptions)
   }
   async submitDeleteForm(e,item) {
+    console.log(item)
     e.preventDefault()
 
     let result = null
@@ -265,7 +266,7 @@ export default class ItemListPage extends React.Component {
           {item.descriptions}
           <br />
           {optionalElements}
-          <Button bsStyle="primary" type="submit" onClick={this.submitDeleteForm.bind(this,this,item)}>Delete Item</Button>
+          <Button bsStyle="primary" type="submit" onClick={e => this.submitDeleteForm.bind(this)(e,item)}>Delete Item</Button>
         </Card>
       </Row>
     )
