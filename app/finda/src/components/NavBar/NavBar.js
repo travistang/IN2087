@@ -7,7 +7,8 @@ import {
   NavDropdown,
   MenuItem,
   Image,
-  Button
+  Button,
+  DropdownButton,
 } from 'react-bootstrap'
 import {Redirect} from 'react-router'
 import Auth from '../../providers/auth'
@@ -18,7 +19,7 @@ export default class NavBar extends React.Component {
     state={
 
         searchResults:[],
-        isOffers:true,
+        isOffers:this.props.isOffers,
         firstDropDownSelected:"Offers",
         firstDropDownSecond:"Wants",
         secondDropDownSelected:"All"
@@ -27,19 +28,14 @@ export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.firstDropDown=this.firstDropDown(this);
+    //this.setState({isOffers:this.props.isOffers});
 
   }
 
   handleInputChange=()=>{
         this.setState({
             query:this.search.value
-        }),()=>{
-           // if(this.props.isForWant){searchResults:data.data}
-            //if(==offers){search user offers}
-        }
-
-      this.props.setQuery(this.search.value)
-
+        },this.props.setQuery(this.search.value))
 
   }
   barRightItems() {
@@ -62,29 +58,22 @@ export default class NavBar extends React.Component {
   }
 
 
-    firstDropDown(){
-        if(!this.state.isOffers)
-        {
-            this.setState({
-                firstDropDownSelected:"Wants",
-                firstDropDownSecond:"Offers",
-                isOffers:false
 
-            });
+  firstDropD(){
 
-            console.log("isOffers");
-            console.log(this.state.firstDropDownSelected);
+return(
+  <NavDropdown id="firstDropDownTitle" title={this.state.firstDropDownSelected} >
+  <MenuItem eventKey={11} id="firstDropDownItem" >{this.state.firstDropDownSecond}</MenuItem>
+      </NavDropdown>
+  )
+  }
+
+    firstDropDown(evt,evtKey){
+        console.log("NavbarOnSelect");
 
 
-        }
-        else {
 
-            console.log("!isOffers");
-            console.log(this.state.firstDropDownSelected);
-            this.state.firstDropDownSelected="Offers";
-            this.setState({firstDropDownSecond:"Wants"});
-            this.setState({isOffers:true})
-        }
+
     }
 
     secondDropDown()
@@ -112,9 +101,46 @@ export default class NavBar extends React.Component {
         </NavDropdown>
       )
   }*/
+
+  handleNavbarSelect(evt, evtK)
+  {
+      console.log("onSelect");
+      console.log(this.state.isOffers);
+      if(evt==11)
+      {
+          if(!this.state.isOffers)
+          {
+              this.setState({
+                  firstDropDownSelected:"Wants",
+                  firstDropDownSecond:"Offers",
+                  isOffers:true
+
+              },this.props.setIsOffers(this.state.isOffers));
+
+              console.log("!isOffers");
+
+
+
+          }
+          else {
+
+
+              this.setState({
+                firstDropDownSelected:"Offers",
+                firstDropDownSecond:"Wants",
+                isOffers:false
+                },this.props.setIsOffers(this.state.isOffers))
+
+              console.log("isOffers/else");
+
+          }
+      }
+
+
+  }
   render() {
     return (
-      <Navbar inverse collapseOnSelect>
+      <Navbar inverse collapseOnSelect onSelect={this.handleNavbarSelect.bind(this)} >
         <Navbar.Header>
           <Navbar.Brand>
             <a href="/home">FindA</a>
@@ -127,12 +153,11 @@ export default class NavBar extends React.Component {
             />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
+          <Nav >
                 //TODO change this to select box
-                <NavDropdown id="firstDropDownTitle" title={this.state.firstDropDownSelected}>
-                    <MenuItem id="firstDropDownItem" onSelect={this.firstDropDown}>{this.state.firstDropDownSecond}</MenuItem>
+            {this.firstDropD()}
 
-                </NavDropdown>
+
                 <NavDropdown id="secondDropDownTitle" title="All">
                     <MenuItem id="secondDropDownItem1" onSelect={this.secondDropDown}>My Groups</MenuItem>
                     <MenuItem id="secondDropDownItem2" onSelect={this.secondDropDown}>My own</MenuItem>

@@ -3,6 +3,7 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
 import ItemListRow from './ItemListRow';
+import ItemListRowOffer from './ItemListRowOffer';
 
 export default class ItemList extends React.Component{
 
@@ -12,10 +13,27 @@ export default class ItemList extends React.Component{
 
 
 
+    body()
+    {
+       if(this.props.isOffers){
+                         this.props.wants.map(function(offer){
+                            return <ItemListRowOffer key={offer._id} offer={offer}></ItemListRowOffer>
+                          })
+                        }
+                        else{
+                        this.props.wants.map(function(want){
+                            return <ItemListRow key={want._id} want={want}></ItemListRow>
+                        })
+       }
+    }
+
+
 
     render() {
 
         return (
+        <div>
+        <p>{"isOffers: " +this.props.isOffers}</p>
 
         <Table hover condensed={false}>
             <thead>
@@ -28,12 +46,11 @@ export default class ItemList extends React.Component{
                 </tr>
             </thead>
             <tbody>
-                {this.props.wants.map(function(want){
-                                           return <ItemListRow key={want._id} want={want}></ItemListRow>
-                                       })}
-            </tbody>
+                {this.body}
+                </tbody>
 
         </Table>
+        </div>
 
 
 

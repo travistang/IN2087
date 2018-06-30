@@ -36,11 +36,13 @@ class App extends React.Component {
         wants:[],
         offers:[],
         query:'',
+        isOffers:true,
     };
 
       this.getWants();
 
     this.setQuery=this.setQuery.bind(this);
+    this.setIsOffers=this.setIsOffers.bind(this);
 
 
     this.routeParams = {
@@ -59,7 +61,8 @@ class App extends React.Component {
       user:this.state.user,
             wants:this.state.wants,
             query:this.state.query,
-            test:"testList:"
+            test:"testList:",
+            isOffers:this.state.isOffers
     }
     };
     this.logout = this.logout.bind(this);
@@ -75,6 +78,12 @@ class App extends React.Component {
 
       },this.getWants);
 
+  }
+
+  setIsOffers(o){
+    this.setState({
+    isOffers:o,
+    })
   }
 
 
@@ -96,10 +105,21 @@ class App extends React.Component {
        }).catch((e) => {
            console.error(e);
        });
-
-
-
    };
+
+
+    getOffers()
+    {
+        this.getOffersP().then((data) => {
+            this.setState({
+                offers: [...data],
+            });
+
+
+        }).catch((e) => {
+            console.error(e);
+        });
+    };
 
 
     getWantsP() {
@@ -111,6 +131,20 @@ class App extends React.Component {
           })
 
        })
+
+    };
+
+
+
+    getOffersP() {
+
+        // console.log(`${apiURL}/wats/?search=${this.state.query}`);
+        return new Promise((res,rej)=>{
+            Http.get2(`${apiURL}/offers/?search=${this.state.query}`,function(data){
+                res(data);
+            })
+
+        })
 
     };
 
@@ -152,6 +186,8 @@ class App extends React.Component {
               logout={this.logout}
               data={this.state.wants}
               setQuery = {this.setQuery}
+              isOffers={this.state.isOffers}
+              setIsOffers={this.setIsOffers}
             />
 
 
@@ -190,7 +226,7 @@ class App extends React.Component {
 
                         <Route
                             path="/listtest"
-                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} test="testList:"/>}
+                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} test="testList:"/>}
                             />
 
 

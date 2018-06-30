@@ -11,7 +11,8 @@ const me    = require('./routes/me');
 const user  = require('./routes/user');
 const group=require('./routes/group');
 const want=require('./routes/want');
-const testRoute = require('./routes/test')
+const offer=require('./routes/offer');
+const testRoute = require('./routes/test');
 const api = express();
 
 // Adding Basic Middlewares
@@ -34,6 +35,7 @@ api.use('/me'    , me);
 api.use('/user' , user);
 api.use('/group',group);
 api.use('/wants',want);
+api.use('/offers',offer)
 
 api.use('/test', testRoute)
 
