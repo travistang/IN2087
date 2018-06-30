@@ -31,18 +31,32 @@ export default class Me extends React.Component {
       return <p className="NoDescription"> This user has no descriptions yet </p>
     }
   }
-  numUserWants() {
-    return this.userWants().length
-  }
-  numUserOffers() {
-    return this.userOffers().length
-  }
+
   userWants() {
     return this.props.user.wants
   }
   userOffers() {
     return this.props.user.offers
   }
+    numUserWants() {
+      if(!this.props.user.wants)
+      {
+        return null;
+    }
+    else{
+          return this.props.user.wants.length
+      }
+
+    }
+    numUserOffers() {
+        if(!this.props.user.offers)
+        {
+            return null;
+        }
+        else{
+            return this.props.user.offers.length
+        }
+    }
   editProfileButton() {
     if(this.props.isMe) {
       return (
@@ -68,14 +82,19 @@ export default class Me extends React.Component {
       <div>
         <Row>
           <Col>
-            {(this.userWants().length > 0)?(<div className="ItemContainer">
-                {this.userWants().map(want => (
-                    <ItemCard want={want} />
-                ))}
-              </div>):(
-                <BackgroundNotice title="This user has no wants" />
-              )
-            }
+            {()=>{ if(!this.props.user.wants)
+                  {
+                  <BackgroundNotice title="This user has no wants" />
+                  }
+      else{
+          <div className="ItemContainer">
+              {this.userWants().map(want => (
+                  <ItemCard want={want} />
+              ))}
+              </div>
+
+
+            }}}
           </Col>
         </Row>
         <Row>
@@ -94,6 +113,11 @@ export default class Me extends React.Component {
       <div>
         <Row>
           <Col>
+
+        {()=>{ if(!this.props.user.offers) {
+          ""
+      }
+      else
             {(this.userOffers().length > 0)?(<div className="ItemContainer">
                 {this.userOffers().map(want => (
                     <ItemCard want={want} />
@@ -101,7 +125,7 @@ export default class Me extends React.Component {
               </div>):(
                 <BackgroundNotice title={`This user has no offers`} />
               )
-            }
+            } }}
           </Col>
         </Row>
         <Row>
