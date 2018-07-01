@@ -22,16 +22,28 @@ export  default class ItemListRowOffer extends React.Component {
             height:'75px',
             overflowY:'auto',
         };
+        let style={
+            height:'85px',
+            width:'85px',
+
+        }
 
 
         return (
             <tr key={this.props.key}>
-                <td>{this.props.offer.image}</td>
+                <td> <div style={style}><img style={style} src={this.props.offer.images}/> </div></td>
 
                 <td >
                     <tr> {this.props.offer.name}</tr>
                     <div style={rowStyle}>
                     <tr> {this.props.offer.descriptions}</tr>
+                    </div>
+
+                </td>
+                <td>
+                    <tr>Price:</tr>
+                    <div style={rowStyle}>
+                        <tr> {this.props.offer.price}</tr>
                     </div>
                 </td>
 

@@ -82,15 +82,19 @@ all(){
 
 
     render() {
+    let style={
+                overflowY:'auto',
+    };
 
         return (
-        <div>
+        <div >
+        <div style={style}>
 
         <Table hover condensed={false}>
             <thead>
                 <tr>
-                    <th>Category:</th>
-                    <th>{this.props.category}</th>
+                    <th></th>
+                    <th></th>
 
 
 
@@ -103,6 +107,7 @@ all(){
             </tbody>
 
         </Table>
+        </div>
         </div>
 
 

@@ -230,7 +230,7 @@ class App extends React.Component {
 
             <Grid className="Section">
               <Row>
-                  <Ads/>
+                  <Ads aImage="http://localhost:3000/uploads/2018-07-01T20:22:14.344Zads1.jpg"></Ads>
 
                 <Col md={6} lg={6}>
                   <Row style={{height:"100vh",marginBottom:8}}>
@@ -261,7 +261,7 @@ class App extends React.Component {
                     />
                     <Route
       path="/home"
-      render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} category={this.state.category}/>}
+      render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="test" category={this.state.category}/>}
       />
 
 
@@ -272,7 +272,7 @@ class App extends React.Component {
       </Row>
       </Col>
 
-      <Ads/>
+      <Ads aImage="http://localhost:3000/uploads/2018-07-01T21:01:37.059Zads2.jpg"/>
       </Row>
       </Grid>
         </div>
