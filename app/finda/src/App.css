@@ -27,7 +27,10 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
+#paraID {
+  color:red;
+  font-weight: bold;
+}
 
 .Ad {
   background: "gray";
