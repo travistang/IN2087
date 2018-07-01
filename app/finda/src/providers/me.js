@@ -64,6 +64,8 @@ export default class Me {
     }
   }
 
+
+
   async toPremium() {
     if(!this.auth.isLoggedIn()) {
       return null

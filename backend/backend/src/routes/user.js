@@ -10,4 +10,5 @@ router.get('/:username',middlewares.checkAuthentication,UserController.info)
 router.get('/:username/info',middlewares.checkAuthentication,UserController.info)
 router.get('/:username/wants',middlewares.checkAuthentication,UserController.wants)
 router.get('/:username/offers',middlewares.checkAuthentication,UserController.offers)
+router.get('/:_id/delete',middlewares.checkAuthentication,UserController.deleteUser)
 module.exports = router

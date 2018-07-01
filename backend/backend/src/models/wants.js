@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 //mongoose.connect('localhost:1234/app/name/finda');
 
 const WantSchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true
   },

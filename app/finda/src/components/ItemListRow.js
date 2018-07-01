@@ -20,17 +20,17 @@ export  default class ItemListRow extends React.Component {
 
     render() {
         let rowStyle={
-            maxHeight:'100px',
-            overflow:'auto',
+            height:'75px',
+            overflowY:'auto',
         };
 
         return (
             <tr key={this.props.key}>
-                <td>{this.props.want.image}</td>
-                <td colspan="2">
-                    <tr> {this.props.want.title}</tr>
+                <td> <img src={this.props.want.images}/></td>
+                <td >
+                    <tr> {this.props.want.name}</tr>
                     <div style={rowStyle}>
-                    <tr > {this.props.want.descriptions}</tr>
+                    <tr> {this.props.want.descriptions}</tr>
                     </div>
                 </td>
             </tr>

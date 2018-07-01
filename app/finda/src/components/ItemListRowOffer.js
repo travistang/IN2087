@@ -19,20 +19,24 @@ export  default class ItemListRowOffer extends React.Component {
 
 
     render() {
-
         let rowStyle={
-            maxHeight:'25px',
-            overflow:'scroll',
+            height:'75px',
+            overflowY:'auto',
         };
+
 
         return (
             <tr key={this.props.key}>
-    <td>{this.props.offer.image}</td>
-        <td colspan="2">
-            <tr> {this.props.offer.name}</tr>
-        <tr style={rowStyle}> {this.props.offer.descriptions}</tr>
-        </td>
-        </tr>
+                <td>{this.props.offer.image}</td>
+
+                <td >
+                    <tr> {this.props.offer.name}</tr>
+                    <div style={rowStyle}>
+                    <tr> {this.props.offer.descriptions}</tr>
+                    </div>
+                </td>
+
+            </tr>
 
     );
     }

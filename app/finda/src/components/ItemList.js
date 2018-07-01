@@ -12,40 +12,13 @@ export default class ItemList extends React.Component{
     }
 
 
-   /* items()
-    {
-        if(this.props.isOffers)
-        {
-            if(this.props.offers)
-            {
-                        return this.props.offers;
-            }
-            else
-            {
-            return [];
-            }
-        }
-        else
-        {
-            if(this.props.wants)
-                {
-                    console.log("ItemList.wants: "+this.props.wants);
-                    return this.props.wants;
-                }
-            else
-                {
-                    console.log("ItemList.offers: "+this.props.offers)
-                    return [];
-                }
-        }
-    }
-*/
+
 
 
 offers()
 {
     console.log("ItemList: ");
-    console.log(this.props.offers);
+    console.log(this.props.category);
     if(this.props.offers)
     {
       return(  this.props.offers.map(function(offer){
@@ -104,13 +77,6 @@ all(){
     )
 }
 
-categories(){
-if(this.props.category="things"){
-
-
-}
-
-}
 
 
 
@@ -123,10 +89,9 @@ if(this.props.category="things"){
         <Table hover condensed={false}>
             <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th ></th>
-                    <th></th>
+                    <th>Category:</th>
+                    <th>{this.props.category}</th>
+
 
 
                 </tr>

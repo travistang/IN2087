@@ -23,7 +23,7 @@ const addWants = (req,res) => {
     let fields = "name descriptions category images".split(' ')
     if(fields.some(field => Object.keys(want).indexOf(field) == -1)) {
       return res.status(400).json({
-        error: `missing either name or descriptions`
+        error: `missing: ${attr}`
       })
     }
     return {name:want.name,descriptions:want.descriptions,category:want.category,images:want.images}

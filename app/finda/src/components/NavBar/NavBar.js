@@ -27,9 +27,6 @@ export default class NavBar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.firstDropDown=this.firstDropDown(this);
-    //this.setState({isOffers:this.props.isOffers});
-
   }
 
   handleInputChange=()=>{
@@ -68,39 +65,11 @@ return(
   )
   }
 
-    firstDropDown(evt,evtKey){
-        console.log("NavbarOnSelect");
 
 
 
 
-    }
 
-    secondDropDown()
-    {
-        this.setState({SecondDropDownSecond:"All"});
-    }
-
-
-
-  /*getWoOItems() {
-      return (
-        <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={1} title="Wants" id="basic-nav-dropdown">
-          <MenuItem eventKey={1.1} href="/offers">Offers</MenuItem>
-          <MenuItem divider />
-          <MenuItem id="firstTwo" eventKey={1.2} href="/wants" onclick={document.getElementById(firstTwo).innerHTML }> Wants </MenuItem>
-        </NavDropdown>
-      )
-  }
-  getOffersItem() {
-      return (
-        <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={2} title="Offers" id="basic-nav-dropdown">
-          <MenuItem eventKey={2.1} href="/me/offers">Me</MenuItem>
-          <MenuItem divider />
-          <MenuItem disabled> You have no groups </MenuItem>
-        </NavDropdown>
-      )
-  }*/
 
   handleNavbarSelect(evt, evtK)
   {
@@ -116,11 +85,6 @@ return(
                   isOffers:true
 
               },this.props.setIsOffers(this.state.isOffers));
-
-              console.log("!isOffers");
-
-
-
           }
           else {
 
@@ -129,12 +93,25 @@ return(
                 firstDropDownSelected:"Offers",
                 firstDropDownSecond:"Wants",
                 isOffers:false
-                },this.props.setIsOffers(this.state.isOffers))
-
-              console.log("isOffers/else");
-
+                },this.props.setIsOffers(this.state.isOffers));
           }
       }
+      if(evt==21){
+          this.props.setCategory("");
+      }
+      if(evt==22){
+          this.props.setCategory("Things");
+      }
+      if(evt==23){
+          this.props.setCategory("Courses");
+      }
+      if(evt==24){
+          this.props.setCategory("People");
+      }
+      if(evt==25){
+          this.props.setCategory("Groups");
+      }
+
 
 
   }
@@ -158,12 +135,12 @@ return(
             {this.firstDropD()}
 
 
-                <NavDropdown id="Categories" title="Categories">
-                    <MenuItem id="All" href="/home">All</MenuItem>
-                    <MenuItem id="Things" href="/things">Things</MenuItem>
-                    <MenuItem id="CourseSlots" href="/courses">Courses</MenuItem>
-                    <MenuItem id="People" href="/people">People</MenuItem>
-                    <MenuItem id="Groups" href="/groups">Groups</MenuItem>
+                <NavDropdown id="Category" title={`In Category: ${this.props.category}`}>
+                    <MenuItem id="All" eventKey={21}>All</MenuItem>
+                    <MenuItem id="Things" eventKey={22}>Things</MenuItem>
+                    <MenuItem id="CourseSlots" eventKey={23}>Courses</MenuItem>
+                    <MenuItem id="People" eventKey={24}>People</MenuItem>
+                    <MenuItem id="Groups" eventKey={25}>Groups</MenuItem>
 
                 </NavDropdown>
 
