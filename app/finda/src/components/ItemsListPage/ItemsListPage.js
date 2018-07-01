@@ -28,7 +28,8 @@ export default class ItemListPage extends React.Component {
     // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
     this.state = {
       hasChanged: this.getQuestions().map(field => ({[field]:false})),
-      filePath: null
+      filePath: null,
+      errorMsg: null
     }
   }
 
@@ -119,7 +120,6 @@ export default class ItemListPage extends React.Component {
       {name: "name",type: "text",},
       {name: "descriptions",type: "textarea"},
       {name: "category",type: "radio",choices: ["Things","People","Groups","Courses-Slots"]},
-      {name: "images",type: "file"}
     ]
   }
   offerQuestions() {
@@ -225,6 +225,36 @@ export default class ItemListPage extends React.Component {
     }
   }
 
+  async validateForm(e) {
+    e.preventDefault()
+    this.setState({errorMsg : ""})
+    let questions = this.getQuestions()
+    let questionNames = questions.map(q => q.name)
+
+    let errorMessage = ""
+
+    for (let inputField in questionNames) {
+      let inputFieldName = questionNames[inputField]
+      console.log('inputField: ' + inputField + ':' + questionNames[inputField] + ":" + this.getInputFieldValue(inputFieldName))
+      if(this.getInputFieldValue(inputFieldName) == undefined) {
+        if(this.state.errorMsg == "") {
+          this.setState({errorMsg : "Please fill out the following fields: "})
+        }
+        errorMessage += " " + questionNames[inputField] + " "
+      } else {
+        console.log('something here...')
+      }
+    }
+
+    if(errorMessage == "") {
+      this.submitAddForm(e)
+    } else {
+      console.log('testttting' + errorMessage)
+      this.setState({errorMsg : "Please fill out the following fields: " + errorMessage})
+      //this.state.errorMsg = errorMessage
+    }
+  }
+
   showFileForm() {
     return (
       <Form>
@@ -290,7 +320,7 @@ export default class ItemListPage extends React.Component {
             {!this.props.isForWant?this.showFileForm():this.showNothing()}
             <FormGroup>
               <Col smOffset={2} sm={10}>
-                <Button bsStyle="primary" type="submit" onClick={this.submitAddForm.bind(this)}>Add Item</Button>
+                <Button bsStyle="primary" type="submit" onClick={this.validateForm.bind(this)}>Add Item</Button>
               </Col>
             </FormGroup>
           </Form>
@@ -344,9 +374,11 @@ export default class ItemListPage extends React.Component {
     items = this.getItemList()
     return (
       <div id="formDiv">
+        <p id='paraID'>{this.state.errorMsg}</p>
         {this.addPageHeader()}
         {this.addItemForm()}
         {items.length > 0?(items.map(this.addItemElement.bind(this))):this.addNoItemElement()}
+
       </div>
     )
   }
