@@ -236,25 +236,48 @@ class App extends React.Component {
                       exact={true}
                       render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
                     />
+                    <Route
+      path="/home"
+      render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} category="all"/>}
+      />
+
+      <Route
+      path="/things"
+      exact={true}
+      render={() => <ItemList user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} category="things" />}
+      />
+      <Route
+      path="/groups"
+      exact={true}
+      render={() => <ItemList user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} category="groups"/>}
+      />
+      <Route
+      path="/courses"
+      exact={true}
+      render={() => <ItemList user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} category="courses" />}
+      />
+      <Route
+      path="/people"
+      exact={true}
+      render={() => <ItemList user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} category="people"/>}
+      />
+
+
+
+
+      </Row>
+      </Col>
+
+      <Ads/>
+      </Row>
+      </Grid>
         </div>
       </BrowserRouter>
     );
   }
 }
 
-<Route
-path="/"
-render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
-/>
 
-
-
-</Row>
-</Col>
-
-<Ads/>
-</Row>
-</Grid>
 
 
 export default App;

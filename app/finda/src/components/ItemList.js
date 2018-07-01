@@ -77,6 +77,41 @@ wants()
 
 }
 
+all(){
+    return(
+        <div>
+                <p>{"isOffers: " +this.props.isOffers}</p>
+
+                <Table hover condensed={false}>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th ></th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {this.props.isOffers?this.offers():this.wants()}
+
+
+                    </tbody>
+
+                </Table>
+                </div>
+
+    )
+}
+
+categories(){
+if(this.props.category="things"){
+
+
+}
+
+}
+
 
 
 
@@ -84,7 +119,6 @@ wants()
 
         return (
         <div>
-        <p>{"isOffers: " +this.props.isOffers}</p>
 
         <Table hover condensed={false}>
             <thead>
@@ -92,6 +126,7 @@ wants()
                     <th></th>
                     <th></th>
                     <th ></th>
+                    <th></th>
 
 
                 </tr>
