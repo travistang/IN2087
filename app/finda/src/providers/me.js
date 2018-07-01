@@ -76,6 +76,18 @@ export default class Me {
     }
   }
 
+  async addGroups(group) {
+    if(!this.user) {
+      return null
+    }
+    else {
+      console.log("Group")
+      console.log(group)
+      let response = await this.auth.authenticatedPost('/group',group)
+      return response
+    }
+  }
+
   async toPremium() {
     if(!this.auth.isLoggedIn()) {
       return null
