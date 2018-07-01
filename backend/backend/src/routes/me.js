@@ -33,12 +33,7 @@ router.post('/toPremium',middlewares.checkAuthentication,MeController.toPremium)
 
 router.post("/upload", upload.single('image'), (req, res, next) => {
   console.log(req.file)
-
-  res.status(201).json({
-    uploadedImage: {
-      path: 'http://localhost:3000/' + req.file.path
-    }
-  })
+  res.status(200).json({path: req.file.path});
 });
 
 module.exports = router

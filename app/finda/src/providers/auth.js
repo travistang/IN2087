@@ -50,16 +50,17 @@ export default class AuthProvider {
     return response
   }
 
-  async nonAuthenticatedPost(url,data = {}) {
-    console.log(data)
-    axios.post(apiURL + url, {
-    image: data
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  async imageUploadPost(url,data = {}) {
+    const formData = new FormData();
+    formData.append('image',data)
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    let response = await axios.post(apiURL + url, formData,config)
+    response = JSON.stringify(response.data.path)
+    console.log(response)
+    return response
   }
 }

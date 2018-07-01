@@ -27,7 +27,8 @@ export default class ItemListPage extends React.Component {
     super(props)
     // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
     this.state = {
-      hasChanged: this.getQuestions().map(field => ({[field]:false}))
+      hasChanged: this.getQuestions().map(field => ({[field]:false})),
+      filePath: null
     }
   }
 
@@ -64,6 +65,10 @@ export default class ItemListPage extends React.Component {
         return // stop the form from submitting
       }
       output[inputFieldName] = inputFieldName=="isInfinite"?(this.getFieldToBoolean(field)):(field)
+    }
+
+    if(!this.props.isForWant) {
+      output['images'] = this.state.filePath
     }
     return output
   }
@@ -201,7 +206,10 @@ export default class ItemListPage extends React.Component {
     let meProvider = Me.getInstance()
     let result = null
     result = await meProvider.uploadImage(file)
-    console.log('Do something here with uploading files!!')
+    result = result.replace('"', '')
+    result = result.replace('"', '')
+    this.state.filePath = 'http://localhost:3000/' + result
+    console.log('Received file path...   ' + 'http://localhost:3000/' + result.replace('"', ''))
   }
 
 

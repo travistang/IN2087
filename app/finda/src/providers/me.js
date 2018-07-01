@@ -30,7 +30,8 @@ export default class Me {
       return null
     }
     else {
-      let response = await this.auth.nonAuthenticatedPost('/me/upload', {"image": image})
+      let response = await this.auth.imageUploadPost('/me/upload', image)
+      console.log('only response...' + response)
       return response
     }
   }
