@@ -88,6 +88,28 @@ export default {
       </FormGroup>
     )
   },
+  selectElement(input,state,updateValue) {
+    return (
+      <FormGroup>
+        <Col className="FormName" componentClass={ControlLabel} sm={2}>
+          {input.name}
+        </Col>
+        <Col sm={10}>
+        <select name={input.name}>
+          {
+            input.options.map(thisOption => (
+              <option value={thisOption}>
+                {thisOption}
+              </option>
+            ))
+          }
+          </select>
+        </Col>
+
+      </FormGroup>
+    )
+  },
+
   textareaElement(input,state,updateValue,placeholder = "Write something about yourself...") {
     return (
       <FormGroup>

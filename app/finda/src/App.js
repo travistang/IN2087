@@ -8,24 +8,43 @@ import ItemsListPage from './components/ItemsListPage/ItemsListPage'
 import logo from './logo.svg';
 import './App.css';
 import ContentRoutes from "./routes"
+import {apiURL} from "./config"
 import {
   Grid,
   Row,
   Col,
 } from 'react-bootstrap'
 import { ToastContainer } from "react-toastr";
-import Toaster from './providers/toaster'
-import Auth from './providers/auth'
-import Me from './providers/me'
-import MeComponent from './components/Me/Me'
+import Toaster from './providers/toaster';
+import Auth from './providers/auth';
+import Me from './providers/me';
+import MeComponent from './components/Me/Me';
+import Http from './providers/http';
+import ItemList from "./components/ItemList";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+
+
 class App extends React.Component {
   constructor(props) {
-    super(props)
-    this.auth = Auth.getInstance()
-    this.me = Me.getInstance()
+    super(props);
+    this.auth = Auth.getInstance();
+    this.me = Me.getInstance();
     this.state = {
-      user: null
-    }
+      user: null,
+        wants:[],
+        offers:[],
+        query:'',
+        isOffers:true,
+    };
+
+      this.getWants();
+      this.getOffers();
+
+    this.setQuery=this.setQuery.bind(this);
+    this.setIsOffers=this.setIsOffers.bind(this);
+
 
     this.routeParams = {
       "/login": {
@@ -39,13 +58,118 @@ class App extends React.Component {
       },
       "/me/offers": {
         user: this.state.user
-      }
+      },"/listtest":{
+      user:this.state.user,
+            wants:this.state.wants,
+            query:this.state.query,
+            test:"testList:",
+            isOffers:this.state.isOffers
     }
-
-    this.logout = this.logout.bind(this)
+    };
+    this.logout = this.logout.bind(this);
     // get user info first
-    this.updateUser()
+    this.updateUser();
+  };
+
+
+  setQuery(q){
+
+      if(this.state.isOffers)
+      {
+          this.setState({
+              query:q,
+
+          },this.getOffers);
+      }else {
+          this.setState({
+              query:q,
+
+          },this.getWants);
+      }
+
+
   }
+
+
+  setIsOffers(o){
+    this.setState({
+    isOffers:o,
+    })
+  }
+
+
+
+    componentWillMount(){
+        this.getWants();
+        this.getOffers();
+
+        //this.getOffers();
+    };
+
+   getWants()
+   {
+       this.getWantsP().then((data) => {
+           this.setState({
+               wants: [...data],
+           });
+
+
+       }).catch((e) => {
+           console.error(e);
+       });
+   };
+
+
+    getOffers()
+    {
+        this.getOffersP().then((data) => {
+            this.setState({
+                offers: [...data],
+            });
+
+
+        }).catch((e) => {
+            console.error(e);
+        });
+    };
+
+
+    getWantsP() {
+
+      // console.log(`${apiURL}/wats/?search=${this.state.query}`);
+       return new Promise((res,rej)=>{
+          Http.get2(`${apiURL}/wants/?search=${this.state.query}`,function(data){
+              res(data);
+          })
+
+       })
+
+    };
+
+
+
+    getOffersP() {
+
+        // console.log(`${apiURL}/wats/?search=${this.state.query}`);
+        return new Promise((res,rej)=>{
+            Http.get2(`${apiURL}/offers/?search=${this.state.query}`,function(data){
+                res(data);
+            })
+
+        })
+
+    };
+
+    componentDidMount(){
+        this.getWants();
+        this.getOffers();
+
+    };
+
+
+
+
+
   logout() {
     // remove token
     this.auth.logout()
@@ -59,6 +183,8 @@ class App extends React.Component {
         this.setState(Object.assign({},this.state,{user}))
       })
   }
+
+
   render() {
     return (
       <BrowserRouter>
@@ -71,7 +197,14 @@ class App extends React.Component {
             <NavBar
               user={this.state.user}
               logout={this.logout}
+              data={this.state.wants}
+              setQuery = {this.setQuery}
+              isOffers={this.state.isOffers}
+              setIsOffers={this.setIsOffers}
             />
+
+
+
             <Grid className="Section">
               <Row>
                   <Ads/>
@@ -103,6 +236,13 @@ class App extends React.Component {
                       exact={true}
                       render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
                     />
+
+                        <Route
+                            path="/"
+                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
+                            />
+
+
 
                   </Row>
                 </Col>
