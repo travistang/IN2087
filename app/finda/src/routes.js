@@ -24,6 +24,7 @@ export default [
     params: {
       isMe: true,
       isForWant: true,
+      isForGroup: false,
     }
   },
   {
@@ -32,15 +33,20 @@ export default [
     params: {
       isMe: true,
       isForWant: false,
+      isForGroup: false,
     }
   },
-
-    {
-      path:"/listtest",
-        component: ItemList,
-
+  {
+    path: "/me/groups",
+    component: ItemsListPage,
+    params: {
+      isMe: true,
+      isForWant: false,
+      isForGroup: true,
     }
-
-
-
+  },
+  {
+    path:"/listtest",
+    component: ItemList,
+  }
 ]
