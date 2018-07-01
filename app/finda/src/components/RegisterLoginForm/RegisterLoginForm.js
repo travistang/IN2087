@@ -11,6 +11,7 @@ import {
   PageHeader,
   HelpBlock,
   Col,
+  Row,
   Button,
   Radio,
   Alert,
@@ -24,49 +25,19 @@ import FormElements from '../../utils/form'
 
 export const registerTitle = "Register a new account"
 export const loginTitle = "Login"
-const commonFields = [{
-  name: 'username',
-  helptext: 'Username is required',
-}]
+const commonFields = [
+  {name: 'username',helptext: 'Username is required'}]
 const registerFieldsConfig = [
-  {
-    name: "username",
-    type: "text",
-  },
-  {
-    name: "password",
-    type: 'password'
-  },
-  {
-    name: 'gender',
-    type: 'radio',
-    choices: ['M','F'],
-  },
-  {
-    name: 'dob',
-    displayName: 'Date of Birth',
-    type: "date"
-  },
-  {
-    name: 'descriptions',
-    type: "textarea"
-  }
+  {name: "username",type: "text"},
+  {name: "password",type: 'password'},
+  {name: 'gender',type: 'radio',choices: ['M','F']},
+  {name: 'dob',displayName: 'Date of Birth',type: "date"},
+  {name: 'descriptions',type: "textarea"}
 ]
 const loginFieldsConfig = [
-  {
-    name: "username",
-    type: "text",
-
-  },
-  {
-    name: "password",
-    type: 'password',
-  },
-  {
-    name: 'remember',
-    type: 'checkbox',
-    text: 'Remember me',
-  }
+  {name: "username",type: "text"},
+  {name: "password",type: 'password'},
+  {name: 'remember',type: 'checkbox',text: 'Remember me'}
 ]
 const registerFields = registerFieldsConfig.map(field => field.name)
 const loginFields = loginFieldsConfig.map(field => field.name)
@@ -115,6 +86,7 @@ export default class RegisterLoginForm extends React.Component {
       }
       payload[field] = this.state[field]
     }
+    payload["isPremium"] = false
     // register / login
     let authProvider = Auth.getInstance()
     
@@ -165,94 +137,6 @@ export default class RegisterLoginForm extends React.Component {
     return null
   }
 
-  // textElement(input) {
-  //   return (
-  //     <FormGroup
-  //       controlId={input.name}
-  //       validationState={this.getValidationState(input.name)}>
-  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
-  //         {input.name}
-  //       </Col>
-  //       <Col sm={10}>
-  //         <FormControl
-  //           type={input.type}
-  //           value={this.state[input.name]}
-  //           onChange={e => this.updateValue(e,input.name)}
-  //           placehodler={input.name} />
-  //       </Col>
-  //     </FormGroup>)
-  // }
-  // checkboxElement(input) {
-  //   return (
-  //     <FormGroup>
-  //       <Col smOffset={2} sm={10}>
-  //         <Checkbox
-  //           value={this.state[input.name]}
-  //           onChange={e => this.updateValue(e,input.name)}
-  //         >
-  //           {input.text}
-  //         </Checkbox>
-  //       </Col>
-  //     </FormGroup>
-  //   )
-  // }
-  // radioElement(input) {
-  //   return (
-  //     <FormGroup>
-  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
-  //         {input.name}
-  //       </Col>
-  //       <Col sm={10}>
-  //         {
-  //           input.choices.map(choice => (
-  //             <Radio
-  //               name={input.name}
-  //               value={choice}
-  //               onClick={e => this.updateValue(e,input.name)}
-  //               inline>
-  //             {choice}
-  //             </Radio>
-  //           ))
-  //         }
-  //       </Col>
-  //
-  //     </FormGroup>
-  //   )
-  // }
-  // dateElement(input) {
-  //   return (
-  //     <FormGroup>
-  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
-  //         {input.displayName?input.displayName:input.name}
-  //       </Col>
-  //       <Col sm={10}>
-  //       <DatePicker
-  //         className="CalendarBox"
-  //         maxDate={new Date()}
-  //         onChange={date => this.updateValue({target:{value:date}},input.name)}
-  //         value={this.state[input.name]}
-  //       />
-  //       </Col>
-  //     </FormGroup>
-  //   )
-  // }
-  // textareaElement(input) {
-  //   return (
-  //     <FormGroup>
-  //       <Col className="FormName" componentClass={ControlLabel} sm={2}>
-  //         {input.displayName?input.displayName:input.name}
-  //       </Col>
-  //       <Col sm={10}>
-  //         <FormControl
-  //           componentClass="textarea"
-  //           placeholder="Write something about yourself..."
-  //           value={this.state[input.name]}
-  //           onChange={text => this.updateValue(text,input.name)}>
-  //         </FormControl>
-  //       </Col>
-  //     </FormGroup>
-  //   )
-  // }
   getFormElement(input) {
     if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'radio') return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
@@ -314,6 +198,15 @@ export default class RegisterLoginForm extends React.Component {
   redirectToMe() {
     this.setState(Object.assign({},this.state,{shouldRedirectToMePage: true}))
   }
+  addPageHeader(){
+    return(
+      <Row>
+        <PageHeader>
+          {this.props.isRegister?"Register a new account":"Login"}
+        </PageHeader>
+      </Row> 
+    )
+  }
   render() {
     // you dont need another registration / login when you have logged in
     if (Auth.getInstance().isLoggedIn()) {
@@ -329,9 +222,7 @@ export default class RegisterLoginForm extends React.Component {
     }
     return (
       <div>
-        <PageHeader>
-          {this.props.isRegister?registerTitle:loginTitle}
-        </PageHeader>
+        {this.addPageHeader()}
         {(this.state.formSubmitMessage)?(this.formSubmitMessageElement.bind(this)()):null}
         <Card className="FormContainer" bsSize="large">
           <Form horizontal>

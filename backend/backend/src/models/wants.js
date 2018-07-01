@@ -12,6 +12,8 @@ const WantSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: String,
+  images: [String],
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
