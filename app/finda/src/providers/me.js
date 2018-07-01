@@ -63,4 +63,19 @@ export default class Me {
       return response
     }
   }
+
+  async toPremium() {
+    if(!this.auth.isLoggedIn()) {
+      return null
+    }
+    if(!this.user) {
+      return null
+    }
+    if(this.user.isPremium) {
+      return null
+    }
+    let response = await this.auth.authenticatedPost('/me/toPremium')
+    let isPremium = await response.json()
+    return isPremium
+  }
 }
