@@ -85,6 +85,12 @@ export default class ItemListPage extends React.Component {
         return this.props.user.groups
     }
   }
+
+
+
+
+
+
   getNrUserWants() {
     return this.userWants().length
   }
@@ -97,6 +103,9 @@ export default class ItemListPage extends React.Component {
   getItemList() {
     return this.props.isForGroup?this.getUserGroups():(this.props.isForWant?this.getUserWants():this.getUserOffers())
   }
+
+
+
 
   getInputFieldValue(inputField) {
     return this.state[inputField]
@@ -353,10 +362,10 @@ export default class ItemListPage extends React.Component {
     )
   }
   addItemElement(item) {
-    console.log("Items")
-    console.log(item.groupname)
+    console.log("addElemetnItems:")
+    console.log(item)
     let optionalElements = null
-    if(!this.props.isForWant){
+    if(!this.props.isForGroup && !this.props.isForWant){
       optionalElements = (
         <div>
           Price: {item.price}
