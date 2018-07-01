@@ -9,8 +9,6 @@ const config = require('../../config')
 
 // aux functions for controlling memberships
 const isUserInGroup = async (groupname,userId,res) => {
-  console.log('userId')
-  console.log(userId)
   let count = await GroupModel.count({
     groupname,
     members: userId
