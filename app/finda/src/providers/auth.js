@@ -1,5 +1,7 @@
 import {apiURL} from "../config"
 import Http from './http'
+import axios from 'axios';
+
 export default class AuthProvider {
   static singleton = null
   static getInstance() {
@@ -45,6 +47,20 @@ export default class AuthProvider {
 
   async authenticatedPost(url,data = {}) {
     let response = await Http.post(`${apiURL}${url}`,data,{"x-access-token": this.getToken()})
+    return response
+  }
+
+  async imageUploadPost(url,data = {}) {
+    const formData = new FormData();
+    formData.append('image',data)
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    let response = await axios.post(apiURL + url, formData,config)
+    response = JSON.stringify(response.data.path)
+    console.log(response)
     return response
   }
 

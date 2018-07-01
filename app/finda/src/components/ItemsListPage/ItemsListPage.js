@@ -27,7 +27,9 @@ export default class ItemListPage extends React.Component {
     super(props)
     // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
     this.state = {
-      hasChanged: this.getQuestions().map(field => ({[field]:false}))
+      hasChanged: this.getQuestions().map(field => ({[field]:false})),
+      filePath: null,
+      errorMsg: null
     }
   }
 
@@ -85,6 +87,10 @@ export default class ItemListPage extends React.Component {
       }
       output[inputFieldName] = field
     }
+
+    if(!this.props.isForWant) {
+      output['images'] = this.state.filePath
+    }
     return output
   }
 
@@ -114,7 +120,7 @@ export default class ItemListPage extends React.Component {
       {name: "name",type: "text",},
       {name: "descriptions",type: "textarea"},
       {name: "category",type: "radio",choices: ["Things","People","Groups","Courses"]},
-      {name: "images",type: "file"}
+
     ]
   }
   offerQuestions() {
@@ -123,7 +129,6 @@ export default class ItemListPage extends React.Component {
       {name: "descriptions",type: "textarea",},
       {name: "category",type: "radio",choices: ["Things","People","Groups","Courses"]},
       {name: "price",type: "text"},
-      {name: "images",type: "file"},
       {name: "amount",type: "text"},
       {name: "isInfinite",choices: ["true", "false"],type: "radio"}
     ]
@@ -177,7 +182,7 @@ export default class ItemListPage extends React.Component {
     }
     return providerAnswer
   }
-  
+
 
   async submitAddForm(e) {
     e.preventDefault()
@@ -221,6 +226,66 @@ export default class ItemListPage extends React.Component {
     }
   }
 
+  async validateForm(e) {
+    e.preventDefault()
+    this.setState({errorMsg : ""})
+    let questions = this.getQuestions()
+    let questionNames = questions.map(q => q.name)
+
+    let errorMessage = ""
+
+    for (let inputField in questionNames) {
+      let inputFieldName = questionNames[inputField]
+      console.log('inputField: ' + inputField + ':' + questionNames[inputField] + ":" + this.getInputFieldValue(inputFieldName))
+      if(this.getInputFieldValue(inputFieldName) == undefined) {
+        if(this.state.errorMsg == "") {
+          this.setState({errorMsg : "Please fill out the following fields: "})
+        }
+        errorMessage += " " + questionNames[inputField] + " "
+      } else {
+        console.log('something here...')
+      }
+    }
+
+    if(errorMessage == "") {
+      this.submitAddForm(e)
+    } else {
+      console.log('testttting' + errorMessage)
+      this.setState({errorMsg : "Please fill out the following fields: " + errorMessage})
+      //this.state.errorMsg = errorMessage
+    }
+  }
+
+  showFileForm() {
+    return (
+      <Form>
+        <input type="file" onChange={(evt) => this.readFile(evt)} />
+      </Form>
+    )
+  }
+
+  showNothing() {
+    return (
+      <div>
+      </div>
+    )
+  }
+
+  async readFile(fileInput) {
+    let file = fileInput.target.files[0];
+    console.log(file);
+    //console.log(fileInput.target.value);
+    //const file = fileInput.target.value;
+    //const file = fileInput.files[0];
+    let meProvider = Me.getInstance()
+    let result = null
+    result = await meProvider.uploadImage(file)
+    result = result.replace('"', '')
+    result = result.replace('"', '')
+    this.state.filePath = 'http://localhost:3000/' + result
+    console.log('Received file path...   ' + 'http://localhost:3000/' + result.replace('"', ''))
+  }
+
 
   getMeTitleString(){
     let titleString = this.props.isForWant?"Your wants":"Your offers"
@@ -238,7 +303,7 @@ export default class ItemListPage extends React.Component {
         <PageHeader>
           {this.props.isMe?this.getMeTitleString():this.getUserTitleString()}
         </PageHeader>
-      </Row> 
+      </Row>
     )
   }
   addItemForm() {
@@ -248,14 +313,15 @@ export default class ItemListPage extends React.Component {
     return (
       <Row>
         <Card>
-          <h4> 
-          {this.props.isMe?this.getMeTitleString():this.getUserTitleString()} 
+          <h4>
+          {this.props.isMe?this.getMeTitleString():this.getUserTitleString()}
           </h4>
           <Form horizontal>
             {this.getQuestions().map(this.getFormElement.bind(this))}
+            {!this.props.isForWant?this.showFileForm():this.showNothing()}
             <FormGroup>
               <Col smOffset={2} sm={10}>
-                <Button bsStyle="primary" type="submit" onClick={this.submitAddForm.bind(this)}>Add Item</Button>
+                <Button bsStyle="primary" type="submit" onClick={this.validateForm.bind(this)}>Add Item</Button>
               </Col>
             </FormGroup>
           </Form>
@@ -309,9 +375,11 @@ export default class ItemListPage extends React.Component {
     items = this.getItemList()
     return (
       <div id="formDiv">
+        <p id='paraID'>{this.state.errorMsg}</p>
         {this.addPageHeader()}
         {this.addItemForm()}
         {items.length > 0?(items.map(this.addItemElement.bind(this))):this.addNoItemElement()}
+
       </div>
     )
   }
