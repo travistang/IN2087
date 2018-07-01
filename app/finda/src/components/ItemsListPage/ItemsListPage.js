@@ -131,7 +131,6 @@ export default class ItemListPage extends React.Component {
       {name: "descriptions",type: "textarea",},
       {name: "price",type: "text"},
       {name: "wants",type: "select",options: options},
-      {name: "images",type: "file",onChange: "readFile(this);"},
       {name: "amount",type: "text"},
       {name: "isInfinite",choices: ["true", "false"],type: "radio"}
     ]
@@ -185,7 +184,7 @@ export default class ItemListPage extends React.Component {
     }
     return providerAnswer
   }
-  
+
 
   async submitAddForm(e) {
     e.preventDefault()
@@ -293,7 +292,7 @@ export default class ItemListPage extends React.Component {
         <PageHeader>
           {this.props.isMe?this.getMeTitleString():this.getUserTitleString()}
         </PageHeader>
-      </Row> 
+      </Row>
     )
   }
   addItemForm() {
@@ -303,8 +302,8 @@ export default class ItemListPage extends React.Component {
     return (
       <Row>
         <Card>
-          <h4> 
-          {this.props.isMe?this.getMeTitleString():this.getUserTitleString()} 
+          <h4>
+          {this.props.isMe?this.getMeTitleString():this.getUserTitleString()}
           </h4>
           <Form horizontal>
             {this.getQuestions().map(this.getFormElement.bind(this))}
