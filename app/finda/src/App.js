@@ -138,7 +138,6 @@ class App extends React.Component {
        }).catch((e) => {
            console.error(e);
        });
-
    };
 
 
@@ -252,12 +251,17 @@ class App extends React.Component {
                     <Route
                       path="/me/wants"
                       exact={true}
-                      render={() => <ItemsListPage isMe={true} isForWant={true} user={this.state.user} />}
+                      render={() => <ItemsListPage isMe={true} isForWant={true} isForGroup={false} user={this.state.user} />}
                     />
                     <Route
                       path="/me/offers"
                       exact={true}
-                      render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
+                      render={() => <ItemsListPage isMe={true} isForWant={false} isForGroup={false} user={this.state.user} />}
+                    />
+                    <Route
+                      path="/me/groups"
+                      exact={true}
+                      render={() => <ItemsListPage isMe={true} isForWant={false} isForGroup={true} user={this.state.user} />}
                     />
                     <Route
       path="/home"
@@ -280,8 +284,5 @@ class App extends React.Component {
     );
   }
 }
-
-
-
 
 export default App;

@@ -41,6 +41,24 @@ export default class ItemListPage extends React.Component {
     if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
     return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
   }
+  getFormElement(input) {
+    if(input.type == 'checkbox') {
+      return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
+    }
+    if(input.type == 'radio') {
+      return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
+    }
+    if(input.type == 'select') {
+      return FormElements.selectElement(input,this.state,this.updateValue.bind(this))
+    }
+    if(input.type == 'date') {
+      return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
+    }
+    if(input.type == 'textarea') {
+      return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
+    }
+    return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
+  }
 
   getUserWants() {
     if(!this.props.user.wants){
@@ -59,15 +77,35 @@ export default class ItemListPage extends React.Component {
         return this.props.user.offers
     }
   }
+  getUserGroups() {
+    if(!this.props.user.groups){
+      return [];
+    }
+    else{
+        return this.props.user.groups
+    }
+  }
+
+
+
+
+
+
   getNrUserWants() {
     return this.userWants().length
   }
   getNrUserOffers() {
     return this.userOffers().length
   }
-  getItemList() {
-    return this.props.isForWant?this.getUserWants():this.getUserOffers()
+  getNrUserGroups() {
+    return this.userGroups().length
   }
+  getItemList() {
+    return this.props.isForGroup?this.getUserGroups():(this.props.isForWant?this.getUserWants():this.getUserOffers())
+  }
+
+
+
 
   getInputFieldValue(inputField) {
     return this.state[inputField]
@@ -88,31 +126,11 @@ export default class ItemListPage extends React.Component {
       output[inputFieldName] = field
     }
 
-    if(!this.props.isForWant) {
+    //REMEMBER AIDAN
+    if(!this.props.isForGroup && !this.props.isForWant) {
       output['images'] = this.state.filePath
     }
     return output
-  }
-
-
-
-  getFormElement(input) {
-    if(input.type == 'checkbox') {
-      return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
-    }
-    if(input.type == 'radio') {
-      return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
-    }
-    if(input.type == 'select') {
-      return FormElements.selectElement(input,this.state,this.updateValue.bind(this))
-    }
-    if(input.type == 'date') {
-      return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
-    }
-    if(input.type == 'textarea') {
-      return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
-    }
-    return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
   }
 
   wantQuestions() {
@@ -133,8 +151,14 @@ export default class ItemListPage extends React.Component {
       {name: "isInfinite",choices: ["true", "false"],type: "radio"}
     ]
   }
+  groupQuestions() {
+    return [
+      {name: "groupname",type: "text",},
+      {name: "descriptions",type: "textarea",}
+    ]
+  }
   getQuestions() {
-    let questions = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+    let questions = this.props.isForGroup?this.groupQuestions():(this.props.isForWant?this.wantQuestions():this.offerQuestions())
     return questions
   }
 
@@ -162,15 +186,21 @@ export default class ItemListPage extends React.Component {
   async addWantsOffers(payload) {
     let meProvider = Me.getInstance()
     let providerAnswer = null
-    if(this.props.isForWant) {
-      providerAnswer = await meProvider.addWants(payload)
+    if(this.props.isForGroup) {
+      providerAnswer = await meProvider.addGroups(payload)
     }
     else {
-      providerAnswer = await meProvider.addOffers(payload)
+      if(this.props.isForWant) {
+        providerAnswer = await meProvider.addWants(payload)
+      }
+      else {
+        providerAnswer = await meProvider.addOffers(payload)
+      }
     }
     return providerAnswer
 
   }
+  // REMEMBER MARKUS
   async deleteWantsOffers(payload) {
     let meProvider = Me.getInstance()
     let providerAnswer = null
@@ -196,18 +226,25 @@ export default class ItemListPage extends React.Component {
     let result = null
     result = await this.addWantsOffers(payload)
 
-
-    console.log('Add Item')
-    console.log('Name: ' + payload.name)
-    console.log('Description: ' + payload.descriptions)
-    console.log('Category: ' + payload.category)
-    console.log('Image: ' + payload.images)
-    if(!this.props.isForWant) {
-      console.log('Price: ' + payload.price)
-      console.log('Amount: ' + payload.amount)
-      console.log('Is Infinite: ' + payload.isInfinite)
+    if (this.props.isForGroup){
+      console.log('Add Item')
+      console.log('Name: ' + payload.groupname)
+      console.log('Description: ' + payload.descriptions)
+    }
+    else {
+      console.log('Add Item')
+      console.log('Name: ' + payload.name)
+      console.log('Description: ' + payload.descriptions)
+      console.log('Category: ' + payload.category)
+      console.log('Image: ' + payload.images)
+      if(!this.props.isForWant) {
+        console.log('Price: ' + payload.price)
+        console.log('Amount: ' + payload.amount)
+        console.log('Is Infinite: ' + payload.isInfinite)
+      }
     }
   }
+  // REMEMBER MARKUS
   async submitDeleteForm(e,item) {
     e.preventDefault()
 
@@ -250,9 +287,7 @@ export default class ItemListPage extends React.Component {
     if(errorMessage == "") {
       this.submitAddForm(e)
     } else {
-      console.log('testttting' + errorMessage)
       this.setState({errorMsg : "Please fill out the following fields: " + errorMessage})
-      //this.state.errorMsg = errorMessage
     }
   }
 
@@ -286,16 +321,14 @@ export default class ItemListPage extends React.Component {
     console.log('Received file path...   ' + 'http://localhost:3000/' + result.replace('"', ''))
   }
 
-
   getMeTitleString(){
-    let titleString = this.props.isForWant?"Your wants":"Your offers"
+    let titleString = this.props.isForGroup?"Your groups":(this.props.isForWant?"Your wants":"Your offers")
     return titleString
   }
   getUserTitleString(){
-    let titleString = this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
+    let titleString = this.props.isForGroup?`${this.props.user.username}'s groups`:(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)
     return titleString
   }
-
 
   addPageHeader(){
     return(
@@ -318,7 +351,7 @@ export default class ItemListPage extends React.Component {
           </h4>
           <Form horizontal>
             {this.getQuestions().map(this.getFormElement.bind(this))}
-            {!this.props.isForWant?this.showFileForm():this.showNothing()}
+            {(!this.props.isForWant && !this.props.isForGroup)?this.showFileForm():this.showNothing()}
             <FormGroup>
               <Col smOffset={2} sm={10}>
                 <Button bsStyle="primary" type="submit" onClick={this.validateForm.bind(this)}>Add Item</Button>
@@ -330,8 +363,10 @@ export default class ItemListPage extends React.Component {
     )
   }
   addItemElement(item) {
+    console.log("addElemetnItems:")
+    console.log(item)
     let optionalElements = null
-    if(!this.props.isForWant){
+    if(!this.props.isForGroup && !this.props.isForWant){
       optionalElements = (
         <div>
           Price: {item.price}
@@ -344,7 +379,7 @@ export default class ItemListPage extends React.Component {
     return (
       <Row>
         <Card>
-          Name: {item.name}
+          Name: {this.isForGroup?item.groupname:item.name}
           <br />
           Description: {item.descriptions}
           <br />
@@ -358,7 +393,7 @@ export default class ItemListPage extends React.Component {
   }
   addNoItemElement() {
     let username = this.props.isMe?'You have':`${this.props.username} has`
-    let wantOrOffer = this.props.isForWant?'wants':'offers'
+    let wantOrOffer = this.props.isForGroup?'groups':(this.props.isForWant?'wants':'offers')
     let title = `${username} no ${wantOrOffer}`
     return <BackgroundNotice title={title} />
   }
