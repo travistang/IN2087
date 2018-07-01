@@ -193,7 +193,6 @@ class App extends React.Component {
               ref={ref => Toaster.getInstance().setRef(ref)}
               className="toast-top-right"
             />
-
             <NavBar
               user={this.state.user}
               logout={this.logout}
@@ -202,13 +201,9 @@ class App extends React.Component {
               isOffers={this.state.isOffers}
               setIsOffers={this.setIsOffers}
             />
-
-
-
             <Grid className="Section">
               <Row>
                   <Ads/>
-
                 <Col md={6} lg={6}>
                   <Row style={{height:"100vh",marginBottom:8}}>
                     <Route
@@ -229,28 +224,27 @@ class App extends React.Component {
                     <Route
                       path="/me/wants"
                       exact={true}
-                      render={() => <ItemsListPage isMe={true} isForWant={true} user={this.state.user} />}
+                      render={() => <ItemsListPage isMe={true} isForWant={true} isForGroup={false} user={this.state.user} />}
                     />
                     <Route
                       path="/me/offers"
                       exact={true}
-                      render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
+                      render={() => <ItemsListPage isMe={true} isForWant={false} isForGroup={false} user={this.state.user} />}
                     />
-
-                        <Route
-                            path="/"
-                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
-                            />
-
-
-
+                    <Route
+                      path="/me/groups"
+                      exact={true}
+                      render={() => <ItemsListPage isMe={true} isForWant={false} isForGroup={true} user={this.state.user} />}
+                    />
+                    <Route
+                      path="/"
+                      render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
+                    />
                   </Row>
                 </Col>
-
                   <Ads/>
               </Row>
             </Grid>
-
         </div>
       </BrowserRouter>
     );

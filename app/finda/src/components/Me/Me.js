@@ -92,8 +92,6 @@ export default class Me extends React.Component {
                   <ItemCard want={want} />
               ))}
               </div>
-
-
             }}}
           </Col>
         </Row>
@@ -113,7 +111,6 @@ export default class Me extends React.Component {
       <div>
         <Row>
           <Col>
-
         {()=>{ if(!this.props.user.offers) {
           ""
       }
@@ -125,7 +122,7 @@ export default class Me extends React.Component {
               </div>):(
                 <BackgroundNotice title={`This user has no offers`} />
               )
-            } }}
+            }}}
           </Col>
         </Row>
         <Row>
@@ -140,7 +137,31 @@ export default class Me extends React.Component {
   }
   groupsSection() {
     return (
-      <BackgroundNotice title="You have no groups" />
+      <div>
+        <Row>
+          <Col>
+        {()=>{ if(!this.props.user.groups) {
+          ""
+      }
+      else
+            {(this.userGroups().length > 0)?(<div className="ItemContainer">
+                {this.userGroups().map(want => (
+                    <ItemCard want={want} />
+                ))}
+              </div>):(
+                <BackgroundNotice title={`This user has no groups`} />
+              )
+            } }}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <div>
+              {this.props.isMe?<Button block bsSize="large" bsStyle="primary" href="/me/groups"> To my groups</Button>:null}
+            </div>
+          </Col>
+        </Row>
+      </div>
     )
   }
   addUserInformation() {
