@@ -119,7 +119,6 @@ export default class ItemListPage extends React.Component {
       {name: "name",type: "text",},
       {name: "descriptions",type: "textarea"},
       {name: "category",type: "radio",choices: ["Things","People","Groups","Courses-Slots"]},
-      {name: "images",type: "file"}
     ]
   }
   offerQuestions() {
