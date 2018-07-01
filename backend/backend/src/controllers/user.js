@@ -13,8 +13,13 @@ const offers = (req,res) => {
   let username = req.params.username
   userUtils.getUserOffers({username},res)
 }
+const deleteUser =(req,res)=>{
+  let _id =req.params._id
+  userUtils.deleteUser({_id},res)
+}
 module.exports = {
   info,
   wants,
   offers,
+  deleteUser,
 }

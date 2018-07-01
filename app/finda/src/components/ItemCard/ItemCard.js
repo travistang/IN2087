@@ -15,12 +15,12 @@ export default function(props) {
       <Grid className="ItemCardContent" fluid>
         <Row>
           <Col className="ItemCardCol">
-            <Image className="ItemThumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
+            <Image className="ItemThumbnail" src={this.props.want.images} circle />
           </Col>
         </Row>
         <Row className="ItemRowTitle">
           <Col sm={12} className="ItemTitle ItemCardCol">
-            <h4> {props.want.title} </h4>
+            <h4> {props.want.name} </h4>
           </Col>
         </Row>
         <Row>

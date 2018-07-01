@@ -11,13 +11,18 @@ const OfferSchema = new mongoose.Schema({
   },
   // exchange item
   price: String,
-  wants: [{type: mongoose.Schema.Types.ObjectId,ref: 'Wants'}],
+  category: String,
   images: [String],
   amount: {
     type: Number,
     required: true
   },
-  isInfinite: Boolean
+  isInfinite: Boolean,
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }
 })
 
 module.exports = mongoose.model('Offer',OfferSchema)

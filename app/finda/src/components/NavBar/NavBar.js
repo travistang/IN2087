@@ -116,11 +116,6 @@ return(
                   isOffers:true
 
               },this.props.setIsOffers(this.state.isOffers));
-
-              console.log("!isOffers");
-
-
-
           }
           else {
 
@@ -129,12 +124,25 @@ return(
                 firstDropDownSelected:"Offers",
                 firstDropDownSecond:"Wants",
                 isOffers:false
-                },this.props.setIsOffers(this.state.isOffers))
-
-              console.log("isOffers/else");
-
+                },this.props.setIsOffers(this.state.isOffers));
           }
       }
+      if(evt==21){
+          this.props.setCategory("");
+      }
+      if(evt==22){
+          this.props.setCategory("Things");
+      }
+      if(evt==23){
+          this.props.setCategory("Courses");
+      }
+      if(evt==24){
+          this.props.setCategory("People");
+      }
+      if(evt==25){
+          this.props.setCategory("Groups");
+      }
+
 
 
   }
@@ -158,14 +166,15 @@ return(
             {this.firstDropD()}
 
 
-                <NavDropdown id="secondDropDownTitle" title="Categories">
-                    <MenuItem id="secondDropDownItem1" href="/categories/Things">Things</MenuItem>
-                    <MenuItem id="secondDropDownItem2" href="/categories/Groups">Groups</MenuItem>
-                    <MenuItem id="secondDropDownItem2" href="/categories/CourseSlots">Course Slots</MenuItem>
-                    <MenuItem id="secondDropDownItem2" href="/categories/Jobs">Jobs</MenuItem>
-                    <MenuItem id="secondDropDownItem2" href="/categories/People">People</MenuItem>
+                <NavDropdown id="Category" title={`In Category: ${this.props.category}`}>
+                    <MenuItem id="All" eventKey={21}>All</MenuItem>
+                    <MenuItem id="Things" eventKey={22}>Things</MenuItem>
+                    <MenuItem id="CourseSlots" eventKey={23}>Courses</MenuItem>
+                    <MenuItem id="People" eventKey={24}>People</MenuItem>
+                    <MenuItem id="Groups" eventKey={25}>Groups</MenuItem>
+
                 </NavDropdown>
-            <NavItem eventKey={3}> Categories</NavItem>
+
           </Nav>
           <Nav className="NavRight" pullRight>
             {this.barRightItems()}

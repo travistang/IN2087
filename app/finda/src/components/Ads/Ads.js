@@ -1,12 +1,23 @@
+"use strict";
 import React, { Component } from 'react';
 import {Col} from 'react-bootstrap'
 
-export default function(props) {
+export default class Ads extends React.Component {
+
+    constructor(props){
+        super(props);
+
+    }
+    render(){
+        console.log("render:");
+        console.log(this.props.aImage);
   return (
     <Col xsHidden smHidden md={3} lg={3}>
-      <div style={{height:"100vh",background: "gray"}}>
-      </div>
+
+    <img style={{height:"100vh"}} src={this.props.aImage}/>
+
     </Col>
 
   )
-}
+
+}}

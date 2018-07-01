@@ -27,6 +27,16 @@ const getUserInfo = (query,res) => {
           }))
 }
 
+const deleteUser=(query,res)=>{
+    UserModel.findByIdAndRemove(req.params._id).exec()
+        .then(() => res.status(200).json({message: `User with id${req.params.id} was deleted`}))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+
+}
+
 const getUserWants = (query,res) => {
   UserModel.findOne(query)
     .populate('wants')
@@ -158,7 +168,7 @@ const addOffers = async (userId,offers,res) => {
 
 const toPremium = async (userId,res) => {
   try {
-    let result = await UserModel.update({_id: userId},{toPremium: true}).exec()
+    let result = await UserModel.update({_id: userId},{isPremium: true}).exec()
     res.status(200).json(result)
   } catch(e) {
     res.status(500).json({
@@ -175,4 +185,5 @@ module.exports = {
   addOffers,
 
   toPremium,
+  deleteUser,
 }

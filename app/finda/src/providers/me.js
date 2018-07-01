@@ -24,6 +24,18 @@ export default class Me {
     return user
   }
 
+  async uploadImage(image) {
+    console.log('image is here: ' + image.name)
+    if(!this.user) {
+      return null
+    }
+    else {
+      let response = await this.auth.imageUploadPost('/me/upload', image)
+      console.log('only response...' + response)
+      return response
+    }
+  }
+
   async addWants(want) {
     if(!this.user) {
       return null
@@ -62,5 +74,32 @@ export default class Me {
       let response = await this.auth.authenticatedDelete('/me/offers',offer)
       return response
     }
+  }
+
+  async addGroups(group) {
+    if(!this.user) {
+      return null
+    }
+    else {
+      console.log("Group")
+      console.log(group)
+      let response = await this.auth.authenticatedPost('/group',group)
+      return response
+    }
+  }
+
+  async toPremium() {
+    if(!this.auth.isLoggedIn()) {
+      return null
+    }
+    if(!this.user) {
+      return null
+    }
+    if(this.user.isPremium) {
+      return null
+    }
+    let response = await this.auth.authenticatedPost('/me/toPremium')
+    let isPremium = await response.json()
+    return isPremium
   }
 }

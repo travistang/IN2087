@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 //mongoose.connect('localhost:1234/app/name/finda');
 
 const WantSchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true
   },
@@ -12,6 +12,8 @@ const WantSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: String,
+  images: [String],
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

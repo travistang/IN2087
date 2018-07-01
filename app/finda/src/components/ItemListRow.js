@@ -3,7 +3,6 @@
 import React from 'react';
 import { TableRow, TableColumn, FontIcon, Button } from 'react-md';
 import { Link } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Table from 'react-bootstrap';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {apiURL} from "../config"
@@ -19,13 +18,19 @@ export  default class ItemListRow extends React.Component {
 
 
     render() {
+        let rowStyle={
+            height:'75px',
+            overflowY:'auto',
+        };
 
         return (
             <tr key={this.props.key}>
-                <td>{this.props.want.image}</td>
-                <td colspan="2">
-                    <tr> {this.props.want.title}</tr>
+                <td> <img src={this.props.want.images}/></td>
+                <td >
+                    <tr> {this.props.want.name}</tr>
+                    <div style={rowStyle}>
                     <tr> {this.props.want.descriptions}</tr>
+                    </div>
                 </td>
             </tr>
 

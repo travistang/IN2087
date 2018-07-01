@@ -37,6 +37,7 @@ class App extends React.Component {
         offers:[],
         query:'',
         isOffers:true,
+        category:'',
     };
 
       this.getWants();
@@ -44,6 +45,7 @@ class App extends React.Component {
 
     this.setQuery=this.setQuery.bind(this);
     this.setIsOffers=this.setIsOffers.bind(this);
+    this.setCategory=this.setCategory.bind(this);
 
 
     this.routeParams = {
@@ -91,6 +93,25 @@ class App extends React.Component {
   }
 
 
+    setCategory(c){
+
+        if(this.state.isOffers)
+        {
+            this.setState({
+                category:c,
+
+            },this.getOffers);
+        }else {
+            this.setState({
+                category:c,
+
+            },this.getWants);
+        }
+
+
+    }
+
+
   setIsOffers(o){
     this.setState({
     isOffers:o,
@@ -136,9 +157,8 @@ class App extends React.Component {
 
     getWantsP() {
 
-      // console.log(`${apiURL}/wats/?search=${this.state.query}`);
        return new Promise((res,rej)=>{
-          Http.get2(`${apiURL}/wants/?search=${this.state.query}`,function(data){
+          Http.get2(`${apiURL}/wants/?search=${this.state.query}&category=${this.state.category}`,function(data){
               res(data);
           })
 
@@ -152,7 +172,7 @@ class App extends React.Component {
 
         // console.log(`${apiURL}/wats/?search=${this.state.query}`);
         return new Promise((res,rej)=>{
-            Http.get2(`${apiURL}/offers/?search=${this.state.query}`,function(data){
+            Http.get2(`${apiURL}/offers/?search=${this.state.query}&category=${this.state.category}`,function(data){
                 res(data);
             })
 
@@ -201,13 +221,15 @@ class App extends React.Component {
               setQuery = {this.setQuery}
               isOffers={this.state.isOffers}
               setIsOffers={this.setIsOffers}
+              setCategory={this.setCategory}
+              category={this.state.category}
             />
 
 
 
             <Grid className="Section">
               <Row>
-                  <Ads/>
+                  <Ads aImage="http://localhost:3000/uploads/2018-07-01T20:22:14.344Zads1.jpg"></Ads>
 
                 <Col md={6} lg={6}>
                   <Row style={{height:"100vh",marginBottom:8}}>
@@ -229,28 +251,34 @@ class App extends React.Component {
                     <Route
                       path="/me/wants"
                       exact={true}
-                      render={() => <ItemsListPage isMe={true} isForWant={true} user={this.state.user} />}
+                      render={() => <ItemsListPage isMe={true} isForWant={true} isForGroup={false} user={this.state.user} />}
                     />
                     <Route
                       path="/me/offers"
                       exact={true}
-                      render={() => <ItemsListPage isMe={true} isForWant={false} user={this.state.user} />}
+                      render={() => <ItemsListPage isMe={true} isForWant={false} isForGroup={false} user={this.state.user} />}
                     />
+                    <Route
+                      path="/me/groups"
+                      exact={true}
+                      render={() => <ItemsListPage isMe={true} isForWant={false} isForGroup={true} user={this.state.user} />}
+                    />
+                    <Route
+      path="/home"
+      render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="test" category={this.state.category}/>}
+      />
 
-                        <Route
-                            path="/"
-                            render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="testList:"/>}
-                            />
 
 
 
-                  </Row>
-                </Col>
 
-                  <Ads/>
-              </Row>
-            </Grid>
 
+      </Row>
+      </Col>
+
+      <Ads aImage="http://localhost:3000/uploads/2018-07-01T21:01:37.059Zads2.jpg"/>
+      </Row>
+      </Grid>
         </div>
       </BrowserRouter>
     );

@@ -12,40 +12,13 @@ export default class ItemList extends React.Component{
     }
 
 
-   /* items()
-    {
-        if(this.props.isOffers)
-        {
-            if(this.props.offers)
-            {
-                        return this.props.offers;
-            }
-            else
-            {
-            return [];
-            }
-        }
-        else
-        {
-            if(this.props.wants)
-                {
-                    console.log("ItemList.wants: "+this.props.wants);
-                    return this.props.wants;
-                }
-            else
-                {
-                    console.log("ItemList.offers: "+this.props.offers)
-                    return [];
-                }
-        }
-    }
-*/
+
 
 
 offers()
 {
     console.log("ItemList: ");
-    console.log(this.props.offers);
+    console.log(this.props.category);
     if(this.props.offers)
     {
       return(  this.props.offers.map(function(offer){
@@ -77,21 +50,52 @@ wants()
 
 }
 
+all(){
+    return(
+        <div>
+                <p>{"isOffers: " +this.props.isOffers}</p>
+
+                <Table hover condensed={false}>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th ></th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {this.props.isOffers?this.offers():this.wants()}
+
+
+                    </tbody>
+
+                </Table>
+                </div>
+
+    )
+}
+
+
 
 
 
     render() {
+    let style={
+                overflowY:'auto',
+    };
 
         return (
-        <div>
-        <p>{"isOffers: " +this.props.isOffers}</p>
+        <div >
+        <div style={style}>
 
         <Table hover condensed={false}>
             <thead>
                 <tr>
                     <th></th>
                     <th></th>
-                    <th ></th>
+
 
 
                 </tr>
@@ -103,6 +107,7 @@ wants()
             </tbody>
 
         </Table>
+        </div>
         </div>
 
 
