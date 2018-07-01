@@ -33,11 +33,31 @@ export default class ItemListPage extends React.Component {
     }
   }
 
+  getFormElement(input) {
+    if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'select') return FormElements.selectElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'radio') return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'date') return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
+    return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
+  }
+
   getUserWants() {
-    return this.props.user.wants
+    if(!this.props.user.wants){
+      return [];
+    }
+    else{
+        return this.props.user.wants
+    }
+
   }
   getUserOffers() {
-    return this.props.user.offers
+    if(!this.props.user.wants){
+      return [];
+    }
+    else{
+        return this.props.user.offers
+    }
   }
   getNrUserWants() {
     return this.userWants().length
@@ -65,7 +85,7 @@ export default class ItemListPage extends React.Component {
         this.setState(Object.assign({},this.state,{hasChanged: {[inputFields]: true}}))
         return // stop the form from submitting
       }
-      output[inputFieldName] = inputFieldName=="isInfinite"?(this.getFieldToBoolean(field)):(field)
+      output[inputFieldName] = field
     }
 
     if(!this.props.isForWant) {
@@ -83,6 +103,9 @@ export default class ItemListPage extends React.Component {
     if(input.type == 'radio') {
       return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
     }
+    if(input.type == 'select') {
+      return FormElements.selectElement(input,this.state,this.updateValue.bind(this))
+    }
     if(input.type == 'date') {
       return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
     }
@@ -94,55 +117,28 @@ export default class ItemListPage extends React.Component {
 
   wantQuestions() {
     return [
-      {
-        name: "name",
-        type: "text",
-      },
-      {
-        name: "descriptions",
-        type: "textarea"
-      },
-
+      {name: "name",type: "text",},
+      {name: "descriptions",type: "textarea"},
     ]
   }
   offerQuestions() {
+    let options = []
+    if(!!this.props.user) {
+      options = this.getUserWants().map(entry => entry.name)
+    }
     return [
-      {
-        name: "name",
-        type: "text",
-      },
-      {
-        name: "descriptions",
-        type: "textarea",
-      },
-      {
-        name: "price",
-        type: "text"
-      },
-      {
-        name: "wants",
-        type: "none"
-      },
-      /*
-      {
-        name: "images",
-        type: "file",
-        onChange: "readFile(this);"
-      },
-      */
-      {
-        name: "amount",
-        type: "text"
-      },
-      {
-        name: "isInfinite",
-        type: "radio",
-        choices: ['Yes','No']
-      },
+      {name: "name",type: "text",},
+      {name: "descriptions",type: "textarea",},
+      {name: "price",type: "text"},
+      {name: "wants",type: "select",options: options},
+      {name: "images",type: "file",onChange: "readFile(this);"},
+      {name: "amount",type: "text"},
+      {name: "isInfinite",choices: ["true", "false"],type: "radio"}
     ]
   }
   getQuestions() {
-    return this.props.isForWant?this.wantQuestions():this.offerQuestions()
+    let questions = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+    return questions
   }
 
   getValidationState(field) {
@@ -166,9 +162,33 @@ export default class ItemListPage extends React.Component {
   //const config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
 
 
-  async submitForm(e) {
-    e.preventDefault()
+  async addWantsOffers(payload) {
     let meProvider = Me.getInstance()
+    let providerAnswer = null
+    if(this.props.isForWant) {
+      providerAnswer = await meProvider.addWants(payload)
+    }
+    else {
+      providerAnswer = await meProvider.addOffers(payload)
+    }
+    return providerAnswer
+
+  }
+  async deleteWantsOffers(payload) {
+    let meProvider = Me.getInstance()
+    let providerAnswer = null
+    if(this.props.isForWant) {
+      providerAnswer = (await meProvider.deleteWants(payload))
+    }
+    else {
+      providerAnswer = (await meProvider.deleteOffers(payload))
+    }
+    return providerAnswer
+  }
+  
+
+  async submitAddForm(e) {
+    e.preventDefault()
 
     let questions = this.getQuestions()
     let questionNames = questions.map(q => q.name)
@@ -177,10 +197,23 @@ export default class ItemListPage extends React.Component {
     payload = this.getPayload(questionNames)
 
     let result = null
-    result = this.props.isForWant?(await meProvider.addWants(payload)):(await meProvider.addOffers(payload))
+    result = await this.addWantsOffers(payload)
 
+
+    console.log('Add Item')
     console.log('Name: ' + payload.name)
     console.log('Description: ' + payload.descriptions)
+  }
+  async submitDeleteForm(e,item) {
+    console.log(item)
+    e.preventDefault()
+
+    let result = null
+    result = await this.deleteWantsOffers(item)
+
+    console.log('Delete Item')
+    console.log('Name: ' + item.name)
+    console.log('Description: ' + item.descriptions)
   }
 
   async validateForm(e) {
@@ -244,21 +277,35 @@ export default class ItemListPage extends React.Component {
   }
 
 
-  getMeAddItemFormTitleString(){
-    return this.props.isForWant?"Your wants":"Your offers"
+  getMeTitleString(){
+    let titleString = this.props.isForWant?"Your wants":"Your offers"
+    return titleString
   }
-  getUserAddItemFormTitleString(){
-    return this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
+  getUserTitleString(){
+    let titleString = this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
+    return titleString
+  }
+
+
+  addPageHeader(){
+    return(
+      <Row>
+        <PageHeader>
+          {this.props.isMe?this.getMeTitleString():this.getUserTitleString()}
+        </PageHeader>
+      </Row> 
+    )
   }
   addItemForm() {
     if(!this.props.isMe) {
       return null
     }
-    let formTitle = this.props.isMe?this.getMeAddItemFormTitleString():this.getUserAddItemFormTitleString()
     return (
       <Row>
         <Card>
-          <h4> {formTitle} </h4>
+          <h4> 
+          {this.props.isMe?this.getMeTitleString():this.getUserTitleString()} 
+          </h4>
           <Form horizontal>
             {this.getQuestions().map(this.getFormElement.bind(this))}
             {!this.props.isForWant?this.showFileForm():this.showNothing()}
@@ -272,28 +319,40 @@ export default class ItemListPage extends React.Component {
       </Row>
     )
   }
-  itemElement(item) {
+  addItemElement(item) {
+    console.log(this)
+    let optionalElements = null
+    if(!this.props.isForWant){
+      optionalElements = (
+        <div>
+          Price: {item.price}
+          <br />
+          Amount: {item.amount}
+          <br />
+        </div>
+      )
+    }
     return (
       <Row>
         <Card>
-          {item.name}
+          Name: {item.name}
+          <br />
+          Description: {item.descriptions}
+          <br />
+          {optionalElements}
+          <Button bsStyle="primary" type="submit" onClick={e => this.submitDeleteForm.bind(this)(e,item)}>Delete Item</Button>
         </Card>
       </Row>
     )
   }
-  noItemElement() {
+  addNoItemElement() {
     let username = this.props.isMe?'You have':`${this.props.username} has`
     let wantOrOffer = this.props.isForWant?'wants':'offers'
     let title = `${username} no ${wantOrOffer}`
     return <BackgroundNotice title={title} />
   }
 
-  getMePageHeaderString(){
-    return this.props.isForWant?"Your wants":"Your offers"
-  }
-  getUserPageHeaderString(){
-    return this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`
-  }
+
   render() {
     if(!Auth.getInstance().isLoggedIn()) {
       return <Redirect to='/login' />
@@ -304,20 +363,11 @@ export default class ItemListPage extends React.Component {
     let items = []
     items = this.getItemList()
     return (
-      <div>
-
-        <Row>
-          <PageHeader>
-            {this.props.isMe?this.getMePageHeaderString():this.getUserPageHeaderString()}
-          </PageHeader>
-
-        </Row>
+      <div id="formDiv">
         <p id='paraID'>{this.state.errorMsg}</p>
+        {this.addPageHeader()}
         {this.addItemForm()}
-        {items.length > 0?
-          (items.map(this.itemElement)):
-          this.noItemElement()
-        }
+        {items.length > 0?(items.map(this.addItemElement.bind(this))):this.addNoItemElement()}
 
       </div>
     )

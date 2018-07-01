@@ -7,10 +7,12 @@ const cors 	 = require('cors')
 const middlewares = require('./middlewares');
 
 const auth  = require('./routes/auth');
-const me    = require('./routes/me')
-const user  = require('./routes/user')
-const group = require('./routes/group')
-const testRoute = require('./routes/test')
+const me    = require('./routes/me');
+const user  = require('./routes/user');
+const group=require('./routes/group');
+const want=require('./routes/want');
+const offer=require('./routes/offer');
+const testRoute = require('./routes/test');
 const api = express();
 
 // Adding Basic Middlewares
@@ -29,10 +31,12 @@ api.get('/', (req, res) => {
 });
 
 // API routes
-api.use('/auth'  , auth)
-api.use('/me'    , me)
-api.use('/user' , user)
-api.use('/group', group)
+api.use('/auth'  , auth);
+api.use('/me'    , me);
+api.use('/user' , user);
+api.use('/group',group);
+api.use('/wants',want);
+api.use('/offers',offer)
 
 api.use('/test', testRoute)
 

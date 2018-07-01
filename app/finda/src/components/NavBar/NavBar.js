@@ -7,7 +7,8 @@ import {
   NavDropdown,
   MenuItem,
   Image,
-  Button
+  Button,
+  DropdownButton,
 } from 'react-bootstrap'
 import {Redirect} from 'react-router'
 import Auth from '../../providers/auth'
@@ -15,8 +16,27 @@ import './NavBar.css'
 
 
 export default class NavBar extends React.Component {
+    state={
+
+        searchResults:[],
+        isOffers:this.props.isOffers,
+        firstDropDownSelected:"Offers",
+        firstDropDownSecond:"Wants",
+        secondDropDownSelected:"All"
+    }
+
   constructor(props) {
-    super(props)
+    super(props);
+    this.firstDropDown=this.firstDropDown(this);
+    //this.setState({isOffers:this.props.isOffers});
+
+  }
+
+  handleInputChange=()=>{
+        this.setState({
+            query:this.search.value
+        },this.props.setQuery(this.search.value))
+
   }
   barRightItems() {
     if(Auth.getInstance().isLoggedIn()) {
@@ -36,12 +56,39 @@ export default class NavBar extends React.Component {
       )
     }
   }
-  getWantsItem() {
+
+
+
+  firstDropD(){
+
+return(
+  <NavDropdown id="firstDropDownTitle" title={this.state.firstDropDownSelected} >
+  <MenuItem eventKey={11} id="firstDropDownItem" >{this.state.firstDropDownSecond}</MenuItem>
+      </NavDropdown>
+  )
+  }
+
+    firstDropDown(evt,evtKey){
+        console.log("NavbarOnSelect");
+
+
+
+
+    }
+
+    secondDropDown()
+    {
+        this.setState({SecondDropDownSecond:"All"});
+    }
+
+
+
+  /*getWoOItems() {
       return (
         <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={1} title="Wants" id="basic-nav-dropdown">
-          <MenuItem eventKey={1.1} href="/me/wants">Me</MenuItem>
+          <MenuItem eventKey={1.1} href="/offers">Offers</MenuItem>
           <MenuItem divider />
-          <MenuItem disabled> You have no groups </MenuItem>
+          <MenuItem id="firstTwo" eventKey={1.2} href="/wants" onclick={document.getElementById(firstTwo).innerHTML }> Wants </MenuItem>
         </NavDropdown>
       )
   }
@@ -53,20 +100,68 @@ export default class NavBar extends React.Component {
           <MenuItem disabled> You have no groups </MenuItem>
         </NavDropdown>
       )
+  }*/
+
+  handleNavbarSelect(evt, evtK)
+  {
+      console.log("onSelect");
+      console.log(this.state.isOffers);
+      if(evt==11)
+      {
+          if(!this.state.isOffers)
+          {
+              this.setState({
+                  firstDropDownSelected:"Wants",
+                  firstDropDownSecond:"Offers",
+                  isOffers:true
+
+              },this.props.setIsOffers(this.state.isOffers));
+
+              console.log("!isOffers");
+
+
+
+          }
+          else {
+
+
+              this.setState({
+                firstDropDownSelected:"Offers",
+                firstDropDownSecond:"Wants",
+                isOffers:false
+                },this.props.setIsOffers(this.state.isOffers))
+
+              console.log("isOffers/else");
+
+          }
+      }
+
+
   }
   render() {
     return (
-      <Navbar inverse collapseOnSelect>
+      <Navbar inverse collapseOnSelect onSelect={this.handleNavbarSelect.bind(this)} >
         <Navbar.Header>
           <Navbar.Brand>
             <a href="/home">FindA</a>
           </Navbar.Brand>
           <Navbar.Toggle />
+          <input
+            placeholder="Search for:"
+            ref={input=>this.search=input}
+            onChange={this.handleInputChange}
+            />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
-            {this.getWantsItem()}
-            {this.getOffersItem()}
+          <Nav >
+                //TODO change this to select box
+            {this.firstDropD()}
+
+
+                <NavDropdown id="secondDropDownTitle" title="All">
+                    <MenuItem id="secondDropDownItem1" onSelect={this.secondDropDown}>My Groups</MenuItem>
+                    <MenuItem id="secondDropDownItem2" onSelect={this.secondDropDown}>My own</MenuItem>
+                </NavDropdown>
             <NavItem eventKey={3}> Categories</NavItem>
           </Nav>
           <Nav className="NavRight" pullRight>
@@ -76,4 +171,6 @@ export default class NavBar extends React.Component {
       </Navbar>
     )
   }
+
+
 }
