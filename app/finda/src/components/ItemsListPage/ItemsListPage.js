@@ -247,7 +247,7 @@ export default class ItemListPage extends React.Component {
     }
 
     if(errorMessage == "") {
-      this.submitForm(e)
+      this.submitAddForm(e)
     } else {
       console.log('testttting' + errorMessage)
       this.setState({errorMsg : "Please fill out the following fields: " + errorMessage})
