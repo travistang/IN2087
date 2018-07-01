@@ -24,6 +24,18 @@ export default class Me {
     return user
   }
 
+  async uploadImage(image) {
+    console.log('image is here: ' + image.name)
+    if(!this.user) {
+      return null
+    }
+    else {
+      let response = await this.auth.imageUploadPost('/me/upload', image)
+      console.log('only response...' + response)
+      return response
+    }
+  }
+
   async addWants(want) {
     if(!this.user) {
       return null
