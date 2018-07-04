@@ -104,7 +104,7 @@ export default class ItemCard extends React.Component {
         </Col>
       )
     }
-    if(this.props.offer.wants.length > 0){
+    if(this.props.offer.wants && this.props.offer.wants.length > 0){
       res.push(
         <Col sm={12} className="OfferWantCol">
          Wants {this.props.offer.wants[0].name}

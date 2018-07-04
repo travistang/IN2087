@@ -31,6 +31,8 @@ const searchCategories = async (req,res) => {
   let searchString = req.query.q
   return await SearchUtils.searchCategories(searchString,res)
 }
+
+
 module.exports = {
   searchUser,
   searchOffer,

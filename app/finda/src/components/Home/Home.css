@@ -22,3 +22,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.SearchResultContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

@@ -17,17 +17,30 @@ export default class SearchProvider {
       q: term
     })
     result = await result.json()
-    console.log('search wants result')
-    console.log(result)
     return result
   }
   async searchOffers(term) {
-
+    let url = new URL(`${apiURL}/search/offer`)
+    let result = await Http.get(url,{
+      q: term
+    })
+    result = await result.json()
+    return result
   }
   async searchGroups(term) {
-
+    let url = new URL(`${apiURL}/search/group`)
+    let result = await Http.get(url,{
+      q: term
+    })
+    result = await result.json()
+    return result
   }
   async searchCategories(term) {
-
+    let url = new URL(`${apiURL}/search/categories`)
+    let result = await Http.get(url,{
+      q: term
+    })
+    result = await result.json()
+    return result
   }
 }
