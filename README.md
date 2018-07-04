@@ -24,13 +24,13 @@ Proposed endpoint structures are as follows:
 
   - [x] GET /wants
   - [x] POST /wants
-  - [ ] DELETE /wants
-  - [ ] PATCH /wants
+  - [x] DELETE /wants
+  - ~~[ ] PATCH /wants~~
 
   - [x] GET /offers
   - [x] POST /offers
-  - [ ] DELETE /wants
-  - [ ] PATCH /wants
+  - [x] DELETE /offers
+  - ~~[ ] PATCH /offers~~
 
 
 - [x] /user/:username
@@ -43,9 +43,6 @@ Proposed endpoint structures are as follows:
    - [x] GET /register
    - [x] GET /populate
 
-### Categories
-- [ ] /categories
-  - [ ] GET /:category
 ### Groups
 - [ ] GET /group
 - [x] POST /group
@@ -74,8 +71,8 @@ Proposed endpoint structures are as follows:
   - ~~[ ] POST /invite/:username~~
 
 ### Searches
-- [ ] /search
-  - [ ] GET /wants?q=<search_string>
-  - [ ] GET /offers?q=<search_string>
-  - [ ] GET /users?q=<search_string>
-  - [ ] GET /groups?q=<search_string>
+- [x] /search
+  - [x] GET /wants?q=<search_string>
+  - [x] GET /offers?q=<search_string>
+  - [x] GET /users?q=<search_string>
+  - [x] GET /groups?q=<search_string>
