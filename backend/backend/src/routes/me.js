@@ -15,7 +15,7 @@ router.delete('/wants', middlewares.checkAuthentication,MeController.deleteWants
 
 router.get('/offers',middlewares.checkAuthentication,MeController.offers)
 router.post('/offers',middlewares.checkAuthentication,MeController.addOffers)
-
+router.delete('/offers',middlewares.checkAuthentication,MeController.deleteOffers)
 
 router.post('/toPremium',middlewares.checkAuthentication,MeController.toPremium)
 

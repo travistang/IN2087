@@ -84,6 +84,10 @@ export default class ItemCard extends React.Component {
       let payload = {wants: this.props.want._id}
       let result = await MeProvider.getInstance().deleteWants(payload)
       if(result.status == 200) window.location.reload()
+    } else if (this.props.offer){
+      let payload = {offers: this.props.offer._id}
+      let result = await MeProvider.getInstance().deleteOffers(payload)
+      if (result.status == 200) window.location.reload()
     }
   }
   renderOfferCard() {
@@ -118,7 +122,7 @@ export default class ItemCard extends React.Component {
           this.props.canDelete && (
             <Row>
               <Col sm={12}>
-                <Button bsStyle="danger" bsSize="large" block>
+                <Button onClick={this.deleteItem.bind(this)} bsStyle="danger" bsSize="large" block>
                   Delete
                 </Button>
               </Col>

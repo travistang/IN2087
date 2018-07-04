@@ -96,6 +96,23 @@ const deleteWants = async (req,res) => {
     return res.status(500).json(e.message)
   }
 }
+const deleteOffers = async (req,res) => {
+  let userId = req.userId
+
+  let wants = req.body.offers
+  try {
+    let result = await OfferModel.findByIdAndRemove(wants).exec()
+    let userResult = await OfferModel.findOneAndUpdate({_id: userId},{
+      $pullAll: {
+        wants: [wants]
+      }
+    }).exec()
+
+    return res.status(200).json(result)
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+}
 module.exports = {
   info,
   wants,
@@ -106,5 +123,6 @@ module.exports = {
 
   toPremium,
 
-  deleteWants
+  deleteWants,
+  deleteOffers
 }

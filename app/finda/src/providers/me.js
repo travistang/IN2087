@@ -50,6 +50,13 @@ export default class Me {
     let response = await this.auth.authenticatedDelete('/me/wants',want)
     return response
   }
+  async deleteOffers(offer) {
+    if(!this.user) {
+      return null
+    }
+    let response = await this.auth.authenticatedDelete('/me/offers',offer)
+    return response
+  }
   async createGroup(group) {
     if(!this.user) {
       return null
