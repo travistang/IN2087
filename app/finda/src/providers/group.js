@@ -24,4 +24,15 @@ export default class GroupProvider {
     let response = await this.authProvider.authenticatedGet(url)
     return response.json()
   }
+
+  async joinGroup(groupName) {
+    let url = `/group/${groupName}/join`
+    let response = await this.authProvider.authenticatedPost(url)
+    return response.json()
+  }
+  async quitGroup(groupName) {
+    let url = `/group/${groupName}/quit`
+    let response = await this.authProvider.authenticatedPost(url)
+    return response.json()
+  }
 }

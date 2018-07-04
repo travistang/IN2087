@@ -54,18 +54,41 @@ export default class Group extends React.Component {
         <Row>
           {this.state.info.descriptions}
         </Row>
-        {this.state.isMemberOfGroup && (
+        {this.state.isMemberOfGroup? (
           <Row>
             <Col sm={6}>
               <Row>
-                <Button block onClick={this.editGroupInfo}> Edit Group Info</Button>
+                <Button block onClick={this.editGroupInfo.bind(this)}> Edit Group Info</Button>
+              </Row>
+            </Col>
+            <Col sm={6}>
+              <Row>
+                <Button bsStyle="danger" block onClick={this.quitGroup.bind(this)}> Quit Group</Button>
               </Row>
             </Col>
           </Row>
 
+        ): (
+          <Row>
+            <Col sm={6}>
+              <Row>
+                <Button block onClick={this.joinGroup.bind(this)}> joinGroup</Button>
+              </Row>
+            </Col>
+          </Row>
         )}
       </Col>
     )
+  }
+  async quitGroup() {
+    let name = this.state.info.groupname
+    let result = this.groupProvider.quitGroup(name)
+    if(result) window.location.reload()
+  }
+  async joinGroup() {
+    let name = this.state.info.groupname
+    let result = this.groupProvider.joinGroup(name)
+    if(result) window.location.reload()
   }
   wantsSection() {
     return (
