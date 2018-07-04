@@ -21,8 +21,6 @@ const isUserInGroup = async (groupname,userId,res) => {
 
 const getGroupList = async (userId,res) => {
   try {
-    console.log('userId')
-    console.log(userId)
     let groups = await GroupModel
       .aggregate([
         {

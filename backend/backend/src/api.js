@@ -11,6 +11,8 @@ const me    = require('./routes/me')
 const user  = require('./routes/user')
 const group = require('./routes/group')
 const testRoute = require('./routes/test')
+const search = require('./routes/search')
+
 const api = express();
 
 // Adding Basic Middlewares
@@ -34,5 +36,7 @@ api.use('/user' , user)
 api.use('/group', group)
 
 api.use('/test', testRoute)
+
+api.use('/search', search)
 
 module.exports = api;

@@ -13,7 +13,9 @@ const WantSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  }
+  },
+
+  categories: [String]
 })
 
 module.exports = mongoose.model('Want',WantSchema)

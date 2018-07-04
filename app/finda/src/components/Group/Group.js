@@ -50,9 +50,9 @@ export default class Group extends React.Component {
     return (
       <Col className="NameCol" xs={12} md={8} sm={8} lg={8}>
         <Row>
-          <h2>{this.state.info.groupname}</h2>
-          <Badge>{this.state.info.wants.length} wants</Badge>
-          <Badge>{this.state.info.offers.length} offers</Badge>
+            <h2>{this.state.info.groupname}</h2>
+            <Badge>{this.state.info.wants.length} wants</Badge>
+            <Badge>{this.state.info.offers.length} offers</Badge>
         </Row>
         <Row>
           {this.state.info.descriptions}
@@ -75,7 +75,7 @@ export default class Group extends React.Component {
       <div>
         <Row>
           {(this.state.info && this.state.info.wants.length)?
-            this.state.info.wants.map(want => <ItemCard want={want} />)
+            this.state.info.wants.map(want => <ItemCard className="ItemCard" want={want} />)
             :
             <BackgroundNotice title="This group has no wants" />
           }
@@ -121,6 +121,7 @@ export default class Group extends React.Component {
     return (
       <Col>
         <Row>
+          <Col sm={2} />
           {this.groupInfoComponent()}
         </Row>
         <div className="SubpageContainer">
