@@ -15,6 +15,7 @@ import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
 import Card from '../Card/Card'
 import FormElements from '../../utils/form'
 import Me from '../../providers/me'
+import GroupProvider from '../../providers/group'
 import './ItemsListPage.css'
 export default class ItemListPage extends React.Component {
   /*
@@ -28,11 +29,24 @@ export default class ItemListPage extends React.Component {
     // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
     this.state = {
       errorMessage: null,
+      info : null,
       hasChanged: this.questions().map(field => ({[field]:false}))
     }
 
     // populate categories
+    if(this.props.isGroup) {
+      let groupname = this.props.match.params.groupname
+      GroupProvider.getInstance().info(groupname).then(info => {
+        this.setState(Object.assign({},this.state,{info}))
+      })
 
+    }
+  }
+  isMemberOfGroup() {
+    if(!this.state.info || ! this.props.user) return false
+    return this.state.info.members
+      .map(m => m._id)
+      .some(id => id == this.props.user._id)
   }
   getFormElement(input) {
     if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
@@ -143,8 +157,25 @@ export default class ItemListPage extends React.Component {
       payload[field] = this.state[field]
     }
 
-    let meProvider = Me.getInstance() // Must be changed to not only supporting me
-    console.log(meProvider.getUser())
+    if(this.props.isGroup) {
+      // group thing
+      let groupProvider = GroupProvider.getInstance()
+      let result = null
+      if(this.props.isForGroup)
+        result = await groupProvider.addWants(this.state.info.groupname,payload)
+      else
+        result = await groupProvider.addOffers(this.state.info.groupname,payload)
+
+      if(result) {
+        // refresh?!
+        window.location.reload()
+      } else {
+        let msg = result
+        this.setState(Object.assign({},this.state,{errorMessage: msg.error || msg.message || "An error has occured"}))
+      }
+      return
+    }
+    let meProvider = Me.getInstance()
     let result = null
 
     if(this.props.isForGroup) {
@@ -166,7 +197,7 @@ export default class ItemListPage extends React.Component {
 
 
   addItemForm() {
-    if(!this.props.isMe) return null
+    if(!this.props.isMe && !this.isMemberOfGroup()) return null
     let formTitle = ""
     if(this.props.isForGroup) {
       formTitle = "Add a new group"
@@ -207,15 +238,22 @@ export default class ItemListPage extends React.Component {
     let items = null
 
     if(!this.props.user) return this.noItemElement()
-    if(this.props.user && this.props.isForGroup) items = this.props.user.groups
+
+    else if(this.props.isGroup && this.props.isForWant) items = this.state.info && this.state.info.wants
+    else if(this.props.isGroup && !this.props.isForWant) items = this.state.info && this.state.info.offers
+
+    else if(this.props.user && this.props.isForGroup) items = this.props.user.groups
     else if(this.props.user && this.props.isForWant) items = this.props.user.wants
     else if(this.props.user && !this.props.isForWant) items = this.props.user.offers
-
     if(!items) return this.noItemElement()
     return (items.length > 0)?
       (items.map(this.itemElement.bind(this))):(this.noItemElement())
   }
   noItemElement() {
+    if(this.props.isGroup) {
+      let title = `${this.state.info && this.state.info.groupname} has no ${this.props.isForWant?"wants":"offers"}`
+      return <BackgroundNotice title={title} />
+    }
     let username = this.props.isMe?'You have':`${this.props.username} has`
     let wantOrOffer = this.props.isForWant?'wants':'offers'
     let title = `${username} no ${wantOrOffer}`
@@ -229,13 +267,18 @@ export default class ItemListPage extends React.Component {
         return "Your Offers"
       if(this.props.isForGroup)
         return "Your Groups"
-
+    } else if(this.props.isGroup) {
+      if(this.props.isForWant) return `${this.state.info && this.state.info.groupname}'s Wants`
+      else return `${this.state.info && this.state.info.groupname}'s Offers`
     }
   }
   render() {
     let items = []
-    if(this.props.user && this.props.isForWant) items = this.props.user.wants
-    if(this.props.user && !this.props.isForWant) items = this.props.user.offers
+    if(this.props.isGroup && this.props.isForWant) items = this.state.info && this.state.info.wants
+    else if(this.props.isGroup && !this.props.isForWant) items = this.state.info && this.state.info.offers
+    else if(this.props.user && this.props.isForWant) items = this.props.user.wants
+    else if(this.props.user && !this.props.isForWant) items = this.props.user.offers
+    else return null
     return (
       <div>
         <Row>

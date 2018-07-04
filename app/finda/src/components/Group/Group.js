@@ -104,7 +104,7 @@ export default class Group extends React.Component {
           <Row>
             <Col>
               <div>
-                {this.state.isMemberOfGroup?<Button block bsSize="large" bsStyle="primary" href="wants"> To {this.state.info.groupname}'s wants</Button>:null}
+                <Button block bsSize="large" bsStyle="primary" href="wants"> To {this.state.info.groupname}'s wants</Button>
               </div>
 
             </Col>
@@ -127,9 +127,8 @@ export default class Group extends React.Component {
           <Row>
             <Col>
               <div>
-                {this.props.isMemberOfGroup?<Button block bsSize="large" bsStyle="primary" href="offers"> To {this.state.info.groupname}'s offers</Button>:null}
+                <Button block bsSize="large" bsStyle="primary" href="offers"> To {this.state.info.groupname}'s offers</Button>
               </div>
-
             </Col>
           </Row>
         )}

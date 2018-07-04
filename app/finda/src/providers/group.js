@@ -35,4 +35,17 @@ export default class GroupProvider {
     let response = await this.authProvider.authenticatedPost(url)
     return response.json()
   }
+
+  async addWants(groupname,wants) {
+    let url = `/group/${groupname}/wants`
+    let payload = {groupname,wants}
+    let response = await this.authProvider.authenticatedPost(url,payload)
+    return response.json()
+  }
+  async addOffers(groupname,offers) {
+    let url = `/group/${groupname}/offers`
+    let payload = {groupname,offers}
+    let response = await this.authProvider.authenticatedPost(url,payload)
+    return response.json()
+  }
 }
