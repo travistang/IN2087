@@ -83,8 +83,7 @@ export default class ItemCard extends React.Component {
     if(this.props.want) {
       let payload = {wants: this.props.want._id}
       let result = await MeProvider.getInstance().deleteWants(payload)
-      console.log("delete result")
-      console.log(result)
+      if(result.status == 200) window.location.reload()
     }
   }
   renderOfferCard() {
