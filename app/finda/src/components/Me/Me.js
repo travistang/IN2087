@@ -37,10 +37,13 @@ export default class Me extends React.Component {
     return this.userOffers().length
   }
   userWants() {
-    return this.props.user.wants
+    return this.props.user.wants || []
   }
   userOffers() {
-    return this.props.user.offers
+    return this.props.user.offers || []
+  }
+  userGroups() {
+    return this.props.user.groups || []
   }
   editProfileButton() {
     if(this.props.isMe) {
@@ -91,7 +94,7 @@ export default class Me extends React.Component {
           <Col>
             {(this.userOffers().length > 0)?(<div className="ItemContainer">
                 {this.userOffers().map(want => (
-                    <ItemCard want={want} />
+                    <ItemCard offer={want} />
                 ))}
               </div>):(
                 <BackgroundNotice title={`This user has no offers`} />
@@ -113,7 +116,29 @@ export default class Me extends React.Component {
   }
   groupsSection() {
     return (
-      <BackgroundNotice title="You have no groups" />
+      <div>
+        <Row>
+          <Col>
+            {(this.userGroups().length > 0)?(<div className="ItemContainer">
+                {this.userGroups().map(group => (
+                    <ItemCard group={group} />
+                ))}
+              </div>):(
+                <BackgroundNotice title={`This user did not join any groups`} />
+              )
+            }
+          </Col>
+
+        </Row>
+        <Row>
+          <Col>
+            <div>
+              {this.props.isMe && <Button block bsSize="large" bsStyle="primary" href="/me/groups"> To my groups</Button>}
+            </div>
+
+          </Col>
+        </Row>
+      </div>
     )
   }
   render() {

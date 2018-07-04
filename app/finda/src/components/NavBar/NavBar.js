@@ -91,7 +91,6 @@ export default class NavBar extends React.Component {
           <Nav>
             {this.getWantsItem()}
             {this.getOffersItem()}
-            {this.getCategoriesItem()}
           </Nav>
           <Nav className="NavRight" pullRight>
             {this.barRightItems()}

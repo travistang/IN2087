@@ -22,14 +22,22 @@ export default class ItemCard extends React.Component {
     console.log(props.offers)
     this.state = {
       isItemOwner: false,
-      isClicked: false
+      isClicked: false,
+      isMe: false
     }
     MeProvider.getInstance().getUser().then(user => {
       if(!user) {
-        this.setState({isItemOwner: false})
+        this.setState(Object.assign({},this.state,{isItemOwner: false}))
         return
       }
+      // update isMe if this is rendering a user
+      if(this.props.user && this.props.user._id == user._id) {
+        this.setState(Object.assign({},this.state,{isMe: true}))
+      }
+
       if(this.props.group) return
+      if(this.props.user) return
+      // update isMe according to items if this is rendering wants/offers
       let thing = this.props.want || this.props.offer
       let id = thing.owner
       this.setState({isItemOwner: id == user._id})
@@ -116,9 +124,14 @@ export default class ItemCard extends React.Component {
   renderContactButton() {
     return (
       <Col sm={12}>
-        <Button block>Contact user</Button>
+        <Button block onClick={this.contactUser.bind(this)}>Contact user</Button>
       </Col>
     )
+  }
+  contactUser() {
+    let thing = this.props.want || this.props.offer
+    if(!thing) return
+    // TODO: give a chat !
   }
   renderGroupCard() {
     return (
@@ -143,14 +156,45 @@ export default class ItemCard extends React.Component {
     // browserHistory.push(`/group/${this.props.group.groupname}/`)
   }
   redirectComponent() {
-    return this.state.isClicked?(<Redirect to={`/group/${this.props.group.groupname}/`} />):null
+    if(!this.state.isClicked) return
+    if(this.props.group) return <Redirect to={`/group/${this.props.group.groupname}/`} />
+    if(this.props.user) {
+      let url = this.state.isMe?`/me`:`/user/${this.props.user.username}`
+      return <Redirect to={url} />
+    }
+
+  }
+  renderUserCard() {
+    console.log(this.props.user.username)
+    console.log('user')
+    return (
+      <Grid className="ItemCardContent UserCard" fluid>
+        <Row>
+          <div className="UserThumbnailContainer">
+            <img className="UserThumbnail" src="http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/512/user-alt.png" />
+          </div>
+        </Row>
+        <Row className="UsernameRow">
+          <h4>{this.props.user.username}</h4>
+        </Row>
+        <Row>
+          {!this.state.isMe && this.renderContactButton()}
+        </Row>
+      </Grid>
+    )
+  }
+  getCardClass() {
+    if(this.props.group) return "GroupCard ItemCardMain"
+    if(this.props.user) return "UserCard ItemCardMain"
+    return "ItemCardMain"
   }
   render() {
     return (
-      <Card onClick={this.handleClick.bind(this)} cardClass={this.props.group?"GroupCard ItemCardMain":"ItemCardMain"}>
+      <Card onClick={this.handleClick.bind(this)} cardClass={this.getCardClass()}>
         {this.props.want && this.renderWantCard()}
         {this.props.offer && this.renderOfferCard()}
         {this.props.group && this.renderGroupCard()}
+        {this.props.user && this.renderUserCard()}
         {this.redirectComponent()}
       </Card>
     )

@@ -98,7 +98,7 @@ export default class Group extends React.Component {
       <div>
         <Row>
           {(this.state.info && this.state.info.offers.length)?
-            this.state.info.offers.map(offer => <ItemCard want={offer} />)
+            this.state.info.offers.map(offer => <ItemCard offer={offer} />)
             :
             <BackgroundNotice title="This group has no offers" />
           }
@@ -113,6 +113,19 @@ export default class Group extends React.Component {
             </Col>
           </Row>
         )}
+      </div>
+    )
+  }
+  memberSection() {
+    return (
+      <div>
+        <Row>
+          {(this.state.info && this.state.info.members.length)?
+            this.state.info.members.map(member => <ItemCard user={member} />)
+            :
+            <BackgroundNotice title="This group has no members" />
+          }
+        </Row>
       </div>
     )
   }
@@ -131,6 +144,9 @@ export default class Group extends React.Component {
             </Tab>
             <Tab eventKey={2} title="Offers">
               {this.offersSection()}
+            </Tab>
+            <Tab eventKey={3} title="Members">
+              {this.memberSection()}
             </Tab>
           </Tabs>
         </div>

@@ -3,6 +3,7 @@
   height: 220px;
   width: 156px;
 }
+
 .GroupCard:hover {
   color: white;
   background: gray;
@@ -40,4 +41,24 @@
   text-align: center;
   color: green;
   font-weight: bold;
+}
+.UserThumbnail {
+  height: 32px;
+  width: 32px;
+}
+
+.UserCard:hover {
+  cursor: pointer;
+  color: white;
+  background: gray;
+}
+.UsernameRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.UserThumbnailContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -27,6 +27,7 @@ export default class ItemListPage extends React.Component {
     this.state = {
       hasChanged: this.questions().map(field => ({[field]:false}))
     }
+    Me.getInstance().getUser().then(user => this.setState(Object.assign({},this.state,user)))
   }
   getFormElement(input) {
     if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
@@ -140,13 +141,20 @@ export default class ItemListPage extends React.Component {
     )
   }
   itemElement(item) {
-    return (
-      <Row>
-        <Card>
-          {item.name}
-        </Card>
-      </Row>
-    )
+    if(this.props.isForWant) {
+      return <ItemCard want={item} />
+    }
+    if(this.props.isForOffer) {
+      return <ItemCard offer={item} />
+    }
+  }
+  renderList() {
+    let items = null
+    if(!this.state.user) return this.noItemElement()
+    if(this.state.user && this.props.isForWant) items = this.state.user.wants
+    if(this.state.user && this.props.isForOffer) items = this.state.user.offers
+    return (items.length > 0)?
+      (items.map(this.itemElement)):(this.noItemElement())
   }
   noItemElement() {
     let username = this.props.isMe?'You have':`${this.props.username} has`
@@ -167,10 +175,7 @@ export default class ItemListPage extends React.Component {
 
         </Row>
         {this.addItemForm()}
-        {items.length > 0?
-          (items.map(this.itemElement)):
-          this.noItemElement()
-        }
+        {this.renderList()}
       </div>
     )
   }
