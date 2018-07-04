@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Alert,
   Col,
   Row,
   Image,
@@ -14,6 +15,7 @@ import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
 import Card from '../Card/Card'
 import FormElements from '../../utils/form'
 import Me from '../../providers/me'
+import './ItemsListPage.css'
 export default class ItemListPage extends React.Component {
   /*
     Expected props are as follows...
@@ -25,20 +27,27 @@ export default class ItemListPage extends React.Component {
     super(props)
     // this.questions = props.isForWant?this.wantQuestions:this.offerQuestions
     this.state = {
+      errorMessage: null,
       hasChanged: this.questions().map(field => ({[field]:false}))
     }
-    Me.getInstance().getUser().then(user => this.setState(Object.assign({},this.state,user)))
+
+    // populate categories
+
   }
   getFormElement(input) {
     if(input.type == 'checkbox') return FormElements.checkboxElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'radio') return FormElements.radioElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'date') return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
+    if(input.type == 'choices') return FormElements.choicesElement(input,this.state,this.updateValue.bind(this))
     return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
   }
   questions() {
+    if(this.props.isForGroup)
+      return this.groupQuestions()
     if(this.props.isForWant)
       return this.wantQuestions()
+
     return this.offerQuestions()
   }
   getValidationState(field) {
@@ -55,6 +64,18 @@ export default class ItemListPage extends React.Component {
         }
       })
     )
+  }
+  groupQuestions() {
+    return [
+      {
+        name: "groupname",
+        type: "text",
+      },
+      {
+        name: "descriptions",
+        type: "textarea"
+      }
+    ]
   }
   wantQuestions() {
     return [
@@ -81,17 +102,34 @@ export default class ItemListPage extends React.Component {
       },
       {
         name: "amount",
-        type: "text"
+        type: "number",
       },
+      {
+        name: "price",
+        type: "number",
+      },
+      // {
+      //   name: "wants",
+      //   type: "choices",
+      //   choices: (this.props.user)?this.props.user.wants.map(want => want.name):[],
+      // },
+      {
+        name: "categories",
+        type: 'text'
+      }
     ]
   }
 
-  //const config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
-
-
   async submitForm(e) {
     e.preventDefault()
-    let config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+    // first, reset the message
+    this.setState(Object.assign({},this.state,{errorMessage: null}))
+    let config = null
+    if(this.props.isForGroup) {
+      config = this.groupQuestions()
+    }else {
+      config = this.props.isForWant?this.wantQuestions():this.offerQuestions()
+    }
     let questionNames = config.map(q => q.name)
 
     let payload = {}
@@ -109,20 +147,35 @@ export default class ItemListPage extends React.Component {
     console.log(meProvider.getUser())
     let result = null
 
-    if(this.props.isForWant) {
+    if(this.props.isForGroup) {
+      result = await meProvider.createGroup(payload)
+    }
+    else if(this.props.isForWant) {
       result = await meProvider.addWants(payload)
     } else {
       result = await meProvider.addOffers(payload)
     }
-
-    console.log('Name: ' + payload.name)
-    console.log('Description: ' + payload.descriptions)
+    if(result.status == 200) {
+      // refresh?!
+      window.location.reload()
+    } else {
+      let msg = await result.json()
+      this.setState(Object.assign({},this.state,{errorMessage: msg.error || msg.message || "An error has occured"}))
+    }
   }
 
 
   addItemForm() {
     if(!this.props.isMe) return null
-    let formTitle = this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)
+    let formTitle = ""
+    if(this.props.isForGroup) {
+      formTitle = "Add a new group"
+    }
+    else if(this.props.isForWant) {
+      formTitle = "Add a new want"
+    } else {
+      formTitle = "Add a new offer"
+    }
     return (
       <Row>
         <Card>
@@ -141,26 +194,43 @@ export default class ItemListPage extends React.Component {
     )
   }
   itemElement(item) {
-    if(this.props.isForWant) {
-      return <ItemCard want={item} />
+    if(this.props.isForGroup)
+      return <ItemCard group={item} />
+    else if(this.props.isForWant) {
+      return <ItemCard want={item} canDelete={this.props.isMe}/>
     }
-    if(this.props.isForOffer) {
-      return <ItemCard offer={item} />
+    else {
+      return <ItemCard offer={item} canDelete={this.props.isMe}/>
     }
   }
   renderList() {
     let items = null
-    if(!this.state.user) return this.noItemElement()
-    if(this.state.user && this.props.isForWant) items = this.state.user.wants
-    if(this.state.user && this.props.isForOffer) items = this.state.user.offers
+
+    if(!this.props.user) return this.noItemElement()
+    if(this.props.user && this.props.isForGroup) items = this.props.user.groups
+    else if(this.props.user && this.props.isForWant) items = this.props.user.wants
+    else if(this.props.user && !this.props.isForWant) items = this.props.user.offers
+
+    if(!items) return this.noItemElement()
     return (items.length > 0)?
-      (items.map(this.itemElement)):(this.noItemElement())
+      (items.map(this.itemElement.bind(this))):(this.noItemElement())
   }
   noItemElement() {
     let username = this.props.isMe?'You have':`${this.props.username} has`
     let wantOrOffer = this.props.isForWant?'wants':'offers'
     let title = `${username} no ${wantOrOffer}`
     return <BackgroundNotice title={title} />
+  }
+  getPageTitle() {
+    if(this.props.isMe) {
+      if(this.props.isForWant && !this.props.isForGroup)
+        return "Your Wants"
+      if (!this.props.isForWant && !this.props.isForGroup)
+        return "Your Offers"
+      if(this.props.isForGroup)
+        return "Your Groups"
+
+    }
   }
   render() {
     let items = []
@@ -170,12 +240,22 @@ export default class ItemListPage extends React.Component {
       <div>
         <Row>
           <PageHeader>
-            {this.props.isMe?(this.props.isForWant?"Your wants":"Your offers"):(this.props.isForWant?`${this.props.user.username}'s wants`:`${this.props.user.username}'s offers`)}
+            {this.getPageTitle()}
           </PageHeader>
 
         </Row>
+        {this.state.errorMessage && (
+          <Row>
+            <Alert bsStyle="danger">
+              {this.state.errorMessage}
+            </Alert>
+          </Row>
+        )}
         {this.addItemForm()}
-        {this.renderList()}
+        <div className="ItemContainer">
+          {this.renderList()}
+        </div>
+
       </div>
     )
   }

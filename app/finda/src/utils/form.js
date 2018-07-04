@@ -12,10 +12,31 @@ import {
   Button,
   Radio,
   Alert,
+  DropdownButton,
+  MenuItem,
 } from 'react-bootstrap'
 import DatePicker from 'react-date-picker'
 
 export default {
+  choicesElement(input,state,getValidationState,updateValue) {
+    return (
+      <FormGroup
+        controlId={input.name}
+        validationState={getValidationState(input.name)}
+      >
+        <Col className="FormName" componentClass={ControlLabel} sm={2}>
+          {input.name}
+        </Col>
+        <Col sm={10}>
+          <DropdownButton
+            title={state[input.name]}
+          >
+            {input.choices.map(choice => <MenuItem onClick={() => updateValue({target:{value:choice}},input.name)}>{choice}</MenuItem>)}
+          </DropdownButton>
+        </Col>
+      </FormGroup>
+    )
+  },
   textElement(input,state,getValidationState,updateValue) {
     return (
       <FormGroup

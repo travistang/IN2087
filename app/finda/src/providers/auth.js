@@ -47,4 +47,9 @@ export default class AuthProvider {
     let response = await Http.post(`${apiURL}${url}`,data,{"x-access-token": this.getToken()})
     return response
   }
+
+  async authenticatedDelete(url,params = {}) {
+    let response = await Http.delete(`${apiURL}${url}`,params,{"x-access-token": this.getToken()})
+    return response
+  }
 }

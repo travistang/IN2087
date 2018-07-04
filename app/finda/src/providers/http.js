@@ -24,4 +24,16 @@ export default class {
     })
   }
 
+  static async delete(url, params = {},header = {}) {
+
+    return await fetch(url,{
+      body: JSON.stringify(params),
+      headers: {
+        'content-type': 'application/json',
+        ...header
+      },
+      method: 'DELETE'
+    })
+  }
+
 }

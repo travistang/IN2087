@@ -11,6 +11,7 @@ router.get('/info',middlewares.checkAuthentication,MeController.info)
 
 router.get('/wants',middlewares.checkAuthentication,MeController.wants)
 router.post('/wants',middlewares.checkAuthentication,MeController.addWants)
+router.delete('/wants', middlewares.checkAuthentication,MeController.deleteWants)
 
 router.get('/offers',middlewares.checkAuthentication,MeController.offers)
 router.post('/offers',middlewares.checkAuthentication,MeController.addOffers)

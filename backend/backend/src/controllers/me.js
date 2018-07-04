@@ -2,6 +2,9 @@
 const config    = require('../config')
 const UserModel = require('../models/user')
 const userUtils = require('./utils/user')
+const OfferModel = require('../models/offers')
+const WantModel = require('../models/wants')
+
 const info = (req,res) => {
   let userId = req.userId
   userUtils.getUserInfo({_id: userId},res)
@@ -75,6 +78,24 @@ const toPremium = (req,res) => {
   let userId = req.userId
   userUtils.toPremium(userId,res)
 }
+
+const deleteWants = async (req,res) => {
+  let userId = req.userId
+
+  let wants = req.body.wants
+  try {
+    let result = await WantModel.findByIdAndRemove(wants).exec()
+    let userResult = await WantModel.findOneAndUpdate({_id: userId},{
+      $pullAll: {
+        wants: [wants]
+      }
+    }).exec()
+
+    return res.status(200).json(result)
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+}
 module.exports = {
   info,
   wants,
@@ -83,5 +104,7 @@ module.exports = {
   addWants,
   addOffers,
 
-  toPremium
+  toPremium,
+
+  deleteWants
 }

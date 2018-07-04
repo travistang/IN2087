@@ -9,7 +9,7 @@ import {
   Image,
   Badge,
   Button,
-  Grid
+  Grid,
 } from 'react-bootstrap'
 import MeProvider from '../../providers/me'
 import './ItemCard.css'
@@ -65,8 +65,27 @@ export default class ItemCard extends React.Component {
         <Row>
           {!this.state.isItemOwner && this.renderContactButton()}
         </Row>
+        {
+          this.props.canDelete && (
+            <Row>
+              <Col sm={12}>
+                <Button onClick={this.deleteItem.bind(this)} bsStyle="danger" bsSize="large" block>
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+          )
+        }
       </Grid>
     )
+  }
+  async deleteItem() {
+    if(this.props.want) {
+      let payload = {wants: this.props.want._id}
+      let result = await MeProvider.getInstance().deleteWants(payload)
+      console.log("delete result")
+      console.log(result)
+    }
   }
   renderOfferCard() {
     return (
@@ -89,9 +108,24 @@ export default class ItemCard extends React.Component {
         <Row>
           {this.renderPrice()}
         </Row>
-        <Row>
-          {!this.state.isItemOwner && this.renderContactButton()}
-        </Row>
+        {
+          !this.state.isItemOwner && (
+            <Row>
+              {this.renderContactButton()}
+            </Row>
+          )
+        }
+        {
+          this.props.canDelete && (
+            <Row>
+              <Col sm={12}>
+                <Button bsStyle="danger" bsSize="large" block>
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+          )
+        }
       </Grid>
     )
   }

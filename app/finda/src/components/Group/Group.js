@@ -19,8 +19,6 @@ import './Group.css'
 export default class Group extends React.Component {
   constructor(props) {
     super(props)
-    console.log('props')
-    console.log(props)
     this.groupProvider = GroupProvider.getInstance()
     this.authProvider = AuthProvider.getInstance()
     this.state = {
@@ -30,7 +28,6 @@ export default class Group extends React.Component {
     this.loadGroupInfo()
   }
   loadGroupInfo() {
-    console.log('load group info')
     let groupname = this.props.match.params.groupname
     this.groupProvider.info(groupname).then(groupinfo => {
       this.setState(Object.assign({},this.state,{

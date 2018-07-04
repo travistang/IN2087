@@ -43,4 +43,19 @@ export default class Me {
       return response
     }
   }
+  async deleteWants(want) {
+    if(!this.user) {
+      return null
+    }
+    let response = await this.auth.authenticatedDelete('/me/wants',want)
+    return response
+  }
+  async createGroup(group) {
+    if(!this.user) {
+      return null
+    } else {
+      let response = await this.auth.authenticatedPost('/group',group)
+      return response
+    }
+  }
 }
