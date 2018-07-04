@@ -83,6 +83,7 @@ class App extends React.Component {
                   <Row style={{height:"100vh",marginBottom:8}}>
                     {ContentRoutes.map(route =>
                       <Route path={route.path}
+                        exact={true}
                         render={() => <route.component {...route.params} {...this.routeParams[route.path]} />}
                       >
                       </Route>

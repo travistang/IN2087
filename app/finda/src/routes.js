@@ -1,7 +1,16 @@
 import Ads from './components/Ads/Ads'
 import RegisterLoginForm from './components/RegisterLoginForm/RegisterLoginForm'
 import ItemsListPage from './components/ItemsListPage/ItemsListPage'
+import Home from './components/Home/Home'
 export default [
+  {
+    path: "/",
+    component: Home,
+  },
+  {
+    path: "/home",
+    component: Home,
+  },
   {
     path: "/register",
     component: RegisterLoginForm,

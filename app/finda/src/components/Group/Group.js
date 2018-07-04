@@ -117,7 +117,7 @@ export default class Group extends React.Component {
     )
   }
   render () {
-    if(!this.authProvider.isLoggedIn()) return <Redirect to='/login' />
+    // if(!this.authProvider.isLoggedIn()) return <Redirect to='/login' />
     return (
       <Col>
         <Row>

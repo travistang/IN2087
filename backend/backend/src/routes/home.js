@@ -7,5 +7,5 @@ const router         = express.Router();
 const HomeController = require('../controllers/home')
 const middlewares = require('../middlewares')
 
-router.get('/home',HomeController.getHomeContent)
+router.get('/',HomeController.getHomeContent)
 module.exports = router

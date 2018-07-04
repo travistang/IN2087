@@ -3,6 +3,11 @@
   height: 220px;
   width: 156px;
 }
+.GroupCard:hover {
+  color: white;
+  background: gray;
+  cursor:pointer;
+}
 .ItemTitle {
   /* display: flex;
   align-items: center;
@@ -24,4 +29,15 @@
 }
 .itemRowTitle {
   padding-top: 16px;
+}
+
+.PriceCol {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+.PriceCol-Free {
+  text-align: center;
+  color: green;
+  font-weight: bold;
 }

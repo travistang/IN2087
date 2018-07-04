@@ -38,7 +38,7 @@ export default class NavBar extends React.Component {
   }
   getWantsItem() {
     if(!this.props.user) return (
-      <NavDropdown onClick={() => <Redirect to='/login' />} eventKey={1} title="Wants" id="basic-nav-dropdown" />
+      null
     )
     else return (
     <NavDropdown eventKey={1} title="Wants" id="basic-nav-dropdown">
@@ -57,7 +57,7 @@ export default class NavBar extends React.Component {
   }
   getOffersItem() {
     if(!this.props.user) return (
-      <NavDropdown onClick={() => <Redirect to='/login' />} eventKey={1} title="Offers" id="basic-nav-dropdown" />
+      null
     )
       return (
         <NavDropdown onClick={() => this.props.users?"":<Redirect to='/login'/>} eventKey={2} title="Offers" id="basic-nav-dropdown">
@@ -74,6 +74,10 @@ export default class NavBar extends React.Component {
         </NavDropdown>
       )
   }
+  getCategoriesItem() {
+    if(!this.props.user) return null
+    return (<NavItem eventKey={3}> Categories</NavItem>)
+  }
   render() {
     return (
       <Navbar inverse collapseOnSelect>
@@ -87,7 +91,7 @@ export default class NavBar extends React.Component {
           <Nav>
             {this.getWantsItem()}
             {this.getOffersItem()}
-            <NavItem eventKey={3}> Categories</NavItem>
+            {this.getCategoriesItem()}
           </Nav>
           <Nav className="NavRight" pullRight>
             {this.barRightItems()}

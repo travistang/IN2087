@@ -13,9 +13,10 @@ export default class {
     let esc = encodeURIComponent;
     let queryString = Object.keys(params)
         .map(k => esc(k) + '=' + esc(params[k]))
-        .join('&');
-    let resultURL = `${url}?${queryString}`
-    return await fetch(resultURL,{
+        .join('&')
+    let urlObj = new URL(url)
+    Object.keys(params).forEach(key => urlObj.searchParams.append(key, params[key]))
+    return await fetch(urlObj,{
       headers: {
         "content-type": 'application/json',
         ...header
