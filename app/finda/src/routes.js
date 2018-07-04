@@ -26,21 +26,30 @@ export default [
     }
   },
   {
-    path: "/me/wants",
+    path: "/user/:username/wants",
     component: ItemsListPage,
     params: {
-      isMe: true,
+      isMe: false,
       isForWant: true,
     }
   },
   {
-    path: "/me/offers",
+    path: "/user/:username/offers",
     component: ItemsListPage,
     params: {
-      isMe: true,
+      isMe: false,
       isForWant: false,
     }
   },
+  {
+    path: "/user/:username/group",
+    component: ItemsListPage,
+    params: {
+      isMe: false,
+      isForWant: false,
+      isForGroup: true
+    }
+  }
 
 
 ]

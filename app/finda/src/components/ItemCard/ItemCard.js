@@ -38,9 +38,10 @@ export default class ItemCard extends React.Component {
       if(this.props.group) return
       if(this.props.user) return
       // update isMe according to items if this is rendering wants/offers
+      let things = this.props.want?user.wants:user.offers
       let thing = this.props.want || this.props.offer
-      let id = thing.owner
-      this.setState({isItemOwner: id == user._id})
+      let id = thing._id
+      this.setState({isItemOwner: things.filter(t => t._id == t.id) != -1})
     })
   }
   renderWantCard() {

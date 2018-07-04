@@ -17,6 +17,8 @@ import Auth from './providers/auth'
 import Me from './providers/me'
 import MeComponent from './components/Me/Me'
 import GroupComponent from './components/Group/Group'
+import ItemListPage from './components/ItemsListPage/ItemsListPage'
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -98,6 +100,22 @@ class App extends React.Component {
                       path="/group/:groupname"
                       render={(props) => <GroupComponent {...props} user={this.state.user}/>}
                     />
+                    <Route
+                      path="/me/wants"
+                      exact={true}
+                      render={(props) => <ItemListPage {...props} user={this.state.user} isMe={true} isForWant={true} />}
+                    />
+                    <Route
+                      path="/me/offers"
+                      exact={true}
+                      render={(props) => <ItemListPage {...props} user={this.state.user} isMe={true} isForWant={false} />}
+                    />
+                    <Route
+                      path="/me/groups"
+                      exact={true}
+                      render={(props) => <ItemListPage {...props} user={this.state.user} isMe={true} isForGroup={true} />}
+                    />
+
                   </Row>
                 </Col>
 
