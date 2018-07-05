@@ -139,11 +139,13 @@ export default class Group extends React.Component {
     return (
       <div>
         <Row>
-          {(this.state.info && this.state.info.members.length)?
-            this.state.info.members.map(member => <ItemCard user={member} />)
-            :
-            <BackgroundNotice title="This group has no members" />
-          }
+          <div className="MemberSectionContainer">
+            {(this.state.info && this.state.info.members.length)?
+              this.state.info.members.map(member => <ItemCard user={member} />)
+              :
+              <BackgroundNotice title="This group has no members" />
+            }
+          </div>
         </Row>
       </div>
     )

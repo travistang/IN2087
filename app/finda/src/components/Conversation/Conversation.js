@@ -35,6 +35,7 @@ export default class ConversationPage extends React.Component {
     setInterval(() => {
       this.messageProvider.getConversation(partnerId)
         .then(convo => this.setState(Object.assign({},this.states,{convo})))
+
     },3000)
 
     document.addEventListener('keydown', (e) => {
@@ -50,10 +51,10 @@ export default class ConversationPage extends React.Component {
 
   }
   getLastMessageTime() {
-    if(!this.state.convo) return null
+    if(!this.state.convo || !this.state.convo.messages) return null
     return this.state.convo.messages
       .map(m => m.time)
-      .sort((a,b) => a - b)[0]
+      .sort((b,a) => a - b)[0]
   }
   renderConvoHeader() {
     if(!this.state.partner) return null
@@ -86,6 +87,7 @@ export default class ConversationPage extends React.Component {
     )
   }
   getMessagesComponents() {
+    if(!this.state.convo || !this.state.convo.messages) return null
     let msgs = this.state.convo.messages.sort((a,b) => a.time - b.time)
     return msgs.map(msg => this.messageBox(msg))
 
@@ -120,7 +122,7 @@ export default class ConversationPage extends React.Component {
     return (
       <Col>
         {this.renderConvoHeader()}
-        {this.state.convo && this.getMessagesComponents()}
+        {this.getMessagesComponents()}
         {this.getComposeMessageComponents()}
       </Col>
     )

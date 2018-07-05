@@ -15,7 +15,10 @@ const getMessageWithUser = async (req,res) => {
   let receipant = req.params.userId
   let initiator = req.userId
   try {
-    let result = await ConversationModel.findOne({participants: {$in: [initiator,receipant]}})
+    let result = await ConversationModel.findOne({participants: {
+      $all: [initiator,receipant]
+
+    }})
       .populate('participants messages')
       .exec()
     return res.status(200).json(result)
@@ -35,7 +38,7 @@ const postMessageWithUser = async (req,res) => {
   // let messageObj = MessageModel.create(message)
   try {
     let result = await ConversationModel.findOne({participants: {
-      $in: [initiator,receipant]
+      $all: [initiator,receipant]
     }}).exec()
     if(!result) {
       // create one...
@@ -46,7 +49,7 @@ const postMessageWithUser = async (req,res) => {
       return res.status(200).json(convo)
     } else {
       let result = await ConversationModel.findOneAndUpdate({participants: {
-        $in: [initiator,receipant]
+        $all: [initiator,receipant]
       }},{
         $push: {
           messages: {

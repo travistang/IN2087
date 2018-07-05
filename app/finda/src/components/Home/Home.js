@@ -97,9 +97,6 @@ export default class Home extends React.Component {
     )
   }
   handleSearchTermChange(e) {
-    console.log('search term change')
-    console.log(e.target.value)
-    console.log(this.state.searchTerm)
     this.setState(Object.assign({},this.state,{searchTerm:e.target.value}))
     if(this.searchTrigger) clearTimeout(this.searchTrigger)
 
@@ -126,10 +123,11 @@ export default class Home extends React.Component {
           searchFunc = this.searchProvider.searchCategories
         } else {
           // ??
-          console.log("gg")
           return
         }
         let result= await searchFunc(this.state.searchTerm)
+        console.log('home result')
+        console.log(result)
         this.setState(Object.assign({},this.state,{searchResult: result}))
   }
   setSearchOption(option) {

@@ -1,3 +1,9 @@
 ItemCard {
   padding: 16px;
 }
+
+.MemberSectionContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

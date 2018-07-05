@@ -180,6 +180,7 @@ export default class ItemCard extends React.Component {
   }
   contactUser() {
     console.log('im contacting user')
+
     if(this.props.user) {
       this.setState(Object.assign({},this.state,{
         contactComponent: <Redirect to={`/messages/${this.props.user._id}`} />
