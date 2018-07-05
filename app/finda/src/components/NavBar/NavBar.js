@@ -78,6 +78,10 @@ export default class NavBar extends React.Component {
     if(!this.props.user) return null
     return (<NavItem eventKey={3}> Categories</NavItem>)
   }
+  getMessageItem() {
+    if(!this.props.user) return null
+    return <NavItem eventKey={3} href="/messages"> Messages </NavItem>
+  }
   render() {
     return (
       <Navbar inverse collapseOnSelect>
@@ -91,6 +95,7 @@ export default class NavBar extends React.Component {
           <Nav>
             {this.getWantsItem()}
             {this.getOffersItem()}
+            {this.getMessageItem()}
           </Nav>
           <Nav className="NavRight" pullRight>
             {this.barRightItems()}

@@ -20,6 +20,12 @@ const OfferSchema = new mongoose.Schema({
   isInfinite: Boolean,
 
   categories: [String],
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+
 })
 
 module.exports = mongoose.model('Offer',OfferSchema)

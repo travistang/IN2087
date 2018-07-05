@@ -11,8 +11,22 @@ const searchUser = async (req,res) => {
   return await SearchUtils.searchUser(searchString,res)
 
 }
+const getUserById = async (req,res) => {
+  let _id = req.query.id
+  try {
+    let result = await UserModel
+      .findOne({_id})
+      .populate('wants offers groups')
+      .exec()
+    return res.status(200).json(result)
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+}
+
 const getUserByName = async (req,res) => {
   let username = req.query.username
+  if(!username) return getUserById(req,res)
   try {
     let result = await UserModel
       .findOne({username})

@@ -17,6 +17,8 @@ import Auth from './providers/auth'
 import Me from './providers/me'
 import MeComponent from './components/Me/Me'
 import GroupComponent from './components/Group/Group'
+import MessageComponent from './components/Message/Message'
+import ConversationPage from './components/Conversation/Conversation'
 import ItemListPage from './components/ItemsListPage/ItemsListPage'
 
 class App extends React.Component {
@@ -131,7 +133,16 @@ class App extends React.Component {
                       exact={true}
                       render={(props) => <ItemListPage {...props} user={this.state.user} isMe={true} isForGroup={true} />}
                     />
-
+                    <Route
+                      path="/messages"
+                      exact={true}
+                      render={(props) => <MessageComponent {...props} user={this.state.user} />}
+                    />
+                    <Route
+                      path="/messages/:userId"
+                      exact={true}
+                      render={(props) => <ConversationPage {...props} user={this.state.user} />}
+                    />
                   </Row>
                 </Col>
 

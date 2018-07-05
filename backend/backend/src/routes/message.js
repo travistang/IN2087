@@ -6,6 +6,7 @@ const router         = express.Router();
 const MessageController = require('../controllers/message')
 const middlewares    = require('../middlewares');
 
+router.get('/',middlewares.checkAuthentication,MessageController.getAllConversations)
 router.get('/:userId',middlewares.checkAuthentication,MessageController.getMessageWithUser)
 router.post('/:userId',middlewares.checkAuthentication,MessageController.postMessageWithUser)
 

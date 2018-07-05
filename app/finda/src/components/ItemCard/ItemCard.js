@@ -20,11 +20,11 @@ export default class ItemCard extends React.Component {
   }
   constructor(props) {
     super(props)
-    console.log(props.offers)
     this.state = {
       isItemOwner: false,
       isClicked: false,
-      isMe: false
+      isMe: false,
+      contactComponent: null,
     }
     MeProvider.getInstance().getUser().then(user => {
       if(!user) {
@@ -42,7 +42,7 @@ export default class ItemCard extends React.Component {
       let things = this.props.want?user.wants:user.offers
       let thing = this.props.want || this.props.offer
       let id = thing._id
-      this.setState({isItemOwner: things.filter(t => t._id == t.id) != -1})
+      this.setState({isItemOwner: things.some(t => t._id == id)})
     })
   }
   renderWantCard() {
@@ -64,7 +64,7 @@ export default class ItemCard extends React.Component {
           </Col>
         </Row>
         <Row>
-          {!this.state.isItemOwner && this.renderContactButton()}
+          {!this.props.canDelete && !(this.state.isItemOwner) && this.renderContactButton()}
         </Row>
         {
           this.props.canDelete && (
@@ -173,15 +173,28 @@ export default class ItemCard extends React.Component {
   }
   renderContactButton() {
     return (
-      <Col sm={12}>
-        <Button block onClick={this.contactUser.bind(this)}>Contact user</Button>
+      <Col>
+        <Button block onClick={this.contactUser.bind(this)}>Contact User</Button>
       </Col>
     )
   }
   contactUser() {
+    console.log('im contacting user')
+    if(this.props.user) {
+      this.setState(Object.assign({},this.state,{
+        contactComponent: <Redirect to={`/messages/${this.props.user._id}`} />
+      }))
+      return
+    }
+    // for contacting creators of wants / offers
     let thing = this.props.want || this.props.offer
-    if(!thing) return
+    let userId = thing.creator
+    if(!userId) return
     // TODO: give a chat !
+    this.setState(Object.assign({},this.state,{
+      contactComponent: <Redirect to={`/messages/${userId}`} />
+    }))
+
   }
   renderGroupCard() {
     return (
@@ -215,8 +228,6 @@ export default class ItemCard extends React.Component {
 
   }
   renderUserCard() {
-    console.log(this.props.user.username)
-    console.log('user')
     return (
       <Grid className="ItemCardContent UserCard" fluid>
         <Row>
@@ -246,6 +257,7 @@ export default class ItemCard extends React.Component {
         {this.props.group && this.renderGroupCard()}
         {this.props.user && this.renderUserCard()}
         {this.redirectComponent()}
+        {this.state.contactComponent}
       </Card>
     )
   }

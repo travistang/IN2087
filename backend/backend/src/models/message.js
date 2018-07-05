@@ -22,16 +22,12 @@ const messageSchema = new mongoose.Schema({
 
 const conversationSchema = new mongoose.Schema({
   messages: [messageSchema],
-  initiator: {
+  participants: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  },
-  receipant: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }
+  }],
+
 })
 
 module.exports = {

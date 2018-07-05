@@ -1,0 +1,44 @@
+.UserThumbnailContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.UserThumbnail {
+  height: 96px;
+  width: 96px;
+}
+.ComposeMessageContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 16px;
+  border-top: 1px solid gray;
+}
+.ConvoHeaderRow {
+}
+.MyMessageRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.TheirMessageRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.MyMessageBox {
+  background-color: lightgreen;
+  border-radius: 16px;
+  margin-top : 16px;
+  padding: 8px;
+}
+
+.TheirMessageBox {
+  border: 1px solid black;
+  border-radius: 16px;
+  margin-top: 16px;
+  padding: 8px;
+}

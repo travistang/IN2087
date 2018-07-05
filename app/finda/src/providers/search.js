@@ -10,6 +10,14 @@ export default class SearchProvider {
 
   constructor() {
   }
+  async getUserById(id) {
+    let url = new URL(`${apiURL}/search/user`)
+    let result = await Http.get(url,{
+      id
+    })
+    result = await result.json()
+    return result
+  }
   async getUserByName(name) {
     let url = new URL(`${apiURL}/search/user`)
     let result = await Http.get(url,{

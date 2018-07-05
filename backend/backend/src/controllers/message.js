@@ -1,12 +1,22 @@
 const {ConversationModel,MessageModel} = require('../models/message')
 
+const getAllConversations = async (req,res) => {
+  let initiator = req.userId
+  try {
+    let result = await ConversationModel.find({participants: initiator})
+      .populate('participants')
+      .exec()
+    return res.status(200).json(result)
+  } catch(e) {
+    return res.status(500).json(e.message)
+  }
+}
 const getMessageWithUser = async (req,res) => {
   let receipant = req.params.userId
   let initiator = req.userId
   try {
-    let result = ConversationModel.findOne({initiator,receipant})
-      .populate('receipant')
-      .populate('initiator')
+    let result = await ConversationModel.findOne({participants: {$in: [initiator,receipant]}})
+      .populate('participants messages')
       .exec()
     return res.status(200).json(result)
   } catch(e) {
@@ -17,30 +27,33 @@ const getMessageWithUser = async (req,res) => {
 const postMessageWithUser = async (req,res) => {
   let receipant = req.params.userId
   let initiator = req.userId
-  let message = req.body.message
+  let message = {message: req.body.message}
 
   message.time = new Date()
   message.author = initiator
 
+  // let messageObj = MessageModel.create(message)
   try {
-    let result = ConversationModel.findOne({initiator,receipant})
-    if(result.length == 0) {
+    let result = await ConversationModel.findOne({participants: {
+      $in: [initiator,receipant]
+    }}).exec()
+    if(!result) {
       // create one...
-      let messageObj = MessageModel.create(message)
-      let convo = ConversationModel.create({
-        initiator,
-        receipant,
-        messages: [messageObj]
+            let convo = await ConversationModel.create({
+        participants: [initiator,receipant],
+        messages: [message]
       })
       return res.status(200).json(convo)
     } else {
-      let result = ConversationModel.findOneAndUpdate({initiator,receipant},{
+      let result = await ConversationModel.findOneAndUpdate({participants: {
+        $in: [initiator,receipant]
+      }},{
         $push: {
           messages: {
-            $each: [messageObj]
+            $each: [message]
           }
         }
-      })
+      }).exec()
       return res.status(200).json(result)
     }
 
@@ -49,6 +62,7 @@ const postMessageWithUser = async (req,res) => {
   }
 }
 module.exports = {
+  getAllConversations,
   getMessageWithUser,
   postMessageWithUser,
 }
