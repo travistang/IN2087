@@ -90,7 +90,7 @@ export default class ItemCard extends React.Component {
       let result = await func.bind(gp)(this.props.groupInfo.groupname,payload)
       console.log('delete result')
       console.log(result)
-      return
+      if(result) window.location.reload()
     }
     if(this.props.want) {
       let payload = {wants: this.props.want._id}
@@ -161,7 +161,7 @@ export default class ItemCard extends React.Component {
         </Col>
       )
     }
-    if(!this.props.offer.price && this.props.offer.wants.length == 0) {
+    if(!this.props.offer.price && (!this.props.offer.wants || this.props.offer.wants.length == 0)) {
 
       res.push(
         <Col sm={12} className="PriceCol-Free">

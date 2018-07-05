@@ -11,6 +11,7 @@ import {
   Tab
 } from 'react-bootstrap'
 import Auth from '../../providers/auth'
+import SearchProvider from '../../providers/search'
 import Card from '../Card/Card'
 import ItemCard from '../ItemCard/ItemCard'
 import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
@@ -18,12 +19,31 @@ import './Me.css'
 export default class Me extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      user: null
+    }
+    if(props.match && props.match.params.username) {
+      console.log('gettin user info')
+      SearchProvider.getInstance().getUserByName(props.match.params.username).then(user => {
+        console.log('user:')
+        console.log(user)
+        if(!user) return
+        this.setState(Object.assign({},this.state,{user}))
+      })
+    }
   }
   userName() {
+    if(this.state.user) return this.state.user.username
     if(this.props.user) return this.props.user.username
     return ''
   }
   userDescriptions() {
+    if(this.state.user && this.state.user.descriptions) {
+      return <p>{this.state.user.descriptions}</p>
+    } else {
+      return <p className="NoDescription"> This user has no descriptions yet </p>
+    }
     if(this.props.user && this.props.user.descriptions) {
       return <p>{this.props.user.descriptions}</p>
     } else {
@@ -37,13 +57,13 @@ export default class Me extends React.Component {
     return this.userOffers().length
   }
   userWants() {
-    return this.props.user.wants || []
+    return (this.state.user && this.state.user.wants) || this.props.user.wants || []
   }
   userOffers() {
-    return this.props.user.offers || []
+    return (this.state.user && this.state.user.offers) || this.props.user.offers || []
   }
   userGroups() {
-    return this.props.user.groups || []
+    return (this.state.user && this.state.user.groups) || this.props.user.groups || []
   }
   editProfileButton() {
     if(this.props.isMe) {
@@ -83,7 +103,7 @@ export default class Me extends React.Component {
     )
   }
   toPremiumButton() {
-    if(!this.props.user.isPremium) return (
+    if(this.props.isMe && !this.props.user.isPremium) return (
       <Button bsStyle="success"> To Premium </Button>
     )
   }

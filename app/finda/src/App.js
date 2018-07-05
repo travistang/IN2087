@@ -112,6 +112,11 @@ class App extends React.Component {
                       render={(props) => <ItemListPage {...props} isGroup={true} isForWant={false} user={this.state.user}/>}
                     />
                     <Route
+                      path="/user/:username"
+                      exact={true}
+                      render={(props) => <MeComponent {...props} isMe={false} user={this.state.user} />}
+                    />
+                    <Route
                       path="/me/wants"
                       exact={true}
                       render={(props) => <ItemListPage {...props} user={this.state.user} isMe={true} isForWant={true} />}
