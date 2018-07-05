@@ -161,7 +161,7 @@ export default class ItemListPage extends React.Component {
       // group thing
       let groupProvider = GroupProvider.getInstance()
       let result = null
-      if(this.props.isForGroup)
+      if(this.props.isForWant)
         result = await groupProvider.addWants(this.state.info.groupname,payload)
       else
         result = await groupProvider.addOffers(this.state.info.groupname,payload)
@@ -228,10 +228,10 @@ export default class ItemListPage extends React.Component {
     if(this.props.isForGroup)
       return <ItemCard group={item} />
     else if(this.props.isForWant) {
-      return <ItemCard want={item} canDelete={this.props.isMe}/>
+      return <ItemCard want={item} groupInfo={this.state.info} canDelete={this.props.isMe|| (this.isMemberOfGroup())}/>
     }
     else {
-      return <ItemCard offer={item} canDelete={this.props.isMe}/>
+      return <ItemCard offer={item} groupInfo={this.state.info} canDelete={this.props.isMe|| (this.isMemberOfGroup())}/>
     }
   }
   renderList() {

@@ -12,6 +12,7 @@ import {
   Grid,
 } from 'react-bootstrap'
 import MeProvider from '../../providers/me'
+import GroupProvider from '../../providers/group'
 import './ItemCard.css'
 export default class ItemCard extends React.Component {
   static contextTypes = {
@@ -80,6 +81,17 @@ export default class ItemCard extends React.Component {
     )
   }
   async deleteItem() {
+    if(this.props.groupInfo) {
+      let isWant = this.props.want
+      let thing = isWant?this.props.want:this.props.offer
+      let payload = {[isWant?"wants":"offers"]: thing._id}
+      let gp = GroupProvider.getInstance()
+      let func = this.props.want?gp.deleteWants:gp.deleteOffers
+      let result = await func.bind(gp)(this.props.groupInfo.groupname,payload)
+      console.log('delete result')
+      console.log(result)
+      return
+    }
     if(this.props.want) {
       let payload = {wants: this.props.want._id}
       let result = await MeProvider.getInstance().deleteWants(payload)

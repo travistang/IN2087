@@ -48,4 +48,18 @@ export default class GroupProvider {
     let response = await this.authProvider.authenticatedPost(url,payload)
     return response.json()
   }
+
+  async deleteWants(groupname,wants) {
+    let url = `/group/${groupname}/wants`
+    let payload = {groupname,wants: wants.wants}
+    let response = await this.authProvider.authenticatedDelete(url,payload)
+    return response.json()
+  }
+
+  async deleteOffers(groupname, offers) {
+    let url = `/group/${groupname}/offers`
+    let payload = {groupname,offers: offers.offers}
+    let response = await this.authProvider.authenticatedDelete(url,payload)
+    return response.json()
+  }
 }
