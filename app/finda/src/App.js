@@ -229,7 +229,7 @@ class App extends React.Component {
 
             <Grid className="Section">
               <Row>
-                  <Ads aImage="http://localhost:3000/uploads/2018-07-01T20:22:14.344Zads1.jpg"></Ads>
+                  <Ads aImage="http://localhost:3000/uploads/2018-07-05T09:56:34.914Zads11.jpg"></Ads>
 
                 <Col md={6} lg={6}>
                   <Row style={{height:"100vh",marginBottom:8}}>
@@ -276,7 +276,7 @@ class App extends React.Component {
       </Row>
       </Col>
 
-      <Ads aImage="http://localhost:3000/uploads/2018-07-01T21:01:37.059Zads2.jpg"/>
+      <Ads aImage="http://localhost:3000/uploads/2018-07-05T09:57:38.303Zads2.jpg"/>
       </Row>
       </Grid>
         </div>
