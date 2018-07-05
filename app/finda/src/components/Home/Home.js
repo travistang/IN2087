@@ -131,7 +131,7 @@ export default class Home extends React.Component {
         this.setState(Object.assign({},this.state,{searchResult: result}))
   }
   setSearchOption(option) {
-    this.setState(Object.assign({},this.state,{searchOption: option}))
+    this.setState(Object.assign({},this.state,{searchResult: [],searchTerm: "",searchOption: option}),() => this.search())
   }
   getItemCardForResult(result) {
     let props = {}
