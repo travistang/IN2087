@@ -11,6 +11,7 @@ import {
   InputGroup,
   FormControl
 } from 'react-bootstrap'
+import {Redirect} from 'react-router'
 import MessageProvider from '../../providers/message'
 import SearchProvider from '../../providers/search'
 import './Conversation.css'
@@ -21,7 +22,8 @@ export default class ConversationPage extends React.Component {
     this.state = {
       convo: null,
       partner: null,
-      composedMessage: ''
+      composedMessage: '',
+      redirectTo: null,
     }
     let partnerId = this.props.match.params.userId
     this.partnerId = partnerId // for convenience
@@ -56,6 +58,9 @@ export default class ConversationPage extends React.Component {
       .map(m => m.time)
       .sort((b,a) => a - b)[0]
   }
+  redirectToPartner() {
+    this.setState(Object.assign({},this.state,{redirectTo: `/user/${this.state.partner.username}`}))
+  }
   renderConvoHeader() {
     if(!this.state.partner) return null
     return (
@@ -66,7 +71,7 @@ export default class ConversationPage extends React.Component {
           </div>
         </Col>
 
-        <Col sm={10}>
+        <Col sm={10} onClick={this.redirectToPartner.bind(this)}>
           <h3> {this.state.partner.username} </h3>
           <p> {this.getLastMessageTime() || "You have no messages"} </p>
         </Col>
@@ -94,6 +99,12 @@ export default class ConversationPage extends React.Component {
   }
   onCompose(e) {
     this.setState(Object.assign({},this.state,{composedMessage: e.target.value}))
+  }
+  getRedirectComponent() {
+    if(!this.state.redirectTo) {
+      return null
+    }
+    return <Redirect to={this.state.redirectTo} />
   }
   getComposeMessageComponents() {
     return (
@@ -124,6 +135,7 @@ export default class ConversationPage extends React.Component {
         {this.renderConvoHeader()}
         {this.getMessagesComponents()}
         {this.getComposeMessageComponents()}
+        {this.getRedirectComponent()}
       </Col>
     )
   }

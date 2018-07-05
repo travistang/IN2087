@@ -21,7 +21,8 @@ export default class Me extends React.Component {
     super(props)
 
     this.state = {
-      user: null
+      user: null,
+      redirectTo: null,
     }
     if(props.match && props.match.params.username) {
       console.log('gettin user info')
@@ -102,6 +103,14 @@ export default class Me extends React.Component {
 
     )
   }
+  redirectToMessage() {
+    let partnerId = this.state.user._id
+    this.setState(Object.assign({},this.state,{redirectTo: `/messages/${partnerId}`}))
+  }
+  contactButton() {
+    if(this.state.user)
+    return <Button onClick={this.redirectToMessage.bind(this)} bsStyle="info"> Contact {this.state.user.username} </Button>
+  }
   toPremiumButton() {
     if(this.props.isMe && !this.props.user.isPremium) return (
       <Button bsStyle="success"> To Premium </Button>
@@ -166,6 +175,7 @@ export default class Me extends React.Component {
     if(!Auth.getInstance().isLoggedIn()) return <Redirect to='/login' />
     // logged in but user not loaded
     else if(!this.props.user) return null
+    else if(this.state.redirectTo) return <Redirect to={this.state.redirectTo} />
     else return (
       <Col>
         <Row>
@@ -188,6 +198,12 @@ export default class Me extends React.Component {
               <Col sm={6}>
                 {this.toPremiumButton()}
               </Col>
+              { !this.props.isMe &&
+                <Col sm={6}>
+                  {this.contactButton()}
+                </Col>
+
+              }
             </Row>
 
           </Col>

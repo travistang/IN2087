@@ -124,7 +124,7 @@ export default class ItemCard extends React.Component {
           {this.renderPrice()}
         </Row>
         {
-          !this.state.isItemOwner && (
+          !this.props.canDelete && !this.state.isItemOwner && (
             <Row>
               {this.renderContactButton()}
             </Row>
