@@ -15,8 +15,20 @@
   right: 0;
   padding-top: 16px;
   border-top: 1px solid gray;
+  background: white;
+  height: 128px;
+  z-index:2;
+}
+.MessageBoxContainer {
+  position: absolute;
+  top: 128px;
+  left: 0;
+  right:0;
+  bottom: 128px;
+  overflow:scroll;
 }
 .ConvoHeaderRow {
+  height: 128px;
 }
 .MyMessageRow {
   display: flex;

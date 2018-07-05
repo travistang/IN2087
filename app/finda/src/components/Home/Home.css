@@ -1,8 +1,8 @@
 .ItemContainer {
   display: flex;
   flex-wrap:wrap;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: flex-start;
+  /* align-items: flex-start; */
   overflow-x: scroll;
   /* overflow-y: hidden; */
 }
@@ -22,7 +22,9 @@
   align-items: center;
   justify-content: center;
 }
-
+.ItemCardMain {
+  margin: 4px;
+}
 .SearchResultContainer {
   display: flex;
   flex-wrap: wrap;

@@ -29,3 +29,10 @@
 .NavRight {
   height: 50px;
 }
+
+.UsernameNav {
+  color: white !important;
+}
+.UsernameNav:hover {
+  text-decoration: none !important;
+}

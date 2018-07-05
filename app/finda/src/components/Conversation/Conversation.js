@@ -94,7 +94,12 @@ export default class ConversationPage extends React.Component {
   getMessagesComponents() {
     if(!this.state.convo || !this.state.convo.messages) return null
     let msgs = this.state.convo.messages.sort((a,b) => a.time - b.time)
-    return msgs.map(msg => this.messageBox(msg))
+    return (
+      <div className="MessageBoxContainer">
+        {msgs.map(msg => this.messageBox(msg))}
+      </div>
+    )
+
 
   }
   onCompose(e) {

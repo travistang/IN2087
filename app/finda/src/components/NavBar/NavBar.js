@@ -23,7 +23,7 @@ export default class NavBar extends React.Component {
       return (this.props.user?(
           <NavItem>
             <Image className="Thumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
-            <Link to="/me">{this.props.user.username}</Link>
+            <Link className="UsernameNav" to="/me">{this.props.user.username}</Link>
             <Button className="NavButton" onClick={this.props.logout}> Logout</Button>
           </NavItem>
         ): null

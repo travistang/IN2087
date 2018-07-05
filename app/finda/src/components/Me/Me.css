@@ -13,11 +13,15 @@
 .SubpageContainer {
   padding: 16px;
 }
-.ItemContainer {
+.HomeItemContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  margin-left: 4px;
 }
+
 /* put elements to the middle when the screen is too small*/
 @media(max-width: 720px) {
   .ThumbnailCol {

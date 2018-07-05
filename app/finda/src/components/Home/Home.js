@@ -51,7 +51,7 @@ export default class Home extends React.Component {
           </PageHeader>
         </Col>
         <Col>
-          <div className="ItemContainer">
+          <div className="HomeItemContainer">
             {this.state.content.wants.map(want => <ItemCard className="HomeItem" want={want} />)}
           </div>
 
@@ -69,7 +69,7 @@ export default class Home extends React.Component {
           </PageHeader>
         </Col>
         <Col>
-          <div className="ItemContainer">
+          <div className="HomeItemContainer">
             {this.state.content.offers.map(want => <ItemCard className="HomeItem" offer={want} />)}
           </div>
 
@@ -87,7 +87,7 @@ export default class Home extends React.Component {
           </PageHeader>
         </Col>
         <Col>
-          <div className="ItemContainer">
+          <div className="HomeItemContainer">
             {this.state.content.groups.map(want => <ItemCard className="HomeItem" group={want} />)}
           </div>
 

@@ -70,7 +70,7 @@ export default class ItemCard extends React.Component {
           this.props.canDelete && (
             <Row>
               <Col sm={12}>
-                <Button onClick={this.deleteItem.bind(this)} bsStyle="danger" bsSize="large" block>
+                <Button onClick={this.deleteItem.bind(this)} bsStyle="danger" bsSize="small" block>
                   Delete
                 </Button>
               </Col>
@@ -134,7 +134,7 @@ export default class ItemCard extends React.Component {
           this.props.canDelete && (
             <Row>
               <Col sm={12}>
-                <Button onClick={this.deleteItem.bind(this)} bsStyle="danger" bsSize="large" block>
+                <Button onClick={this.deleteItem.bind(this)} bsStyle="danger" bsSize="small" block>
                   Delete
                 </Button>
               </Col>
@@ -174,7 +174,7 @@ export default class ItemCard extends React.Component {
   renderContactButton() {
     return (
       <Col>
-        <Button block onClick={this.contactUser.bind(this)}>Contact User</Button>
+        <Button bsSize="small" block onClick={this.contactUser.bind(this)}>Contact User</Button>
       </Col>
     )
   }
