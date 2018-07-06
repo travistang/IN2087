@@ -17,6 +17,7 @@ import {
   MenuItem,
 
 } from 'react-bootstrap'
+import SearchBar from '../SearchBar/SearchBar'
 import Card from '../Card/Card'
 import ItemCard from '../ItemCard/ItemCard'
 import { Redirect } from 'react-router'
@@ -31,8 +32,8 @@ export default class Home extends React.Component {
     this.searchProvider = SearchProvider.getInstance()
     this.state = {
       searchResult: [],
-      searchTerm: '',
       searchOption: "Wants",
+      searchTerm: '',
       content: null
     }
     this.homeProvider.gethomeContent().then(content => {
@@ -96,43 +97,7 @@ export default class Home extends React.Component {
       </Row>
     )
   }
-  handleSearchTermChange(e) {
-    this.setState(Object.assign({},this.state,{searchTerm:e.target.value}))
-    if(this.searchTrigger) clearTimeout(this.searchTrigger)
 
-      this.searchTrigger = setTimeout(
-        this.search.bind(this)
-      ,500)
-  }
-  async search() {
-        let searchFunc = null
-        if(this.state.searchTerm.trim().length == 0) {
-          this.setState(Object.assign({},this.state,{searchResult: []}))
-          return
-        }
-        if(this.state.searchOption == 'Wants') {
-          searchFunc = this.searchProvider.searchWants
-        }
-        else if(this.state.searchOption == 'Offers') {
-          searchFunc = this.searchProvider.searchOffers
-        }
-        else if(this.state.searchOption == 'Groups') {
-          searchFunc = this.searchProvider.searchGroups
-        }
-        else if(this.state.searchOption == 'Categories') {
-          searchFunc = this.searchProvider.searchCategories
-        } else {
-          // ??
-          return
-        }
-        let result= await searchFunc(this.state.searchTerm)
-        console.log('home result')
-        console.log(result)
-        this.setState(Object.assign({},this.state,{searchResult: result}))
-  }
-  setSearchOption(option) {
-    this.setState(Object.assign({},this.state,{searchResult: [],searchTerm: "",searchOption: option}),() => this.search())
-  }
   getItemCardForResult(result) {
     let props = {}
     if(this.state.searchOption == "Wants") props.want = result
@@ -148,40 +113,13 @@ export default class Home extends React.Component {
     }
     return <ItemCard {...props} />
   }
+
   renderSearchBar() {
     return (
       <Row>
-        <Col sm={12} md={12} lg={12} className="SearchBarCol">
-          <Form inline horizontal className="SearchForm">
-            <FormGroup className="SearchForm">
-
-                <DropdownButton
-                  bsSize="large"
-                  title={this.state.searchOption}
-
-                >
-                  {"Wants Offers Groups Categories".split(' ').map(
-                    (title,i) => <MenuItem onClick={() => this.setSearchOption.bind(this)(title)} eventKey={i}>{title}</MenuItem>)}
-                </DropdownButton>
-              <FormControl
-                bsSize="large"
-                type="text"
-                placeholder="Search"
-                value={this.state.searchTerm}
-                onChange={this.handleSearchTermChange.bind(this)}
-              />
-              <Button
-                bsSize="large"
-                bsStyle="primary"
-                onClick={this.search.bind(this)}
-              >
-                Search
-              </Button>
-            </FormGroup>
-
-          </Form>
-
-        </Col>
+        <SearchBar
+          onSearchResult={this.onSearchResult.bind(this)}
+        />
       </Row>
 
     )
@@ -194,7 +132,11 @@ export default class Home extends React.Component {
     ]
 
   }
-
+  onSearchResult(result) {
+    console.log('search result')
+    console.log(result)
+    this.setState({...this.state,...result})
+  }
   getSearchResultItems() {
     return (
         <Row>
@@ -205,7 +147,7 @@ export default class Home extends React.Component {
           </Col>
           <Col>
             <div className="SearchResultContainer">
-              {this.state.searchResult.length?this.state.searchResult.map(result => this.getItemCardForResult(result)):
+              {(this.state.searchResult.length)?this.state.searchResult.map(result => this.getItemCardForResult(result)):
               (<BackgroundNotice title="No Results" />)}
             </div>
           </Col>

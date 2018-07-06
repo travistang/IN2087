@@ -7,30 +7,38 @@ import {
   NavDropdown,
   MenuItem,
   Image,
-  Button
+  Button,
+  FormGroup,
+  FormControl,
+  Form,
+  InputGroup,
+  DropdownButton,
+  Grid,Row,Col
 } from 'react-bootstrap'
 import {Redirect} from 'react-router'
 import Auth from '../../providers/auth'
+import SearchBar from '../SearchBar/SearchBar'
 import './NavBar.css'
-
 
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props)
+    // listen for changes in route so that the navbar's layout can change accordingly
+    this.shouldShowSearch = !(['','/','/home'].some(p => window.location.pathname == p))
   }
   barRightItems() {
-    if(Auth.getInstance().isLoggedIn()) {
+    if(Auth.getInstance().isLoggedIn())
+    {
       return (this.props.user?(
-          <NavItem>
-            <Image className="Thumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
-            <Link className="UsernameNav" to="/me">{this.props.user.username}</Link>
-            <Button className="NavButton" onClick={this.props.logout}> Logout</Button>
-          </NavItem>
+        <NavItem pullRight href="/me">
+              Hello, {this.props.user.username}
+        </NavItem>
         ): null
       )
-    } else {
+    } else
+    {
       return (
-        <Navbar.Text>
+        <Navbar.Text pullRight>
           Please <Navbar.Link className="Login" href="/login"> login</Navbar.Link> or <Navbar.Link className="Register" href="/register"> Register </Navbar.Link>
         </Navbar.Text>
       )
@@ -82,25 +90,71 @@ export default class NavBar extends React.Component {
     if(!this.props.user) return null
     return <NavItem eventKey={3} href="/messages"> Messages </NavItem>
   }
+  logoutButton() {
+    if(!this.props.user) return null
+    return (
+      <NavItem pullRight onClick={this.props.logout}>
+        Logout
+      </NavItem>
+
+    )
+  }
+  onSearchResult(result) {
+
+  }
+  getSearchForm() {
+    return (
+        <Navbar.Form>
+          <SearchBar onSearchResult={this.onSearchResult.bind(this)} />
+        </Navbar.Form>
+    )
+  }
+  userItems() {
+    if(this.shouldShowSearch)
+    return (
+      <Navbar.Collapse>
+        <Nav pullRight>
+        {this.getWantsItem()}
+        {this.getOffersItem()}
+        {this.getMessageItem()}
+        </Nav>
+      </Navbar.Collapse>
+
+    )
+    return (
+      <Nav>
+      {this.getWantsItem()}
+      {this.getOffersItem()}
+      {this.getMessageItem()}
+      </Nav>
+
+    )
+  }
   render() {
     return (
-      <Navbar inverse collapseOnSelect>
+      <Navbar staticTop={true}  fluid={true}>
         <Navbar.Header>
           <Navbar.Brand>
             <a href="/home">FindA</a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
+        {
+          this.shouldShowSearch && (
+            <Nav>
+                {this.shouldShowSearch && this.getSearchForm()}
+            </Nav>
+          )
+        }
+
         <Navbar.Collapse>
-          <Nav>
-            {this.getWantsItem()}
-            {this.getOffersItem()}
-            {this.getMessageItem()}
-          </Nav>
-          <Nav className="NavRight" pullRight>
+          {!this.shouldShowSearch && this.userItems()}
+          <Nav pullRight>
             {this.barRightItems()}
+            {this.logoutButton()}
           </Nav>
         </Navbar.Collapse>
+        {this.shouldShowSearch && this.userItems()}
       </Navbar>
     )
   }

@@ -27,7 +27,7 @@ class App extends React.Component {
     this.auth = Auth.getInstance()
     this.me = Me.getInstance()
     this.state = {
-      user: null
+      user: null,
     }
 
     this.routeParams = {
@@ -66,6 +66,7 @@ class App extends React.Component {
         this.setState(Object.assign({},this.state,{user}))
       })
   }
+
   render() {
     return (
       <BrowserRouter>
@@ -81,9 +82,8 @@ class App extends React.Component {
             />
             <Grid className="Section">
               <Row>
-                  <Ads/>
 
-                <Col md={6} lg={6}>
+                <Col>
                   <Row style={{height:"100vh",marginBottom:8}}>
                     {ContentRoutes.map(route =>
                       <Route path={route.path}
@@ -146,7 +146,6 @@ class App extends React.Component {
                   </Row>
                 </Col>
 
-                  <Ads/>
               </Row>
             </Grid>
 

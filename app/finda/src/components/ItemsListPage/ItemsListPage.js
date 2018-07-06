@@ -9,6 +9,7 @@ import {
   Button,
   Form,
   FormGroup,
+  Breadcrumb,
 } from 'react-bootstrap'
 import ItemCard from '../ItemCard/ItemCard'
 import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
@@ -272,6 +273,18 @@ export default class ItemListPage extends React.Component {
       else return `${this.state.info && this.state.info.groupname}'s Offers`
     }
   }
+  getBreadCrumb() {
+
+    return (
+      <Breadcrumb>
+        <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href="/me">
+            {this.props.user.username || ""}
+          </Breadcrumb.Item>
+        <Breadcrumb.Item active>{this.getPageTitle()}</Breadcrumb.Item>
+      </Breadcrumb>
+    )
+  }
   render() {
     let items = []
     if(this.props.isGroup && this.props.isForWant) items = this.state.info && this.state.info.wants
@@ -281,6 +294,9 @@ export default class ItemListPage extends React.Component {
     else return null
     return (
       <div>
+        <Row>
+          {this.getBreadCrumb()}
+        </Row>
         <Row>
           <PageHeader>
             {this.getPageTitle()}
