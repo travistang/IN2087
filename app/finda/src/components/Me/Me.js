@@ -8,9 +8,11 @@ import {
   PageHeader,
   Button,
   Tabs,
-  Tab
+  Tab,
+  Alert
 } from 'react-bootstrap'
 import Auth from '../../providers/auth'
+import MeProvider from '../../providers/me'
 import SearchProvider from '../../providers/search'
 import Card from '../Card/Card'
 import ItemCard from '../ItemCard/ItemCard'
@@ -23,12 +25,11 @@ export default class Me extends React.Component {
     this.state = {
       user: null,
       redirectTo: null,
+      errorMessage: null,
     }
     if(props.match && props.match.params.username) {
       console.log('gettin user info')
       SearchProvider.getInstance().getUserByName(props.match.params.username).then(user => {
-        console.log('user:')
-        console.log(user)
         if(!user) return
         this.setState(Object.assign({},this.state,{user}))
       })
@@ -113,7 +114,7 @@ export default class Me extends React.Component {
   }
   toPremiumButton() {
     if(this.props.isMe && !this.props.user.isPremium) return (
-      <Button bsStyle="success"> To Premium </Button>
+      <Button onClick={this.toPremium.bind(this)} bsStyle="success"> To Premium </Button>
     )
   }
   offersSection() {
@@ -170,6 +171,11 @@ export default class Me extends React.Component {
       </div>
     )
   }
+  async toPremium() {
+    let response = await MeProvider.getInstance().toPremium()
+    if(response.status == 200) window.location.reload()
+    else this.setState({...this.state,errorMessage: "Unable to upgrade to premium user"})
+  }
   render() {
 
     if(!Auth.getInstance().isLoggedIn()) return <Redirect to='/login' />
@@ -178,6 +184,12 @@ export default class Me extends React.Component {
     else if(this.state.redirectTo) return <Redirect to={this.state.redirectTo} />
     else return (
       <Col>
+        {this.state.errorMessage && (
+          <Alert bsStyle="error">
+            <h4>An error has occured!</h4>
+            <p>{this.state.errorMessage}</p>
+          </Alert>
+        )}
         <Row>
           <Col className="ThumbnailCol" xs={12} md={4} sm={4} lg={4}>
             <Image className="BigThumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />

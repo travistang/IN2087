@@ -65,4 +65,10 @@ export default class Me {
       return response
     }
   }
+
+  async toPremium() {
+    if(!this.user) return
+    let response = await this.auth.authenticatedPost('/me/toPremium')
+    return response
+  }
 }

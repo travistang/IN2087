@@ -159,7 +159,7 @@ const addOffers = async (userId,offers,res) => {
 
 const toPremium = async (userId,res) => {
   try {
-    let result = await UserModel.update({_id: userId},{toPremium: true}).exec()
+    let result = await UserModel.update({_id: userId},{isPremium: true}).exec()
     res.status(200).json(result)
   } catch(e) {
     res.status(500).json({
