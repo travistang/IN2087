@@ -133,8 +133,6 @@ export default class Home extends React.Component {
 
   }
   onSearchResult(result) {
-    console.log('search result')
-    console.log(result)
     this.setState({...this.state,...result})
   }
   getSearchResultItems() {

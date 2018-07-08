@@ -47,7 +47,10 @@
   height: 32px;
   width: 32px;
 }
-
+.UserCard {
+  height: 198px;
+  width: 321px;
+}
 .UserCard:hover {
   cursor: pointer;
   color: white;
@@ -62,4 +65,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right:8px;
+}
+
+.UserCardContent {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.UserThumbnailContainer {
+  flex: 1;
+}
+.UserThumbnail {
+  height: 100%;
+  width: 100%;
+}
+.UserDetailColumn {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+.UserInfoRow {
+  flex: 0 0 44px;
+}
+.UserDescriptionRow {
+  flex: 0 0 44px;
+  overflow: hidden;
+}
+.UserContactRow {
+  flex: 0 0 44px;
 }

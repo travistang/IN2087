@@ -132,7 +132,7 @@ export default class NavBar extends React.Component {
   }
   render() {
     return (
-      <Navbar staticTop={true}  fluid={true}>
+      <Navbar staticTop={true}  fluid={false}>
         <Navbar.Header>
           <Navbar.Brand>
             <a href="/home">FindA</a>

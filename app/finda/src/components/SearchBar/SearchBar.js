@@ -92,6 +92,7 @@ export default class SearchBar extends React.Component {
           <DropdownButton
             componentClass={InputGroup.Button}
             bsSize={this.props.size || ""}
+            bsStyle="success"
             title={this.state.searchOption}
           >
             {this.searchOptions.map((o,i) =>

@@ -253,12 +253,14 @@ export default class ItemListPage extends React.Component {
   noItemElement() {
     if(this.props.isGroup) {
       let title = `${this.state.info && this.state.info.groupname} has no ${this.props.isForWant?"wants":"offers"}`
-      return <BackgroundNotice title={title} />
+      return <div className="NoItemElement"><BackgroundNotice title={title} /></div>
     }
     let username = this.props.isMe?'You have':`${this.props.username} has`
-    let wantOrOffer = this.props.isForWant?'wants':'offers'
-    let title = `${username} no ${wantOrOffer}`
-    return <BackgroundNotice title={title} />
+    let item = "wants"
+    if(!this.props.isForWant) item = "offers"
+    if(this.props.isForGroup) item = "groups"
+    let title = `${username} no ${item}`
+    return <div className="NoItemElement"><BackgroundNotice title={title} /></div>
   }
   getPageTitle() {
     if(this.props.isMe) {
@@ -274,7 +276,6 @@ export default class ItemListPage extends React.Component {
     }
   }
   getBreadCrumb() {
-
     return (
       <Breadcrumb>
         <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>

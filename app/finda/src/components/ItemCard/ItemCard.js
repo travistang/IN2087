@@ -228,26 +228,42 @@ export default class ItemCard extends React.Component {
     }
 
   }
+  // <Grid className="ItemCardContent UserCard" fluid>
+  //   <Row>
+  //     <div className="UserThumbnailContainer">
+  //       <img className="UserThumbnail" src="http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/512/user-alt.png" />
+  //     </div>
+  //   </Row>
+  //   <Row className="UsernameRow">
+  //     <h4>{this.props.user.username}</h4>
+  //   </Row>
+  //   <Row>
+  //     {!this.state.isMe && this.renderContactButton()}
+  //   </Row>
+  // </Grid>
   renderUserCard() {
     return (
-      <Grid className="ItemCardContent UserCard" fluid>
-        <Row>
-          <div className="UserThumbnailContainer">
-            <img className="UserThumbnail" src="http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/512/user-alt.png" />
+      <div className="UserCardContent">
+        <div className="UserThumbnailContainer">
+          <img className="UserThumbnail" src="http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/512/user-alt.png"/>
+        </div>
+        <div className="UserDetailColumn">
+          <div className="UserInfoRow">
+            {this.props.user.username}
           </div>
-        </Row>
-        <Row className="UsernameRow">
-          <h4>{this.props.user.username}</h4>
-        </Row>
-        <Row>
-          {!this.state.isMe && this.renderContactButton()}
-        </Row>
-      </Grid>
+          <div className="UserDescriptionRow">
+            {this.props.user.descriptions}
+          </div>
+          <div className="UserContactRow">
+            <i class="glyphicon glyphicon-search" /> Contact User
+          </div>
+        </div>
+      </div>
     )
   }
   getCardClass() {
     if(this.props.group) return "GroupCard ItemCardMain"
-    if(this.props.user) return "UserCard ItemCardMain"
+    if(this.props.user) return "UserCard"
     return "ItemCardMain"
   }
   render() {

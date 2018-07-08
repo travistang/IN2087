@@ -118,7 +118,7 @@ export default class RegisterLoginForm extends React.Component {
     }
     // register / login
     let authProvider = Auth.getInstance()
-    
+
     let result = null
 
     // submit form according to registration / login
@@ -293,16 +293,17 @@ export default class RegisterLoginForm extends React.Component {
     }
 
     if(message == 'loginSuccess') {
-      // <Redirect to="/me">
       // trigger the redirect after 3 seconds...
       // setTimeout(() => {
       //   this.shouldRedirectToMePage = true
       // },3000)
-      return (
-        <Alert bsStyle="success">
-          <strong> Login Success! </strong> You will be redirected in a few seconds...
-        </Alert>
-      )
+      // return (
+      //   <Alert bsStyle="success">
+      //     <strong> Login Success! </strong> You will be redirected in a few seconds...
+      //   </Alert>
+      // )
+      return (<Redirect to="/home" />)
+
     }
 
   }
@@ -319,13 +320,13 @@ export default class RegisterLoginForm extends React.Component {
     // you dont need another registration / login when you have logged in
     if (Auth.getInstance().isLoggedIn())
     {
-      setTimeout(function(){this.redirectToMe()}.bind(this), 3000)
+      // <Alert bsStyle="success">
+      //   <strong> Login Success! </strong> You will be redirected in a few seconds...
+      // </Alert>
       return (
         <div>
-          {this.shouldRedirectToMePage?<Redirect to="/me" />:null}
-          <Alert bsStyle="success">
-            <strong> Login Success! </strong> You will be redirected in a few seconds...
-          </Alert>
+          <Redirect to="/me" />
+
         </div>
       )
     }

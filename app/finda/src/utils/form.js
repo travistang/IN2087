@@ -17,6 +17,7 @@ import {
 } from 'react-bootstrap'
 import DatePicker from 'react-date-picker'
 
+
 export default {
   choicesElement(input,state,getValidationState,updateValue) {
     return (
@@ -126,5 +127,6 @@ export default {
         </Col>
       </FormGroup>
     )
-  }
+  },
+
 }
