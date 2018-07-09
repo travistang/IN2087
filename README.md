@@ -17,10 +17,10 @@ Proposed endpoint structures are as follows:
 - [ ] /auth
   - [x] POST /login
   - [x] POST /register
-  ~~ - [ ] POST /create_group ~~
+  - ~~[ ] POST /create_group ~~
 ### Users
 - [ ] /me
-  - [ ] POST /toPremium
+  - [x] POST /toPremium
   - [x] GET /info
   - [ ] POST /info  
 
