@@ -55,6 +55,7 @@ export default class ItemListPage extends React.Component {
     if(input.type == 'date') return FormElements.dateElement(input,this.state,this.updateValue.bind(this))
     if(input.type == 'textarea') return FormElements.textareaElement(input,this.state,this.updateValue.bind(this),"Description of the item")
     if(input.type == 'choices') return FormElements.choicesElement(input,this.state,this.updateValue.bind(this))
+    if(input.type == 'images') return FormElements.imageUploadElement(input,this.state)
     return FormElements.textElement(input,this.state,this.getValidationState.bind(this),this.updateValue.bind(this))
   }
   questions() {
@@ -102,7 +103,11 @@ export default class ItemListPage extends React.Component {
         name: "descriptions",
         type: "textarea"
       },
-
+      {
+        name: "thumbnail",
+        fieldName: "Ideal image of what you want",
+        type: 'images',
+      }
     ]
   }
   offerQuestions() {
@@ -131,6 +136,12 @@ export default class ItemListPage extends React.Component {
       {
         name: "categories",
         type: 'text'
+      },
+      {
+        name: "thumbnail",
+        fieldName: "Image of your offer",
+        type: 'images',
+
       }
     ]
   }
@@ -276,6 +287,7 @@ export default class ItemListPage extends React.Component {
     }
   }
   getBreadCrumb() {
+    if(!this.props.user) return null
     return (
       <Breadcrumb>
         <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>

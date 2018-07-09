@@ -128,5 +128,15 @@ export default {
       </FormGroup>
     )
   },
+  imageUploadElement(input,state) {
+    return (
+      <div class="form-group">
+        <label class="FormName col-sm-2 control-label" for={input.name}>{input.fieldName || " Upload image"}</label>
+        <Col sm={10}>
+          <input type="file" class="form-control-file" id={input.name} />
+        </Col>
 
+      </div>
+    )
+  }
 }

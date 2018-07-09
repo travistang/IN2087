@@ -18,6 +18,7 @@ import {
   Glyphicon,
 
 } from 'react-bootstrap'
+import Autosuggest from 'react-autosuggest'
 import SearchProvider from '../../providers/search'
 /*
   Expect:
@@ -37,6 +38,10 @@ export default class SearchBar extends React.Component {
       searchOption: this.searchOptions[0],
     }
     this.searchProvider = SearchProvider.getInstance()
+  }
+  handleAutoSuggestSearchTermChange(e,{newValue}) {
+    return this.handleSearchTermChange({target:{value:{newValue}}})
+
   }
   handleSearchTermChange(e) {
     this.setState(Object.assign({},this.state,{searchTerm:e.target.value}))
@@ -59,6 +64,7 @@ export default class SearchBar extends React.Component {
   async search() {
         let searchFunc = null
         if(this.state.searchTerm.trim().length == 0) {
+          alert('search with empty string')
           this.setState(Object.assign({},this.state,{searchResult: []}))
           return
         }
@@ -85,7 +91,34 @@ export default class SearchBar extends React.Component {
   setSearchOption(o) {
     this.setState(Object.assign({},this.state,{searchOption:o}), () => {this.search()})
   }
+  // auto-suggest stuff
+  async onSuggestionsFetchRequested({value,reason}) {
+    if(value.trim().length > 0
+      && "input-focused input-changed".split(' ').some(r => r == reason))
+    {
+      return await this.search()
+    }
+    // this.setState({...this.state,searchTerm: value})
+  }
+  onSuggestionsClearRequested() {
+    this.setState({...this.state,searchResult: []})
+  }
+  getSuggestionValue(suggestion) {
+    return suggestion.name // doesnt matter here
+  }
+  renderSuggestion(suggestion,{query,isHighlighted}) {
+    return (
+      <div>
+        Suggestion: {suggestion.name},query: {query}
+      </div>
+    )
+  }
   render () {
+    let inputProps = {
+      placeholder: "Search",
+      value:this.state.searchTerm,
+      onChange:this.handleAutoSuggestSearchTermChange.bind(this)
+    }
     return (
       <FormGroup>
         <InputGroup>
@@ -99,13 +132,29 @@ export default class SearchBar extends React.Component {
               <MenuItem onClick={() => this.setSearchOption.bind(this)(o)} eventKey={i}>{o}</MenuItem>
             )}
           </DropdownButton>
-          <FormControl
-            bsSize={this.props.size || ""}
-            type="text"
-            placeholder="Search"
-            value={this.state.searchTerm}
-            onChange={this.handleSearchTermChange.bind(this)}
-          />
+          {
+            this.props.withSearchSuggestion?(
+              // search suggestion stuff goes here
+              <Autosuggest
+                suggestions={this.state.searchResult}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
+                getSuggestionValue={this.getSuggestionValue.bind(this)}
+                renderSuggestion={this.renderSuggestion.bind(this)}
+                inputProps={inputProps}
+              >
+
+              </Autosuggest>
+            ):(
+              <FormControl
+                bsSize={this.props.size || ""}
+                type="text"
+                placeholder="Search"
+                value={this.state.searchTerm}
+                onChange={this.handleSearchTermChange.bind(this)}
+              />
+            )
+          }
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit">
               <i class="glyphicon glyphicon-search"></i>

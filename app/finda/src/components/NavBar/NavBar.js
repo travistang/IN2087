@@ -105,7 +105,10 @@ export default class NavBar extends React.Component {
   getSearchForm() {
     return (
         <Navbar.Form>
-          <SearchBar onSearchResult={this.onSearchResult.bind(this)} />
+          <SearchBar
+            onSearchResult={this.onSearchResult.bind(this)}
+            withSearchSuggestion={false}
+          />
         </Navbar.Form>
     )
   }

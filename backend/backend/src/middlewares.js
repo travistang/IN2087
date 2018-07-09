@@ -3,6 +3,19 @@
 const jwt    = require('jsonwebtoken');
 
 const config = require ('./config');
+const multer = require('multer')
+
+const wantStorage = multer.diskStorage({
+  destination: (req,file,cb) => {
+    cb(null,'/tmp/wants')
+  },
+  filename: (req,file,cb) => {
+    cb(null,`${req.body.name}-${req.userId}`)
+  }
+})
+
+
+const offerStorage = multer.diskStorage
 
 const allowCrossDomain = (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
