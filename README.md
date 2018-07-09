@@ -1,6 +1,8 @@
 # IN2087
 For group 42
 
+## ATTENTION!
+Anything starting from branch `v3` is just for personal interest instead of credits:)
 ## How to set up the frontend + backend (on your machine)
 - install `docker-compose`
 - in the directory (where docker-compose.yml is), run `docker-compose up --build` (if that doesnt work, try with `sudo`)
